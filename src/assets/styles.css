@@ -1,0 +1,191 @@
+:root {
+	--blue: #2060df;
+	--green: #2060df;
+
+	--border-radius-small: 6px;
+	--font-size-default: 1.2rem;
+	--spacing-xs: 0.5rem;
+	--spacing-s: 1rem;
+	--spacing-default: var(--spacing-s);
+	--surface-default: rgba(230, 230, 230);
+
+	--color-success: var(--green);
+
+	--header-surface: var(--surface-default);
+	--forms-font-size: var(--font-size-default);
+	--service-bar-surface: var(--surface-default);
+
+	--focus-color: var(--blue);
+	--focus-width: 3px;
+	--focus-outline-default: var(--focus-width) solid var(--focus-color);
+	--focus-outline-offset: 2px;
+
+	--item-surface: var(--surface-default);
+	--item-border-radius: var(--border-radius-small);
+
+	--form-elem-border-radius: var(--border-radius-small);
+	--form-elem-border: 1px solid black;
+}
+
+:focus-visible {
+	outline-color: var(--focus-color);
+	outline-width: var(--focus-width);
+	box-shadow: 0 0 5px var(--focus-color);
+}
+
+/* ---------- GENERAL ---------- */
+
+body {
+	font-size: var(--font-size-default);
+	line-height: 1.4;
+}
+
+.sr-only,
+[data-sr-only='true'] {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	position: absolute;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	width: 1px;
+}
+
+/* ---------- TYPOGRAPHY ---------- */
+
+small {
+	display: block;
+	opacity: 0.5;
+	font-style: italic;
+}
+
+/* ---------- MAIN ---------- */
+
+main {
+	padding: var(--spacing-default);
+}
+
+div.centered {
+	width: 800px;
+	margin: 0 auto;
+}
+
+/* ---------- HEADER ---------- */
+
+header {
+	align-items: center;
+	background-color: var(--header-surface);
+	display: flex;
+	justify-content: space-between;
+	padding: var(--spacing-default);
+
+	> div {
+		align-items: center;
+		display: flex;
+	}
+}
+
+.logo {
+	font-weight: bold;
+}
+
+/* ---------- DRAG AND DROP ---------- */
+
+.drag-item {
+	border: 1px solid;
+	display: inline-block;
+	padding: var(--spacing-default);
+}
+
+.drop-area {
+	border: 1px dashed;
+	padding: var(--spacing-default);
+}
+
+/* ---------- FORMS ---------- */
+
+fieldset {
+	border: none;
+}
+
+input,
+textarea,
+select,
+button {
+	border: var(--form-elem-border);
+	border-radius: var(--form-elem-border-radius);
+	font-size: var(--forms-font-size);
+	padding: var(--spacing-default);
+}
+
+input[type='checkbox'] {
+	border-color: transparent;
+	border-radius: 50%;
+	margin: 1rem;
+	width: 1rem;
+	height: 1rem;
+	position: relative;
+}
+
+input[type='checkbox']:focus-visible:before {
+	outline: var(--focus-outline-default);
+	outline-offset: var(--focus-outline-offset);
+}
+
+input[type='checkbox']:before {
+	background-color: white;
+	border-radius: 50%;
+	content: '';
+	display: block;
+	height: 2rem;
+	left: -0.5rem;
+	top: -0.5rem;
+	position: absolute;
+	width: 2rem;
+}
+
+input[type='checkbox']:checked:before {
+	background-color: green;
+}
+
+.form-add-item {
+	background-color: var(--service-bar-surface);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+
+/* ---------- LIST ---------- */
+
+ul.todo-list {
+	justify-content: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xs);
+	margin: 0;
+	padding: 0;
+}
+
+ul.todo-list li {
+	background-color: var(--item-surface);
+	border-radius: var(--item-border-radius);
+	display: flex;
+	align-items: center;
+	list-style: none;
+	padding: var(--spacing-xs);
+}
+
+del {
+	opacity: 0.5;
+}
+
+/* ---------- TEXTBOX ---------- */
+
+.textbox {
+	max-width: 800px;
+	max-width: 800px;
+	margin: 0 auto;
+}

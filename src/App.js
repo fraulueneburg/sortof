@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './assets/styles.css'
+import { ListContextWrapper } from './context/List.context'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import FormNewTodo from './components/FormNewTodo'
+import Header from './components/Header'
+import ToDoList from './components/ToDoList'
+
+export default function App() {
+	return (
+		<>
+			<ListContextWrapper>
+				<Header />
+				<main>
+					<FormNewTodo />
+					<ToDoList />
+				</main>
+			</ListContextWrapper>
+		</>
+	)
 }
-
-export default App;
