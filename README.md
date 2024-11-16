@@ -4,7 +4,8 @@ Have 748 todos and trouble priorotizing? SortOf is here to help! Just dump all y
 
 This is my latest project – a simple React web app that helps you clear your mind. It’s lightweight and easy – no signup or login needed, everything is neatly stored in a cookie in your browser.
 
-Right now, this project is in its earliest stage, but it will soon be available as a demo version.
+> [!IMPORTANT]
+> Right now, this project is in its earliest stage, but it will soon be available as a demo version.
 
 ## Features
 
