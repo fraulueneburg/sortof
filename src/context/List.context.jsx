@@ -4,6 +4,8 @@ const ListContext = createContext()
 
 const ListContextWrapper = ({ children }) => {
 	const [allItemsArr, setAllItemsArr] = useState([])
+	const [deleteMode, setDeleteMode] = useState(false)
+	const [colorMode, setColorMode] = useState('Auto')
 
 	useEffect(() => {
 		const savedTodos = sessionStorage.getItem('todos')
@@ -23,6 +25,10 @@ const ListContextWrapper = ({ children }) => {
 			value={{
 				allItemsArr,
 				setAllItemsArr,
+				deleteMode,
+				setDeleteMode,
+				colorMode,
+				setColorMode,
 			}}>
 			{children}
 		</ListContext.Provider>

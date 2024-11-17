@@ -14,7 +14,12 @@ export default function ToDoList() {
 	// Changed within Component
 
 	const handleToDoChange = (id, updatedTodo) => {
-		setAllItemsArr((prev) => prev.map((item) => (item._id === id ? { ...item, ...updatedTodo } : item)))
+		console.log('id, updatedTodo', id, updatedTodo)
+
+		Object.keys(updatedTodo).length === 0
+			? setAllItemsArr((prev) => prev.filter((item) => (item._id !== id ? { ...item } : null)))
+			: setAllItemsArr((prev) => prev.map((item) => (item._id === id ? { ...item, ...updatedTodo } : item)))
+		console.log('allItemsArr', allItemsArr)
 	}
 
 	return (
@@ -31,6 +36,8 @@ export default function ToDoList() {
 				<>
 					<div className="textbox">
 						<h1>
+							<big>👏</big>
+							<br />
 							Need to clear your head,
 							<br />
 							get rid of all the todos in there?
@@ -38,7 +45,7 @@ export default function ToDoList() {
 						<p>
 							sortOf is here to help!
 							<br />
-							Use the form to throw them all on the page, then sort them via drag and drop later.
+							Use the form to throw them all onto the page, then organize them via drag and drop.
 						</p>
 						<small>
 							Everything’s stored in your browser – no login or signup needed.

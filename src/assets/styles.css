@@ -1,14 +1,18 @@
 :root {
 	--blue: #2060df;
-	--green: #2060df;
+	--green: #007a50;
+	--white: #fff;
+	--black: #000;
 
 	--border-radius-small: 6px;
 	--font-size-default: 1.2rem;
 	--spacing-xs: 0.5rem;
-	--spacing-s: 1rem;
+	--spacing-s: 0.75rem;
 	--spacing-default: var(--spacing-s);
 	--surface-default: rgba(230, 230, 230);
 
+	--color-text: var(--black);
+	--color-text-inverted: var(--white);
 	--color-success: var(--green);
 
 	--header-surface: var(--surface-default);
@@ -24,7 +28,7 @@
 	--item-border-radius: var(--border-radius-small);
 
 	--form-elem-border-radius: var(--border-radius-small);
-	--form-elem-border: 1px solid black;
+	--form-elem-border: 1px solid var(--black);
 }
 
 :focus-visible {
@@ -40,6 +44,12 @@ body {
 	line-height: 1.4;
 }
 
+#root {
+	height: 100vh;
+	display: grid;
+	grid-template-rows: min-content 1fr;
+}
+
 .sr-only,
 [data-sr-only='true'] {
 	border: 0;
@@ -52,6 +62,22 @@ body {
 	width: 1px;
 }
 
+/* ---------- MAIN ---------- */
+
+main {
+	display: grid;
+	grid-template-rows: 1fr min-content;
+}
+
+div.centered {
+	margin: 0 auto;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 800px;
+}
+
 /* ---------- TYPOGRAPHY ---------- */
 
 small {
@@ -60,15 +86,8 @@ small {
 	font-style: italic;
 }
 
-/* ---------- MAIN ---------- */
-
-main {
-	padding: var(--spacing-default);
-}
-
-div.centered {
-	width: 800px;
-	margin: 0 auto;
+h1 {
+	margin-top: 0;
 }
 
 /* ---------- HEADER ---------- */
@@ -83,10 +102,12 @@ header {
 	> div {
 		align-items: center;
 		display: flex;
+		gap: var(--spacing-xs);
 	}
 }
 
 .logo {
+	font-size: 1.5rem;
 	font-weight: bold;
 }
 
@@ -103,10 +124,62 @@ header {
 	padding: var(--spacing-default);
 }
 
+.drag-handle {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	width: 2rem;
+	justify-content: right;
+}
+
 /* ---------- FORMS ---------- */
 
-fieldset {
-	border: none;
+button[role='switch'] {
+	padding-left: 5rem;
+	position: relative;
+}
+
+button[role='switch']:before,
+button[role='switch']:after {
+	content: '';
+	display: block;
+	position: absolute;
+}
+button[role='switch']:before {
+	background-color: white;
+	border-radius: 1rem;
+	height: 2rem;
+	left: 0.5rem;
+	top: 0.5rem;
+	width: 4rem;
+}
+
+button[role='switch']:after {
+	background-color: var(--color-text);
+	border-radius: 50%;
+	height: 1.6rem;
+	left: 0.75rem;
+	transition: all 0.35s ease;
+	top: 0.65rem;
+	height: 1.7rem;
+	width: 1.7rem;
+}
+
+button[role='switch'][aria-checked='true']:after {
+	background-color: var(--color-success);
+	left: 2.5rem;
+	transition: all 0.35s ease;
+}
+
+.form-inline {
+	display: flex;
+	gap: var(--spacing-s);
+	justify-content: center;
+	padding: var(--spacing-s);
+}
+
+.form-field :not(:first-child) {
+	margin-left: var(--spacing-xs);
 }
 
 input,
@@ -119,13 +192,21 @@ button {
 	padding: var(--spacing-default);
 }
 
+button svg {
+	display: block;
+}
+
 input[type='checkbox'] {
 	border-color: transparent;
 	border-radius: 50%;
-	margin: 1rem;
-	width: 1rem;
-	height: 1rem;
+	color: var(--color-text-inverted);
+	margin: var(--spacing-s);
 	position: relative;
+	width: 1rem;
+
+	+ .name:not(:has(input)) {
+		margin-left: var(--spacing-xs);
+	}
 }
 
 input[type='checkbox']:focus-visible:before {
@@ -139,22 +220,20 @@ input[type='checkbox']:before {
 	content: '';
 	display: block;
 	height: 2rem;
-	left: -0.5rem;
-	top: -0.5rem;
+	left: -50%;
 	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 	width: 2rem;
 }
 
 input[type='checkbox']:checked:before {
-	background-color: green;
+	background: var(--color-success) url(../assets/IconCheck.svg) no-repeat center center;
+	background-size: 65%;
 }
 
 .form-add-item {
 	background-color: var(--service-bar-surface);
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
 	text-align: center;
 }
 
@@ -170,16 +249,36 @@ ul.todo-list {
 }
 
 ul.todo-list li {
+	align-items: center;
 	background-color: var(--item-surface);
 	border-radius: var(--item-border-radius);
 	display: flex;
-	align-items: center;
+	min-height: 3rem;
 	list-style: none;
 	padding: var(--spacing-xs);
+	position: relative;
+}
+
+ul.todo-list li .btn-delete {
 }
 
 del {
 	opacity: 0.5;
+}
+
+.btn-edit:focus-visible {
+	right: 0;
+}
+
+.btn-edit:not(:focus-visible) {
+	background-color: transparent;
+	border: none;
+	bottom: 0;
+	color: transparent;
+	left: 3rem;
+	right: 2rem;
+	position: absolute;
+	top: 0;
 }
 
 /* ---------- TEXTBOX ---------- */
@@ -188,4 +287,33 @@ del {
 	max-width: 800px;
 	max-width: 800px;
 	margin: 0 auto;
+}
+
+/* ---------- MENUS ---------- */
+
+.menu-wrapper {
+	position: relative;
+}
+
+button[aria-expanded] + [role='menu'] {
+	background-color: var(--white);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	list-style: none;
+	margin: 0;
+	padding: var(--spacing-s);
+	position: absolute;
+	top: 2rem;
+	right: 0;
+}
+
+button[aria-expanded] + [role='menu'] li {
+	white-space: nowrap;
+}
+
+button[aria-expanded='false'] + [role='menu'] {
+	display: none;
+}
+
+button[aria-expanded='true'] + [role='menu'] {
+	display: block;
 }
