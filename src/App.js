@@ -11,8 +11,8 @@ export default function App() {
 			<ListContextWrapper>
 				<Header />
 				<main>
-					<FormNewTodo />
 					<ToDoList />
+					<FormNewTodo />
 				</main>
 			</ListContextWrapper>
 		</>
