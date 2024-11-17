@@ -34,22 +34,25 @@ export default function FormNewTodo() {
 
 	return (
 		<>
-			<form className="form-add-item" onSubmit={handleAddItem}>
-				<fieldset>
-					<legend>New Todo</legend>
+			<form className="form-add-item form-inline" onSubmit={handleAddItem}>
+				<strong className="sr-only">New Todo</strong>
+				<div className="form-field">
 					<label htmlFor="new-item-title">Title</label>
 					<input id="new-item-title" type="text" onChange={handleChangeNewItemTitle} value={newItemTitle} />
+				</div>
+				<div className="form-field">
+					<label htmlFor="new-item-desc">Description</label>
+					<input id="new-item-desc" type="text" />
+				</div>
+				<div className="form-field">
 					<label htmlFor="new-item-color">Color</label>
 					<select id="new-item-color" ref={newItemColorRef}>
 						<option>green</option>
 						<option>yellow</option>
 						<option>blue</option>
 					</select>
-					<br />
-					<label htmlFor="new-item-desc">Description</label>
-					<input id="new-item-desc" type="text" />
-					<button type="submit">Add Item</button>
-				</fieldset>
+				</div>
+				<button type="submit">Add Item</button>
 			</form>
 		</>
 	)
