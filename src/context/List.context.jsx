@@ -5,7 +5,14 @@ const ListContext = createContext()
 const ListContextWrapper = ({ children }) => {
 	const [allItemsArr, setAllItemsArr] = useState([])
 	const [deleteMode, setDeleteMode] = useState(false)
-	const [colorMode, setColorMode] = useState('Auto')
+
+	const preferredColorMode =
+		localStorage.getItem('colorMode') ||
+		(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-mode' : 'light-mode')
+
+	const [colorMode, setColorMode] = useState(preferredColorMode)
+	localStorage.setItem('colorMode', colorMode)
+	document.documentElement.classList.add(preferredColorMode)
 
 	useEffect(() => {
 		const savedTodos = sessionStorage.getItem('todos')

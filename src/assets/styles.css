@@ -1,47 +1,101 @@
 :root {
+	color-scheme: light;
+
+	/* TOKENS */
+
 	--blue: #2060df;
 	--green: #007a50;
-	--white: #fff;
+	--off-white: #fff;
+	--white: #eee;
 	--black: #000;
 
 	--border-radius-small: 6px;
-	--font-size-default: 1.2rem;
+
 	--spacing-xs: 0.5rem;
 	--spacing-s: 0.75rem;
-	--spacing-default: var(--spacing-s);
-	--surface-default: rgba(230, 230, 230);
+
+	/* VARIABLES */
 
 	--color-text: var(--black);
 	--color-text-inverted: var(--white);
 	--color-success: var(--green);
+	--background-page: var(--off-white);
+
+	/* DEFAULTS */
+
+	--border-default: 1px solid var(--black);
+	--border-radius-default: var(--border-radius-small);
+	--focus-color-default: var(--blue);
+	--focus-outline-offset-default: 2px;
+	--focus-width-default: 3px;
+	--focus-outline-default: var(--focus-width-default) solid var(--focus-color-default);
+	--font-size-default: 1.2rem;
+	--spacing-default: var(--spacing-s);
+	--surface-default: rgba(230, 230, 230);
+
+	/* ELEMENT SPECIFIC */
 
 	--header-surface: var(--surface-default);
-	--forms-font-size: var(--font-size-default);
-	--service-bar-surface: var(--surface-default);
 
-	--focus-color: var(--blue);
-	--focus-width: 3px;
-	--focus-outline-default: var(--focus-width) solid var(--focus-color);
-	--focus-outline-offset: 2px;
+	--form-elem-border: var(--border-default);
+	--form-elem-border-radius: var(--border-radius-default);
+	--form-elem-font-size: var(--font-size-default);
 
+	--item-border-radius: var(--border-radius-default);
 	--item-surface: var(--surface-default);
-	--item-border-radius: var(--border-radius-small);
+}
 
-	--form-elem-border-radius: var(--border-radius-small);
-	--form-elem-border: 1px solid var(--black);
+.dark-mode {
+	color-scheme: dark;
+
+	/* TOKENS */
+
+	/* VARIABLES */
+
+	--color-text: var(--white);
+	--color-text-inverted: var(--black);
+
+	/* DEFAULTS */
+
+	--background-page: #121212;
+	--surface-default: rgba(50, 50, 50);
+
+	/* ELEMENT SPECIFIC */
+}
+
+.sepia-mode {
+	--black: hsl(39, 51%, 12%);
+
+	/* TOKENS */
+
+	/* VARIABLES */
+
+	/* DEFAULTS */
+
+	--background-page: hsl(39, 51%, 91%);
+	--surface-default: hsl(39, 51%, 85%);
+
+	/* ELEMENT SPECIFIC */
 }
 
 :focus-visible {
-	outline-color: var(--focus-color);
-	outline-width: var(--focus-width);
-	box-shadow: 0 0 5px var(--focus-color);
+	outline-color: var(--focus-color-default);
+	outline-width: var(--focus-width-default);
+	box-shadow: 0 0 5px var(--focus-color-default);
 }
 
 /* ---------- GENERAL ---------- */
 
 body {
+	background-color: var(--background-page);
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+		'Droid Sans', 'Helvetica Neue', sans-serif;
 	font-size: var(--font-size-default);
+	color: var(--color-text);
 	line-height: 1.4;
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 #root {
@@ -98,12 +152,12 @@ header {
 	display: flex;
 	justify-content: space-between;
 	padding: var(--spacing-default);
+}
 
-	> div {
-		align-items: center;
-		display: flex;
-		gap: var(--spacing-xs);
-	}
+header > div {
+	align-items: center;
+	display: flex;
+	gap: var(--spacing-xs);
 }
 
 .logo {
@@ -146,7 +200,9 @@ button[role='switch']:after {
 	position: absolute;
 }
 button[role='switch']:before {
-	background-color: white;
+	background-color: var(--background-page);
+	border: var(--border-default);
+	box-sizing: border-box;
 	border-radius: 1rem;
 	height: 2rem;
 	left: 0.5rem;
@@ -155,8 +211,10 @@ button[role='switch']:before {
 }
 
 button[role='switch']:after {
-	background-color: var(--color-text);
+	background: var(--color-text) url(../assets/IconX.svg) no-repeat center center;
+	background-size: 65%;
 	border-radius: 50%;
+	color: var(--color-text-inverted);
 	height: 1.6rem;
 	left: 0.75rem;
 	transition: all 0.35s ease;
@@ -166,7 +224,8 @@ button[role='switch']:after {
 }
 
 button[role='switch'][aria-checked='true']:after {
-	background-color: var(--color-success);
+	background: var(--color-success) url(../assets/IconCheck.svg) no-repeat center center;
+	background-size: 65%;
 	left: 2.5rem;
 	transition: all 0.35s ease;
 }
@@ -188,7 +247,7 @@ select,
 button {
 	border: var(--form-elem-border);
 	border-radius: var(--form-elem-border-radius);
-	font-size: var(--forms-font-size);
+	font-size: var(--form-elem-font-size);
 	padding: var(--spacing-default);
 }
 
@@ -233,7 +292,7 @@ input[type='checkbox']:checked:before {
 }
 
 .form-add-item {
-	background-color: var(--service-bar-surface);
+	background-color: var(--surface-default);
 	text-align: center;
 }
 
@@ -257,9 +316,6 @@ ul.todo-list li {
 	list-style: none;
 	padding: var(--spacing-xs);
 	position: relative;
-}
-
-ul.todo-list li .btn-delete {
 }
 
 del {
@@ -289,31 +345,4 @@ del {
 	margin: 0 auto;
 }
 
-/* ---------- MENUS ---------- */
-
-.menu-wrapper {
-	position: relative;
-}
-
-button[aria-expanded] + [role='menu'] {
-	background-color: var(--white);
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-	list-style: none;
-	margin: 0;
-	padding: var(--spacing-s);
-	position: absolute;
-	top: 2rem;
-	right: 0;
-}
-
-button[aria-expanded] + [role='menu'] li {
-	white-space: nowrap;
-}
-
-button[aria-expanded='false'] + [role='menu'] {
-	display: none;
-}
-
-button[aria-expanded='true'] + [role='menu'] {
-	display: block;
-}
+@import url(css/menus.css);
