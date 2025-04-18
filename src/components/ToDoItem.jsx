@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useId, useContext } from 'react'
 import { ListContext } from '../context/List.context'
-import { X as IconX, DotsSixVertical as IconDragHandle } from '@phosphor-icons/react'
+import { X as IconX, DotsSixVertical as IconDragHandle, Pencil as IconEdit } from '@phosphor-icons/react'
 
 export default function ToDoItem(props) {
 	const { onToDoChange } = props
@@ -91,9 +91,10 @@ export default function ToDoItem(props) {
 					</>
 				) : (
 					<>
-						{isChecked ? <del>{name}</del> : name}{' '}
-						<button className="btn-edit" onClick={() => setEditMode((prev) => !prev)}>
-							edit<span className="sr-only">“{name}”</span>
+						{isChecked ? <del>{name}</del> : name}
+						<button type="button" className="btn-edit" onClick={() => setEditMode((prev) => !prev)}>
+							<IconEdit />
+							<span className="sr-only">edit “{name}”</span>
 						</button>
 					</>
 				)}

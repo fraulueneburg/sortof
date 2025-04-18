@@ -3,13 +3,9 @@ import { ListContext } from '../context/List.context'
 import { nanoid } from 'nanoid'
 
 import ToDoItem from './ToDoItem'
-// import { DndContext } from '@dnd-kit/core'
-// import { Droppable } from './components/Droppable'
-// import { Draggable } from './components/Draggable'
 
 export default function ToDoList() {
 	const { allItemsArr, setAllItemsArr } = useContext(ListContext)
-	// const [isDropped, setIsDropped] = useState(false)
 
 	// Changed within Component
 
@@ -55,17 +51,6 @@ export default function ToDoList() {
 					</div>
 				</>
 			)}
-
-			{/* <DndContext onDragEnd={handleDragEnd}>
-    {!isDropped ? <Draggable>Drag me</Draggable> : null}
-    <Droppable>{isDropped ? <Draggable>Drag me</Draggable> : 'Drop here'}</Droppable>
-</DndContext> */}
 		</div>
 	)
-
-	// function handleDragEnd(event) {
-	// 	if (event.over && event.over.id === 'droppable') {
-	// 		setIsDropped(true)
-	// 	}
-	// }
 }
