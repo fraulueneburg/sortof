@@ -1,8 +1,8 @@
-# [IN PROGRESS] <br />SortOf – The Todo App that helps you clear your mind 👏
+# [IN PROGRESS] <br />SortOf – The Todo App that helps you clear your mind 👏
 
 Have 748 todos and trouble priorotizing? SortOf is here to help! Just dump all your todos on the page, then group them via drag and drop or keyboard shortcuts.
 
-This is my latest project – a simple React web app that helps you clear your mind. It’s lightweight and easy – no signup or login needed, everything is neatly stored in a cookie in your browser.
+This is my latest project – a simple React web app that helps you clear your mind. It’s lightweight and easy – no signup or login needed, everything is neatly stored in a cookie in your browser.
 
 > [!IMPORTANT]
 > Right now, this project is in its earliest stage, but it will soon be available as a demo version.
@@ -11,8 +11,8 @@ This is my latest project – a simple React web app that helps you clear your 
 
 - 👏 dump all your todos on the page …
 - ✨ … then sort them via drag and drop or keyboard shortcuts
-- 📋 export to your favourite apps
-- 😌 no signup, no hassle – all data is stored in the browser
+- 📋 export as .json or to your favourite apps
+- 😌 no signup, no hassle – all data is stored in the browser
 - 🌈 accessible and keyboard-navigable
 
 ## About Me
