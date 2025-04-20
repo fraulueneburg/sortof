@@ -1,3 +1,5 @@
+![Preview of the SortOf App](https://repository-images.githubusercontent.com/889601823/09303022-20a2-4e10-a70f-d7e2c3eaedf9)
+
 # [IN PROGRESS] <br />SortOf – The Todo App that helps you clear your mind 👏
 
 Have 748 todos and trouble priorotizing? SortOf is here to help! Just dump all your todos on the page, then group them via drag and drop or keyboard shortcuts.
