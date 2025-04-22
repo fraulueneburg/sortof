@@ -1,9 +1,8 @@
 import './assets/styles.scss'
 import { ListContextWrapper } from './context/List.context'
 
-import FormNewTodo from './components/FormNewTodo'
 import Header from './components/Header'
-import ToDoList from './components/ToDoList'
+import Footer from './components/Footer'
 
 export default function App() {
 	return (
@@ -11,9 +10,10 @@ export default function App() {
 			<ListContextWrapper>
 				<Header />
 				<main>
-					<ToDoList />
-					<FormNewTodo />
+					<h1>What do you need to do today?</h1>
+					<p>hello</p>
 				</main>
+				<Footer />
 			</ListContextWrapper>
 		</>
 	)

@@ -1,38 +1,39 @@
 import { useContext } from 'react'
 import { ListContext } from '../context/List.context'
-import { Export as IconExport, Trash as IconDelete, ArrowsClockwise as IconStartOver } from '@phosphor-icons/react'
+import { Hand as IconHand } from '@phosphor-icons/react'
+import Pill from './Pill'
 import MenuColorMode from './MenuColorMode'
 
 export default function Header() {
-	const { allItemsArr, setAllItemsArr, deleteMode, setDeleteMode } = useContext(ListContext)
-
-	const handleStartOver = () => {
-		sessionStorage.setItem('todos', [])
-		setAllItemsArr([])
-	}
-
 	return (
 		<header>
-			<div className="logo">👏 sortOf</div>
-			<div style={{ display: 'flex' }}>
-				{allItemsArr.length > 0 ? (
-					<>
-						<button onClick={handleStartOver}>
-							<IconStartOver />
-							<span className="sr-only">Start Over</span>
-						</button>
-						<button type="button" role="switch" aria-checked={deleteMode} onClick={() => setDeleteMode((prev) => !prev)}>
-							<IconDelete />
-							<span className="sr-only">Delete Mode</span>
-						</button>
-						<button>
-							<IconExport />
-							<span className="sr-only">Export List</span>
-						</button>
-					</>
-				) : null}
-				<MenuColorMode />
+			<div className="logo">
+				<Pill title="sortOf" link="/">
+					<IconHand weight="bold" />
+				</Pill>
 			</div>
+			<nav className="nav_main">
+				<ul>
+					<li>
+						<Pill title="Dump" status="active" />
+					</li>
+					<li>
+						<Pill title="Sort" />
+					</li>
+					<li>
+						<Pill title="Work" />
+					</li>
+				</ul>
+			</nav>
+			<aside>
+				<nav>
+					<ul>
+						<li>
+							<Pill title="Settings" />
+						</li>
+					</ul>
+				</nav>
+			</aside>
 		</header>
 	)
 }
