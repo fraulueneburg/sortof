@@ -1,4 +1,4 @@
-import './assets/styles.css'
+import './assets/styles.scss'
 import { ListContextWrapper } from './context/List.context'
 
 import FormNewTodo from './components/FormNewTodo'
