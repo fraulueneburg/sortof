@@ -1,4 +1,4 @@
-![Preview of the SortOf App](https://repository-images.githubusercontent.com/889601823/09303022-20a2-4e10-a70f-d7e2c3eaedf9)
+![Preview of the SortOf App](https://repository-images.githubusercontent.com/889601823/af4b9936-dee0-4dcc-a7a1-1d2ca510955a)
 
 # [IN PROGRESS] <br />SortOf – The Todo App that helps you clear your mind 👏
 
