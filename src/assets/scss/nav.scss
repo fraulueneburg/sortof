@@ -1,0 +1,25 @@
+nav {
+	ul {
+		display: flex;
+		flex-direction: row;
+		font-family: var(--font-family-menus);
+		gap: 2rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&.nav_main {
+		ul {
+			counter-reset: mainNavCounter 0;
+
+			li {
+				counter-increment: mainNavCounter;
+			}
+
+			li .pill > :first-child:before {
+				content: counter(mainNavCounter, decimal-leading-zero);
+			}
+		}
+	}
+}

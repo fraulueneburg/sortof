@@ -1,0 +1,25 @@
+.pill {
+	background-color: white;
+	border: var(--border-width-default) solid var(--color-dark);
+	border-radius: var(--border-radius-pill);
+	display: block;
+	overflow: hidden;
+	text-transform: uppercase;
+
+	> a,
+	> span {
+		align-items: center;
+		color: var(--color-text-base);
+		display: flex;
+		gap: 0.25rem;
+		text-decoration: none;
+		padding: 0.1rem 0.5rem;
+	}
+
+	&.active,
+	&.active span,
+	a:hover {
+		background-color: var(--surface-pill-inverted);
+		color: var(--color-text-inverted);
+	}
+}

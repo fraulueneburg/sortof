@@ -1,0 +1,10 @@
+h1 {
+	font-family: var(--font-family-headings);
+	font-size: 7rem;
+	margin: 0;
+	text-transform: uppercase;
+	display: inline-block;
+	box-shadow: 0 1rem 0 currentColor;
+	line-height: 1;
+	max-width: 750px;
+}

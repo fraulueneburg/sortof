@@ -1,0 +1,28 @@
+:root {
+	/* TOKENS */
+	--color-white: #fff;
+	--color-light: #faf5e8;
+	--color-dark: #373533;
+	--purple: #625aff;
+
+	/* VARIABLES */
+    --color-primary: var(--purple)
+
+	--surface-main: var(--color-white);
+    --surface-inverted: var(--color-dark);
+
+    --color-text-base: var(--color-dark);
+    --color-text-inverted: var(--color-white);
+
+	--border-width-default: 3px;
+	--font-family-headings: 'Oswald', sans-serif;
+	--font-family-text: 'Atkinson Hyperlegible Next', sans-serif;
+	--font-family-menus: 'Atkinson Hyperlegible Mono', sans-serif;
+    --font-size-base: 1.5rem;
+
+	/* ELEMENT-SPECIFIC */
+	--color-bg: var(--color-light);
+    --border-radius-pill: 20px;
+    --surface-pill: var(--surface-main);
+    --surface-pill-inverted: var(--surface-inverted);
+}

@@ -1,0 +1,18 @@
+body {
+	background-color: var(--color-bg);
+	color: var(--color-text-base);
+	font-family: var(--font-family-text);
+	font-size: var(--font-size-base);
+	margin: 0;
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100dvh - 2 * 1.875rem);
+	padding: 1.875rem 2.5rem;
+}
+
+main {
+	flex: 1;
+}

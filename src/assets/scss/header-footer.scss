@@ -1,0 +1,19 @@
+header,
+footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	position: relative;
+	flex-wrap: wrap;
+
+	&:after {
+		background-color: var(--color-text-base);
+		content: '';
+		display: block;
+		height: var(--border-width-default);
+		width: 100%;
+		position: absolute;
+		top: calc(50% - 1.5px);
+		z-index: -1;
+	}
+}
