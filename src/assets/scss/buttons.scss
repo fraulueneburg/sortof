@@ -1,3 +1,11 @@
 button {
 	font-size: var(--font-size-base);
 }
+
+.button-icon-only {
+	aspect-ratio: 1 / 1;
+	background-color: transparent;
+	border: none;
+	color: currentColor;
+	padding: 0;
+}

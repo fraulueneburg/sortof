@@ -1,10 +1,17 @@
 import { useContext } from 'react'
 import { ListContext } from '../context/List.context'
 import { Hand as IconHand } from '@phosphor-icons/react'
+import { ArrowsClockwise as IconStartover } from '@phosphor-icons/react'
 import Pill from './Pill'
-import MenuColorMode from './MenuColorMode'
 
 export default function Header() {
+	const { allItemsArr, setAllItemsArr } = useContext(ListContext)
+
+	const handleStartOver = () => {
+		sessionStorage.setItem('todos', [])
+		setAllItemsArr([])
+	}
+
 	return (
 		<header>
 			<div className="logo">
@@ -15,13 +22,13 @@ export default function Header() {
 			<nav className="nav_main">
 				<ul>
 					<li>
-						<Pill title="Dump" status="active" />
+						<Pill title="Dump" link="/" status="active" />
 					</li>
 					<li>
-						<Pill title="Sort" />
+						<Pill title="Sort" link="/sort" />
 					</li>
 					<li>
-						<Pill title="Work" />
+						<Pill title="Work" link="/work" />
 					</li>
 				</ul>
 			</nav>
@@ -29,7 +36,14 @@ export default function Header() {
 				<nav>
 					<ul>
 						<li>
-							<Pill title="Settings" />
+							<Pill title="Start over" hideTitle="true" link="">
+								<button className="button-icon-only" onClick={handleStartOver}>
+									<IconStartover weight="bold" />
+								</button>
+							</Pill>
+						</li>
+						<li>
+							<Pill title="Settings" link="/settings" />
 						</li>
 					</ul>
 				</nav>

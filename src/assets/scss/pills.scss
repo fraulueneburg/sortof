@@ -1,23 +1,32 @@
 .pill {
-	background-color: white;
-	border: var(--border-width-default) solid var(--color-dark);
-	border-radius: var(--border-radius-pill);
 	display: block;
 	overflow: hidden;
 	text-transform: uppercase;
 
 	> a,
 	> span {
+		background-color: white;
+		border: var(--border-width-base) solid var(--border-color-base);
+		border-radius: var(--border-radius-pill);
 		align-items: center;
-		color: var(--color-text-base);
+		color: currentColor;
 		display: flex;
 		gap: 0.25rem;
+		min-height: 2.25rem;
 		text-decoration: none;
-		padding: 0.1rem 0.5rem;
+		padding: 0.1rem 0.75rem 0.1rem 0.5rem;
+
+		&:has(svg:only-child) {
+			width: 2.25rem;
+			padding: 0;
+
+			svg {
+				margin: 0 auto;
+			}
+		}
 	}
 
-	&.active,
-	&.active span,
+	&.active > *,
 	a:hover {
 		background-color: var(--surface-pill-inverted);
 		color: var(--color-text-inverted);
