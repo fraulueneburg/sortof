@@ -6,23 +6,36 @@
 	--purple: #625aff;
 
 	/* VARIABLES */
-    --color-primary: var(--purple)
+	--color-primary: var(--purple);
 
 	--surface-main: var(--color-white);
-    --surface-inverted: var(--color-dark);
+	--surface-inverted: var(--color-dark);
 
-    --color-text-base: var(--color-dark);
-    --color-text-inverted: var(--color-white);
+	--color-text-base: var(--color-dark);
+	--color-text-inverted: var(--color-light);
 
-	--border-width-default: 3px;
+	--border-color-base: var(--color-dark);
+	--border-radius-base: 0.625rem;
+	--border-width-base: 2px;
+	--color-focus: var(--color-primary);
 	--font-family-headings: 'Oswald', sans-serif;
 	--font-family-text: 'Atkinson Hyperlegible Next', sans-serif;
 	--font-family-menus: 'Atkinson Hyperlegible Mono', sans-serif;
-    --font-size-base: 1.5rem;
+	--font-size-base: 1rem;
+	--font-size-xxl: 3rem;
 
 	/* ELEMENT-SPECIFIC */
 	--color-bg: var(--color-light);
-    --border-radius-pill: 20px;
-    --surface-pill: var(--surface-main);
-    --surface-pill-inverted: var(--surface-inverted);
+	--border-radius-pill: 1.5rem;
+	--surface-pill: var(--surface-main);
+	--surface-pill-inverted: var(--surface-inverted);
+	--surface-form-element: var(--surface-main);
+}
+
+@media (min-width: 1024px) {
+	:root {
+		--font-size-base: 1.5rem;
+		--font-size-xxl: 7rem;
+		--border-width-base: 3px;
+	}
 }

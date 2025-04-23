@@ -24,6 +24,8 @@ const ListContextWrapper = ({ children }) => {
 	useEffect(() => {
 		if (allItemsArr.length > 0) {
 			sessionStorage.setItem('todos', JSON.stringify(allItemsArr))
+		} else {
+			sessionStorage.removeItem('todos')
 		}
 	}, [allItemsArr])
 

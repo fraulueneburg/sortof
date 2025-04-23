@@ -1,0 +1,32 @@
+input,
+textarea {
+	background-color: var(--surface-form-element);
+	border: var(--border-width-base) solid var(--border-color-base);
+	border-radius: var(--border-radius-base);
+	color: var(--color-text-base);
+	font-family: var(--font-family-text);
+	font-size: var(--font-size-base);
+	padding: 0.75rem 1rem;
+
+	&:focus {
+		border-color: var(--color-focus);
+		outline: none;
+	}
+}
+
+.form-new-todo {
+	position: relative;
+	width: max-content;
+
+	input {
+		padding-right: 3rem;
+	}
+
+	button[type='submit'] {
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+	}
+}

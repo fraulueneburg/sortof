@@ -1,6 +1,8 @@
 import { useState, useRef, useContext } from 'react'
 import { ListContext } from '../context/List.context'
 import { nanoid } from 'nanoid'
+import { ArrowUDownLeft as IconSubmit } from '@phosphor-icons/react'
+import ButtonIconOnly from './ButtonIconOnly'
 
 export default function FormNewTodo() {
 	const { setAllItemsArr } = useContext(ListContext)
@@ -18,7 +20,7 @@ export default function FormNewTodo() {
 			const newItem = {
 				_id: nanoid(),
 				name: newItemTitle,
-				color: newItemColorRef.current.value,
+				color: 'purple',
 				checked: false,
 				description: '',
 			}
@@ -34,25 +36,11 @@ export default function FormNewTodo() {
 
 	return (
 		<>
-			<form className="form-add-item form-inline" onSubmit={handleAddItem}>
-				<strong className="sr-only">New Todo</strong>
-				<div className="form-field">
-					<label htmlFor="new-item-title">Title</label>
-					<input id="new-item-title" type="text" onChange={handleChangeNewItemTitle} value={newItemTitle} />
-				</div>
-				<div className="form-field">
-					<label htmlFor="new-item-desc">Description</label>
-					<input id="new-item-desc" type="text" />
-				</div>
-				<div className="form-field">
-					<label htmlFor="new-item-color">Color</label>
-					<select id="new-item-color" ref={newItemColorRef}>
-						<option>green</option>
-						<option>yellow</option>
-						<option>blue</option>
-					</select>
-				</div>
-				<button type="submit">Add Item</button>
+			<form className="form-new-todo" onSubmit={handleAddItem}>
+				<input type="text" onChange={handleChangeNewItemTitle} value={newItemTitle} />
+				<button className="button-icon-only" type="submit" value="create to do">
+					<IconSubmit weight="bold" />
+				</button>
 			</form>
 		</>
 	)
