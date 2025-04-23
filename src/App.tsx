@@ -1,20 +1,19 @@
 import './assets/styles.scss'
-import { ListContextWrapper } from './context/List.context'
+import { Routes, Route } from 'react-router-dom'
 
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Layout from './pages/Layout'
+import Home from './pages/Home'
+import About from './pages/About'
 
 export default function App() {
 	return (
 		<>
-			<ListContextWrapper>
-				<Header />
-				<main>
-					<h1>What do you need to do today?</h1>
-					<p>hello</p>
-				</main>
-				<Footer />
-			</ListContextWrapper>
+			<Routes>
+				<Route path="/" element={<Layout />}>
+					<Route path="/" element={<Home />}></Route>
+					<Route path="/about" element={<About />}></Route>
+				</Route>
+			</Routes>
 		</>
 	)
 }

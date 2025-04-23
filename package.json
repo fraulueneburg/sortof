@@ -7,7 +7,8 @@
 		"@phosphor-icons/react": "^2.1.7",
 		"nanoid": "^5.1.5",
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react-dom": "^18.3.1",
+		"react-router-dom": "^7.5.1"
 	},
 	"scripts": {
 		"start": "vite",
@@ -17,7 +18,7 @@
 	"devDependencies": {
 		"@types/react": "^19.1.2",
 		"@types/react-dom": "^19.1.2",
-		"@vitejs/plugin-react": "^4.4.0",
+		"@vitejs/plugin-react": "^4.4.1",
 		"typescript": "^5.8.3",
 		"vite": "^6.3.2"
 	}
