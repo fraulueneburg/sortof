@@ -2,13 +2,24 @@ import { useContext } from 'react'
 import { ListContext } from '../context/List.context'
 import { X as IconDelete } from '@phosphor-icons/react'
 
-export default function ToDoItem(props) {
-	const { _id: id, name: title } = props.data
+type ToDoData = {
+	_id: string
+	title: string
+	color: string
+	checked: boolean
+	description: string
+}
 
+type ToDoProps = {
+	data: ToDoData
+}
+
+export default function ToDoItem({ data }: ToDoProps) {
+	const { title, _id } = data
 	const { allItemsArr, setAllItemsArr } = useContext(ListContext)
 
-	const handleDelete = (id) => {
-		const updatedList = allItemsArr.filter((elem) => elem._id !== id)
+	const handleDelete = () => {
+		const updatedList = allItemsArr.filter((elem) => elem._id !== _id)
 		setAllItemsArr(updatedList)
 	}
 
@@ -16,7 +27,7 @@ export default function ToDoItem(props) {
 		<>
 			<li className="todo-item" draggable="true">
 				<span className="title">{title}</span>
-				<button className="button-icon-only" type="button" value={'delete "' + title + '"'} onClick={() => handleDelete(id)}>
+				<button className="button-icon-only" type="button" aria-label={'delete "' + title + '"'} onClick={handleDelete}>
 					<IconDelete weight="bold" />
 				</button>
 			</li>

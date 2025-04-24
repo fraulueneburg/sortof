@@ -19,7 +19,7 @@ export default function FormNewTodo() {
 		if (trimmedName > 0) {
 			const newItem = {
 				_id: nanoid(),
-				name: newItemTitle,
+				title: newItemTitle,
 				color: 'purple',
 				checked: false,
 				description: '',
