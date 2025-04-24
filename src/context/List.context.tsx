@@ -17,7 +17,7 @@ const ListContextWrapper = ({ children }) => {
 	useEffect(() => {
 		const savedTodos = sessionStorage.getItem('todos')
 		if (savedTodos) {
-			setAllItemsArr(JSON.parse(savedTodos)) // Parse the JSON string back into an array
+			setAllItemsArr(JSON.parse(savedTodos))
 		}
 	}, [])
 
