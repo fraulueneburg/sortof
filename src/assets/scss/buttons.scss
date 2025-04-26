@@ -33,16 +33,3 @@ button {
 		color: currentColor;
 	}
 }
-
-.btn-prev,
-.btn-next {
-	border-radius: 50%;
-	position: fixed;
-	top: 50dvh;
-}
-.btn-prev {
-	left: calc(var(--padding-page-x) / 2);
-}
-.btn-next {
-	right: calc(var(--padding-page-x) / 2);
-}
