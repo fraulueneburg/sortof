@@ -10,7 +10,11 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: calc(100dvh - 2 * 1.875rem);
-	padding: 1.875rem 2.5rem;
+	padding: 0.9rem 1.25rem;
+
+	@media (min-width: 1024px) {
+		padding: 1.875rem 2.5rem;
+	}
 }
 
 main {

@@ -1,10 +1,12 @@
 header,
 footer {
+	--spacing-y: 0.5rem;
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--spacing-y);
 	justify-content: space-between;
 	position: relative;
-	flex-wrap: wrap;
 
 	&:after {
 		background-color: var(--color-text-base);
@@ -13,7 +15,24 @@ footer {
 		height: var(--border-width-base);
 		width: 100%;
 		position: absolute;
-		top: calc(50% - 1.5px);
+		top: calc(50% - var(--border-width-base) / 2);
 		z-index: -1;
+	}
+}
+
+header {
+	@media (max-width: 767px) {
+		nav {
+			order: 1;
+		}
+
+		&:after {
+			top: auto;
+			bottom: calc((100% - var(--spacing-y)) / 4 - var(--border-width-base) / 2);
+		}
+	}
+
+	@media (min-width: 768px) {
+		flex-wrap: nowrap;
 	}
 }
