@@ -1,0 +1,12 @@
+button.btn-prev,
+button.btn-next {
+	border-radius: 50%;
+	position: fixed;
+	top: 50dvh;
+}
+button.btn-prev {
+	left: calc(var(--padding-page-x) / 2);
+}
+button.btn-next {
+	right: calc(var(--padding-page-x) / 2);
+}

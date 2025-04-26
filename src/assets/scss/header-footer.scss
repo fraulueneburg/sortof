@@ -9,7 +9,7 @@ footer {
 	position: relative;
 
 	&:after {
-		background-color: var(--color-text-base);
+		background-color: var(--color-text);
 		content: '';
 		display: block;
 		height: var(--border-width-base);

@@ -1,6 +1,6 @@
 body {
 	background-color: var(--color-bg);
-	color: var(--color-text-base);
+	color: var(--color-text);
 	font-family: var(--font-family-text);
 	font-size: var(--font-size-base);
 	margin: 0;
@@ -10,11 +10,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: calc(100dvh - 2 * 1.875rem);
-	padding: 0.9rem 1.25rem;
-
-	@media (min-width: 1024px) {
-		padding: 1.875rem 2.5rem;
-	}
+	padding: var(--padding-page-y) var(--padding-page-x);
 }
 
 main {

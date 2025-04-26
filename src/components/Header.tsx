@@ -1,49 +1,55 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { ListContext } from '../context/List.context'
+
+import Link from './Link'
+import Button from './Button'
+
 import { Hand as IconHand } from '@phosphor-icons/react'
 import { ArrowsClockwise as IconStartover } from '@phosphor-icons/react'
-import Pill from './Pill'
 
 export default function Header() {
-	const { allItemsArr, setAllItemsArr } = useContext(ListContext)
+	const [startOver, setStartOver] = useState(false)
+	const { setAllItemsArr, step, setStep } = useContext(ListContext)
 
-	const handleStartOver = () => {
-		sessionStorage.setItem('todos', [])
-		setAllItemsArr([])
+	const handleStep = (num: Number) => {
+		setStep(num)
+	}
+
+	const checkCurrStep = (num: number) => {
+		return step === num ? 'step' : undefined
 	}
 
 	return (
 		<header>
 			<div className="logo">
-				<Pill title="sortOf" link="/">
-					<IconHand weight="bold" />
-				</Pill>
+				<Link title="sortOf" href="/" iconBefore={<IconHand />} />
 			</div>
 			<nav className="nav_main">
-				<ul>
+				<ol>
 					<li>
-						<Pill title="Dump" link="/" status="active" />
+						<Link title="Dump" href="#" onClick={() => handleStep(1)} ariaCurrent={checkCurrStep(1)} />
 					</li>
 					<li>
-						<Pill title="Sort" link="/sort" />
+						<Link title="Sort" href="#" onClick={() => handleStep(2)} ariaCurrent={checkCurrStep(2)} />
 					</li>
 					<li>
-						<Pill title="Work" link="/work" />
+						<Link title="Work" href="#" onClick={() => handleStep(3)} ariaCurrent={checkCurrStep(3)} />
 					</li>
-				</ul>
+				</ol>
 			</nav>
 			<aside>
 				<nav>
 					<ul>
 						<li>
-							<Pill title="Start over" hideTitle="true" link="">
-								<button className="button-icon-only" onClick={handleStartOver}>
-									<IconStartover weight="bold" />
-								</button>
-							</Pill>
+							<Button
+								title="Start over"
+								hideTitle={true}
+								onClick={() => setStartOver(true)}
+								iconBefore={<IconStartover />}
+							/>
 						</li>
 						<li>
-							<Pill title="Settings" link="/settings" />
+							<Button title="Settings" onClick={() => {}} />
 						</li>
 					</ul>
 				</nav>

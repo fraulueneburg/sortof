@@ -1,4 +1,4 @@
-import Pill from './Pill'
+import Link from './Link'
 import { ArrowUpRight as IconExternalLink } from '@phosphor-icons/react'
 
 export default function Footer() {
@@ -8,12 +8,15 @@ export default function Footer() {
 				<nav>
 					<ul>
 						<li>
-							<Pill title="About" link="/about" />
+							<Link title="About" href="/about" />
 						</li>
 						<li>
-							<Pill title="Github" link="https://github.com/fraulueneburg/sortof" aria-label="sdfkl">
-								<IconExternalLink />
-							</Pill>
+							<Link
+								title="Github"
+								href="https://github.com/fraulueneburg/sortof"
+								iconAfter={<IconExternalLink />}
+								target="_blank"
+							/>
 						</li>
 					</ul>
 				</nav>

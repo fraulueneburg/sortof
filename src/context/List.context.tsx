@@ -5,6 +5,9 @@ const ListContext = createContext()
 const ListContextWrapper = ({ children }) => {
 	const [allItemsArr, setAllItemsArr] = useState([])
 	const [deleteMode, setDeleteMode] = useState(false)
+	const [step, setStep] = useState(1)
+	const minStep = 1
+	const maxStep = 3
 
 	const preferredColorMode =
 		localStorage.getItem('colorMode') ||
@@ -38,6 +41,10 @@ const ListContextWrapper = ({ children }) => {
 				setDeleteMode,
 				colorMode,
 				setColorMode,
+				step,
+				setStep,
+				minStep,
+				maxStep,
 			}}>
 			{children}
 		</ListContext.Provider>

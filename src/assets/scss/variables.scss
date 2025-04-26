@@ -8,10 +8,10 @@
 	/* VARIABLES */
 	--color-primary: var(--purple);
 
-	--surface-main: var(--color-white);
-	--surface-inverted: var(--color-dark);
+	--color-surface: var(--color-white);
+	--color-surface-inverted: var(--color-dark);
 
-	--color-text-base: var(--color-dark);
+	--color-text: var(--color-dark);
 	--color-text-inverted: var(--color-light);
 
 	--border-color-base: var(--color-dark);
@@ -25,11 +25,12 @@
 	--font-size-xxl: 3rem;
 
 	/* ELEMENT-SPECIFIC */
+
 	--color-bg: var(--color-light);
+	--padding-page-x: 1.25rem;
+	--padding-page-y: 0.9rem;
+
 	--border-radius-pill: 1.5rem;
-	--surface-pill: var(--surface-main);
-	--surface-pill-inverted: var(--surface-inverted);
-	--surface-form-element: var(--surface-main);
 }
 
 @media (min-width: 1024px) {
@@ -37,5 +38,7 @@
 		--font-size-base: 1.5rem;
 		--font-size-xxl: 7rem;
 		--border-width-base: 3px;
+		--padding-page-x: 2.5rem;
+		--padding-page-y: 1.875rem;
 	}
 }
