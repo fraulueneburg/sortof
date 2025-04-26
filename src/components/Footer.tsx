@@ -12,7 +12,7 @@ export default function Footer() {
 						</li>
 						<li>
 							<Pill title="Github" link="https://github.com/fraulueneburg/sortof" aria-label="sdfkl">
-								<IconExternalLink weight="bold" aria-hidden="true" />
+								<IconExternalLink />
 							</Pill>
 						</li>
 					</ul>

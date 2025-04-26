@@ -5,7 +5,7 @@ export default function About() {
 		<>
 			<h1>About</h1>
 			<a className="button-icon-only" href="/" aria-label="close page">
-				<IconClose weight="bold" size="3rem" />
+				<IconClose size="3rem" />
 			</a>
 			<p>
 				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
