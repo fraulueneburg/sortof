@@ -1,0 +1,21 @@
+.list-container {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+
+	.list:first-child {
+		align-self: flex-start;
+	}
+}
+
+.list {
+	background-color: var(--color-surface);
+	border: var(--border-width-base) solid currentColor;
+	border-radius: var(--border-radius-base);
+	padding: 1rem;
+
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+}

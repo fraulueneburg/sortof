@@ -9,14 +9,14 @@ import { ArrowsClockwise as IconStartover } from '@phosphor-icons/react'
 
 export default function Header() {
 	const [startOver, setStartOver] = useState(false)
-	const { setAllItemsArr, step, setStep } = useContext(ListContext)
+	const { setAllTasksArr, step, setStep } = useContext(ListContext)
 
 	const handleStep = (num: Number) => {
 		setStep(num)
 	}
 
-	const checkCurrStep = (num: number) => {
-		return step === num ? 'step' : undefined
+	const checkCurrStep = (navNum: number) => {
+		return step === navNum ? 'step' : undefined
 	}
 
 	return (
@@ -49,7 +49,8 @@ export default function Header() {
 							/>
 						</li>
 						<li>
-							<Button title="Settings" onClick={() => {}} />
+							<Link href="/settings" title="Settings" />
+							{/* <Button title="Settings" onClick={() => {}} /> */}
 						</li>
 					</ul>
 				</nav>

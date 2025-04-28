@@ -5,8 +5,8 @@ button.btn-next {
 	top: calc(50dvh - 2rem);
 }
 button.btn-prev {
-	left: calc(var(--padding-page-x) / 2);
+	left: calc(var(--padding-page-x) / 3);
 }
 button.btn-next {
-	right: calc(var(--padding-page-x) / 2);
+	right: calc(var(--padding-page-x) / 3);
 }

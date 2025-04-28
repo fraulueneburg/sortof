@@ -3,7 +3,7 @@ import { ListContext } from '../context/List.context'
 import { nanoid } from 'nanoid'
 
 export default function _FormNewTodo() {
-	const { setAllItemsArr } = useContext(ListContext)
+	const { setAllTasksArr } = useContext(ListContext)
 
 	const [newItemTitle, setNewItemTitle] = useState('')
 	const newItemColorRef = useRef()
@@ -18,11 +18,10 @@ export default function _FormNewTodo() {
 			const newItem = {
 				_id: nanoid(),
 				name: newItemTitle,
-				color: newItemColorRef.current.value,
 				checked: false,
 				description: '',
 			}
-			setAllItemsArr((prev) => [...prev, newItem])
+			setAllTasksArr((prev) => [...prev, newItem])
 		}
 		setNewItemTitle('')
 	}

@@ -3,9 +3,15 @@ import { ReactNode } from 'react'
 export type ToDoData = {
 	_id: string
 	title: string
-	color: string
 	checked: boolean
-	description: string
+	list: string
+}
+
+export type ListData = {
+	_id: string
+	title: string
+	color: string
+	items?: ToDoData[]
 }
 
 export type LinkProps = {
@@ -28,4 +34,10 @@ export type ButtonProps = {
 	className?: string
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 	size?: 'sm' | 'md' | 'lg'
+	unstyled?: boolean
+}
+
+export type DropdownProps = {
+	isOpen: boolean
+	toggleButton: ReactNode
 }

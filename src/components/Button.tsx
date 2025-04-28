@@ -9,8 +9,9 @@ export default function Button({
 	size,
 	disabled,
 	className,
+	unstyled,
 }: ButtonProps) {
-	const classNames = `pill${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
+	const classNames = `${unstyled ? 'unstyled' : 'pill'}${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
 
 	return (
 		<>

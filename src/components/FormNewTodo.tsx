@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid'
 import { ArrowUDownLeft as IconSubmit } from '@phosphor-icons/react'
 
 export default function FormNewTodo() {
-	const { setAllItemsArr } = useContext(ListContext)
+	const { setAllTasksArr } = useContext(ListContext)
 
 	const [newItemTitle, setNewItemTitle] = useState('')
 	const newItemColorRef = useRef()
@@ -19,11 +19,11 @@ export default function FormNewTodo() {
 			const newItem = {
 				_id: nanoid(),
 				title: newItemTitle,
-				color: 'purple',
 				checked: false,
 				description: '',
+				list: '',
 			}
-			setAllItemsArr((prev) => [...prev, newItem])
+			setAllTasksArr((prev) => [...prev, newItem])
 		}
 		setNewItemTitle('')
 	}
