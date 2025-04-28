@@ -1,3 +1,8 @@
+:focus-visible {
+	outline: calc(var(--border-width-base) + 1px) solid var(--color-primary);
+	outline-offset: var(--border-width-base);
+}
+
 nav {
 	display: flex;
 	height: 100%;
@@ -33,6 +38,7 @@ nav {
 
 			li .pill > :first-child:before {
 				content: counter(mainNavCounter, decimal-leading-zero);
+				padding-right: 0.1rem;
 			}
 		}
 	}

@@ -16,17 +16,39 @@ textarea {
 
 .form-new-todo {
 	position: relative;
-	width: max-content;
+	margin: 0 auto;
+	width: fit-content;
+	z-index: 1;
 
-	input {
+	input[type='text'] {
+		box-sizing: border-box;
+		max-width: 400px;
 		padding-right: 3rem;
+		width: calc(100dvw - 2 * var(--padding-page-x));
+
+		@media (min-width: 1024px) {
+			max-width: 550px;
+		}
 	}
 
 	button[type='submit'] {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 		position: absolute;
 		right: 0;
 		top: 0;
 		bottom: 0;
 		z-index: 1;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-color: var(--color-text);
+			color: var(--color-text-inverted);
+		}
+
+		&:focus {
+			border-radius: var(--border-radius-base);
+		}
 	}
 }

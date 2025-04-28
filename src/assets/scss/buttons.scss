@@ -7,7 +7,9 @@ button {
 	font-size: var(--font-size-base);
 	padding: 0;
 
-	&:hover {
+	&:hover,
+	&:focus,
+	&:active {
 		background-color: var(--color-surface-inverted);
 		color: var(--color-text-inverted);
 	}
@@ -28,7 +30,9 @@ button {
 	color: currentColor;
 	padding: 0;
 
-	&:hover {
+	&:hover,
+	&:focus,
+	&:active {
 		background-color: transparent;
 		color: currentColor;
 	}
