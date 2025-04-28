@@ -23,9 +23,10 @@ This is my latest project – a simple React web app that helps you clear your m
 - Typescript
 - HTML, SCSS
 - Vite
+- React Router DOM
+- nanoid
 - @dnd-kit
 - @phosphor-icons/react
-- nanoid
 
 ## About Me
 
