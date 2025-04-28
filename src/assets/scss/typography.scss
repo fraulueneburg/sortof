@@ -1,12 +1,19 @@
 h1 {
+	display: inline-block;
 	font-family: var(--font-family-headings);
 	font-size: var(--font-size-xxl);
-	margin: 0;
-	text-transform: uppercase;
-	display: inline-block;
-	box-shadow: 0 1rem 0 currentColor;
-	line-height: 1;
+	line-height: 1.2;
+	margin: 0 0 3rem;
 	max-width: 11ch;
+	text-transform: uppercase;
+	text-decoration: underline;
+	text-decoration-thickness: 0.15em;
+}
+
+h2 {
+	margin: 0;
+	font-family: var(--font-family-headings);
+	font-size: var(--font-size-base);
 }
 
 p {
