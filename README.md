@@ -1,4 +1,4 @@
-![Preview of the SortOf App](https://repository-images.githubusercontent.com/889601823/af4b9936-dee0-4dcc-a7a1-1d2ca510955a)
+![Preview of the SortOf App](https://repository-images.githubusercontent.com/889601823/b748c6a2-bc09-44db-a7b6-14da81d2deae)
 
 # [IN PROGRESS] <br />SortOf – The Todo App that helps you clear your mind 👏
 
@@ -16,6 +16,16 @@ This is my latest project – a simple React web app that helps you clear your m
 - 📋 export as .json or to your favourite apps
 - 😌 no signup, no hassle – all data is stored in the browser
 - 🌈 accessible and keyboard-navigable
+
+## Technologies
+
+- React
+- Typescript
+- HTML, SCSS
+- Vite
+- @dnd-kit
+- @phosphor-icons/react
+- nanoid
 
 ## About Me
 
