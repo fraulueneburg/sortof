@@ -1,46 +1,49 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { ListContext } from '../context/List.context'
-
-import { ListData } from '../types'
-import Button from './Button'
 import { useDroppable } from '@dnd-kit/core'
-import ToDoItem from './ToDoItem'
-import { nanoid } from 'nanoid'
+import { TaskData, ListData } from '../types'
+import Task from './Task'
+import Button from './Button'
 
 type ListProps = {
 	data: ListData
+	tasks: TaskData[]
 }
 
-export default function List({ data }: ListProps) {
-	const { _id, title, color, items } = data
-	const { allTasksArr, listsArr, setListsArr } = useContext(ListContext)
+export default function List({ data, tasks }: ListProps) {
+	const { listsArr, setListsArr, setAllTasksArr, defaultListId } = useContext(ListContext)
+
+	const { setNodeRef } = useDroppable({
+		id: data._id,
+	})
 
 	const handleDeleteList = () => {
-		setListsArr((prevArr) => prevArr.filter((list: ListData) => list._id !== _id))
+		setListsArr((prevArr) => prevArr.filter((list) => list._id !== data._id))
+		setAllTasksArr((prevTasks) =>
+			prevTasks.map((task) => (task.list === data._id ? { ...task, list: defaultListId } : task))
+		)
 	}
 
-	const tasks = allTasksArr.filter((task) => task.list === _id)
-
-	const { setNodeRef } = useDroppable({ id: _id })
-
 	return (
-		<>
-			<section className="list" ref={setNodeRef}>
-				<header>
-					<h2>{title}</h2>
-					<aside>
-						{color}
-						<Button title="delete list" unstyled={true} onClick={handleDeleteList} />
-					</aside>
-				</header>
-				{tasks ? (
-					<ul>
-						{tasks.map((task) => (
-							<ToDoItem data={task} key={nanoid()} />
-						))}
-					</ul>
-				) : null}
-			</section>
-		</>
+		<section className="list" ref={setNodeRef}>
+			<header>
+				<h2 className="">{data.title}</h2>
+				<aside>
+					{data._id == defaultListId ? null : (
+						<>
+							{data.color}
+							<Button title="delete list" unstyled={true} onClick={handleDeleteList} />
+						</>
+					)}
+				</aside>
+			</header>
+			{tasks?.length > 0 ? (
+				<ul style={{ padding: '1rem' }}>
+					{tasks.map((task) => {
+						return <Task key={task._id} data={task} />
+					})}
+				</ul>
+			) : null}
+		</section>
 	)
 }

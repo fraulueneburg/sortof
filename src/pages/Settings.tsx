@@ -1,14 +1,13 @@
-import { DndContext, DragEndEvent } from '@dnd-kit/core'
-import { useState, useContext } from 'react'
+import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { useContext } from 'react'
 
-import { Column } from '../components/Column'
-import type { ColumnType, TaskType } from '../types-test'
+import List from '../components/List'
+import { TaskData } from '../types'
 import { ListContext } from '../context/List.context'
+import FormNewTask from '../components/FormNewTask'
 
 export default function Settings() {
-	const { testTasksArr: tasks, setTestTasksArr: setTasks, columnsArr, setColumnsArr } = useContext(ListContext)
-
-	// const [tasks, setTasks] = useState<TaskType[]>(testTasksArr)
+	const { allTasksArr, setAllTasksArr, listsArr } = useContext(ListContext)
 
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event
@@ -16,10 +15,10 @@ export default function Settings() {
 		if (!over) return
 
 		const activeTaskId = active.id as string
-		const newlistId = over.id as TaskType['list']
+		const newlistId = over.id as TaskData['list']
 
-		setTasks(() =>
-			tasks.map((task) =>
+		setAllTasksArr(() =>
+			allTasksArr.map((task) =>
 				task._id === activeTaskId
 					? {
 							...task,
@@ -30,17 +29,29 @@ export default function Settings() {
 		)
 	}
 
+	const sensors = useSensors(
+		useSensor(MouseSensor, {
+			activationConstraint: {
+				delay: 250,
+				tolerance: 5,
+			},
+		}),
+		useSensor(TouchSensor, {
+			activationConstraint: {
+				delay: 250,
+				tolerance: 5,
+			},
+		})
+	)
+
 	return (
 		<>
-			<div className="p-4">
-				<div className="flex gap-8">
-					<DndContext onDragEnd={handleDragEnd}>
-						{columnsArr.map((col) => {
-							return <Column key={col._id} data={col} tasks={tasks.filter((task) => task.list === col._id)} />
-						})}
-					</DndContext>
-				</div>
-			</div>
+			<FormNewTask />
+			<DndContext onDragEnd={handleDragEnd} /*sensors={sensors}*/>
+				{listsArr.map((col) => {
+					return <List key={col._id} data={col} tasks={allTasksArr.filter((task) => task.list === col._id)} />
+				})}
+			</DndContext>
 		</>
 	)
 }

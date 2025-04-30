@@ -1,0 +1,29 @@
+button.toggle-color {
+	border: none;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.dropdown-list {
+	display: flex;
+
+	button[aria-expanded='true'] + ul {
+		display: block;
+	}
+
+	ul {
+		display: none;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 100%;
+	}
+
+	.color-option {
+		background-color: currentColor;
+		border-radius: 50%;
+		width: 2rem;
+		height: 2rem;
+	}
+}

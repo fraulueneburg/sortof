@@ -14,16 +14,15 @@ textarea {
 	}
 }
 
-.form-new-todo {
+.form-new-todo,
+.form-new-list {
 	position: relative;
-	margin: 0 auto;
 	width: fit-content;
 	z-index: 1;
 
 	input[type='text'] {
 		box-sizing: border-box;
 		max-width: 400px;
-		padding-right: 3rem;
 		width: calc(100dvw - 2 * var(--padding-page-x));
 
 		@media (min-width: 1024px) {
@@ -31,14 +30,22 @@ textarea {
 		}
 	}
 
-	button[type='submit'] {
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
+	.inside {
+		display: flex;
 		position: absolute;
 		right: 0;
 		top: 0;
 		bottom: 0;
 		z-index: 1;
+
+		.dropdown-list {
+			align-self: center;
+		}
+	}
+
+	button[type='submit'] {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
 
 		&:hover,
 		&:focus,
@@ -50,5 +57,25 @@ textarea {
 		&:focus {
 			border-radius: var(--border-radius-base);
 		}
+	}
+}
+
+.form-new-todo {
+	margin: 0 auto;
+
+	input[type='text'] {
+		max-width: 400px;
+		padding-right: 3rem;
+		width: calc(100dvw - 2 * var(--padding-page-x));
+
+		@media (min-width: 1024px) {
+			max-width: 550px;
+		}
+	}
+}
+
+.form-new-list {
+	input[type='text'] {
+		padding-right: 7rem;
 	}
 }

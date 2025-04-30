@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export type ToDoData = {
+export type TaskData = {
 	_id: string
 	title: string
 	checked: boolean
@@ -11,7 +11,6 @@ export type ListData = {
 	_id: string
 	title: string
 	color: string
-	items?: ToDoData[]
 }
 
 export type LinkProps = {

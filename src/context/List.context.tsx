@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { ColumnType, TaskType } from '../types-test'
+import { TaskData, ListData } from '../types'
 
 // interface ListContextType {
 //   allTasksArr: any[] // You can replace `any` with your actual item type
@@ -14,44 +14,12 @@ import { ColumnType, TaskType } from '../types-test'
 //   maxStep: number
 // }
 
-const ListContext = createContext()
+const ListContext = createContext('list')
 
 const ListContextWrapper = ({ children }) => {
-	const [columnsArr, setColumnsArr] = useState<ColumnType[]>([
-		{ _id: 'list_00', title: 'NO LIST', color: 'purple', tasks: [] },
-		{ _id: 'list_01', title: 'List #1', color: 'purple', tasks: [] },
-		{ _id: 'list_02', title: 'list_#2', color: 'purple', tasks: [] },
-	])
-
-	const [testTasksArr, setTestTasksArr] = useState<TaskType[]>([
-		{
-			_id: '1',
-			title: 'Research Project – Gather requirements and create initial documentation',
-			list: 'list_00',
-			checked: false,
-		},
-		{
-			_id: '2',
-			title: 'Design System – Create component library and design tokens',
-			list: 'list_00',
-			checked: false,
-		},
-		{
-			_id: '3',
-			title: 'API Integration – Implement REST API endpoints',
-			list: 'list_00',
-			checked: false,
-		},
-		{
-			_id: '4',
-			title: 'Testing – Write unit tests for core functionality',
-			list: 'list_00',
-			checked: false,
-		},
-	])
-
-	const [allTasksArr, setAllTasksArr] = useState([])
-	const [listsArr, setListsArr] = useState([])
+	const defaultListId = 'list_00'
+	const [allTasksArr, setAllTasksArr] = useState<TaskData[]>([])
+	const [listsArr, setListsArr] = useState<ListData[]>([])
 	const [step, setStep] = useState<number | null>(null)
 	const minStep = 1
 	const maxStep = 3
@@ -68,13 +36,11 @@ const ListContextWrapper = ({ children }) => {
 		const savedTodos = sessionStorage.getItem('todos')
 		const savedLists = sessionStorage.getItem('lists')
 		const savedStep = sessionStorage.getItem('step')
-		const savedTestTasks = sessionStorage.getItem('testTasks')
-		const savedColumns = sessionStorage.getItem('columns')
 
 		if (savedTodos) setAllTasksArr(JSON.parse(savedTodos))
-		if (savedLists) setListsArr(JSON.parse(savedLists))
-		if (savedTestTasks) setTestTasksArr(JSON.parse(savedTestTasks))
-		if (savedColumns) setColumnsArr(JSON.parse(savedColumns))
+		if (savedLists) {
+			setListsArr(JSON.parse(savedLists))
+		}
 		setStep(savedStep !== null ? Number(savedStep) : 1)
 	}, [])
 
@@ -95,22 +61,6 @@ const ListContextWrapper = ({ children }) => {
 	}, [listsArr])
 
 	useEffect(() => {
-		if (testTasksArr.length > 0) {
-			sessionStorage.setItem('testTasks', JSON.stringify(testTasksArr))
-		} else {
-			sessionStorage.removeItem('testTasks')
-		}
-	}, [testTasksArr])
-
-	useEffect(() => {
-		if (columnsArr.length > 0) {
-			sessionStorage.setItem('columns', JSON.stringify(columnsArr))
-		} else {
-			sessionStorage.removeItem('columns')
-		}
-	}, [columnsArr])
-
-	useEffect(() => {
 		if (step !== null) {
 			sessionStorage.setItem('step', String(step))
 		}
@@ -119,10 +69,6 @@ const ListContextWrapper = ({ children }) => {
 	return (
 		<ListContext.Provider
 			value={{
-				columnsArr,
-				setColumnsArr,
-				testTasksArr,
-				setTestTasksArr,
 				allTasksArr,
 				setAllTasksArr,
 				listsArr,
@@ -133,6 +79,7 @@ const ListContextWrapper = ({ children }) => {
 				setStep,
 				minStep,
 				maxStep,
+				defaultListId,
 			}}>
 			{children}
 		</ListContext.Provider>
