@@ -49,12 +49,14 @@ export default function Home() {
 	const sensors = useSensors(
 		useSensor(MouseSensor, {
 			activationConstraint: {
-				delay: 250,
+				delay: 75,
+				tolerance: 0,
 			},
 		}),
 		useSensor(TouchSensor, {
 			activationConstraint: {
-				delay: 250,
+				delay: 75,
+				tolerance: 0,
 			},
 		})
 	)
