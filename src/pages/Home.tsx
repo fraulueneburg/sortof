@@ -99,7 +99,7 @@ export default function Home() {
 					title="previous step"
 					hideTitle={true}
 					iconBefore={<IconPrev />}
-					size="md"
+					size="lg"
 					className="btn-prev"
 				/>
 			) : null}
@@ -109,7 +109,7 @@ export default function Home() {
 					title="next step"
 					hideTitle={true}
 					iconBefore={<IconNext />}
-					size="md"
+					size="lg"
 					className="btn-next"
 				/>
 			) : null}

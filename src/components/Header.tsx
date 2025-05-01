@@ -20,20 +20,20 @@ export default function Header() {
 	}
 
 	return (
-		<header>
+		<header id="page-header">
 			<div className="logo">
 				<Link title="sortOf" href="/" iconBefore={<IconHand />} />
 			</div>
 			<nav className="nav_main">
 				<ol>
 					<li>
-						<Link title="Dump" href="#" onClick={() => handleStep(1)} ariaCurrent={checkCurrStep(1)} />
+						<Link title="Dump" onClick={() => handleStep(1)} ariaCurrent={checkCurrStep(1)} />
 					</li>
 					<li>
-						<Link title="Sort" href="#" onClick={() => handleStep(2)} ariaCurrent={checkCurrStep(2)} />
+						<Link title="Sort" onClick={() => handleStep(2)} ariaCurrent={checkCurrStep(2)} />
 					</li>
 					<li>
-						<Link title="Work" href="#" onClick={() => handleStep(3)} ariaCurrent={checkCurrStep(3)} />
+						<Link title="Work" onClick={() => handleStep(3)} ariaCurrent={checkCurrStep(3)} />
 					</li>
 				</ol>
 			</nav>

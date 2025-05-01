@@ -4,7 +4,7 @@ import { ArrowUpRight as IconExternalLink } from '@phosphor-icons/react'
 export default function Footer() {
 	return (
 		<>
-			<footer>
+			<footer id="page-footer">
 				<nav>
 					<ul>
 						<li>

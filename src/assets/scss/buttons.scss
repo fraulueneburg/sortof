@@ -1,11 +1,12 @@
 button {
 	background-color: var(--color-surface);
-	border: var(--border-width-base) solid var(--color-text);
+	border: var(--border-base);
 	border-radius: var(--border-radius-base);
 	color: var(--color-text);
 	cursor: pointer;
 	font-size: var(--font-size-base);
 	padding: 0;
+	width: fit-content;
 
 	&:hover,
 	&:focus,
@@ -21,9 +22,13 @@ button {
 			margin: auto;
 		}
 	}
+
+	&.unstyled {
+		border: none;
+	}
 }
 
-.button-icon-only {
+.btn-icon-only {
 	aspect-ratio: 1 / 1;
 	background-color: transparent;
 	border: none;
