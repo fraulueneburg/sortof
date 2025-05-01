@@ -1,5 +1,5 @@
 :focus-visible {
-	outline: calc(var(--border-width-base) + 1px) solid var(--color-primary);
+	outline: calc(var(--border-width-base) + 1px) var(--border-style-base) var(--color-primary);
 	outline-offset: var(--border-width-base);
 }
 

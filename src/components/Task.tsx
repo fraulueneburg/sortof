@@ -27,9 +27,9 @@ export default function Task({ data }: TaskProps) {
 		: undefined
 
 	return (
-		<li ref={setNodeRef} {...listeners} {...attributes} className="todo-item" style={style}>
+		<li className="todo-item" style={style} ref={setNodeRef} {...listeners} {...attributes}>
 			<span className="title">{title}</span>
-			<button className="button-icon-only" type="button" aria-label={'delete "' + title + '"'} onClick={handleDelete}>
+			<button className="btn-icon-only" type="button" aria-label={'delete "' + title + '"'} onClick={handleDelete}>
 				<IconDelete />
 			</button>
 		</li>

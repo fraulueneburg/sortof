@@ -35,9 +35,9 @@ export default function FormNewList() {
 		<>
 			<form className="form-new-list" onSubmit={handleAddList}>
 				<input type="text" onChange={handleChangeNewListTitle} value={newListTitle} />
-				<div className="inside">
+				<div className="append">
 					<DropdownList />
-					<button className="button-icon-only" type="submit" value="create to do">
+					<button className="btn-icon-only" type="submit" value="create to do">
 						<IconSubmit size="28" />
 					</button>
 				</div>

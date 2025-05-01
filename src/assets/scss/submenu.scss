@@ -1,0 +1,27 @@
+.submenu {
+	[aria-expanded='false'] + div[role='menu'] {
+		display: none;
+	}
+
+	div[role='menu'] {
+		display: block;
+		position: absolute;
+		right: 0;
+		top: 2.5rem;
+		z-index: 20;
+	}
+
+	ul {
+		align-items: flex-end;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			width: max-content;
+		}
+	}
+}

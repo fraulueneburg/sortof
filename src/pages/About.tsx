@@ -4,7 +4,7 @@ export default function About() {
 	return (
 		<>
 			<h1>About</h1>
-			<a className="button-icon-only" href="/" aria-label="close page">
+			<a className="btn-icon-only" href="/" aria-label="close page">
 				<IconClose size="3rem" />
 			</a>
 			<p>

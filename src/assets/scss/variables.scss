@@ -3,7 +3,14 @@
 	--color-white: #fff;
 	--color-light: #faf5e8;
 	--color-dark: #373533;
+
+	--green: #15bca6;
+	--blue-light: #1392ec;
+	--blue-dark: #1254d9;
 	--purple: #625aff;
+	--red: #f54772;
+	--yellow: #f9c406;
+	--orange: #ff930f;
 
 	--box-shadow-base: 0 0 10px rgba(0, 0, 0, 0.4);
 	--box-shadow-inverted: 0 0 10px rgba(255, 255, 255, 0.4);
@@ -17,9 +24,11 @@
 	--color-text: var(--color-dark);
 	--color-text-inverted: var(--color-light);
 
-	--border-color-base: var(--color-dark);
-	--border-radius-base: 0.625rem;
 	--border-width-base: 2px;
+	--border-style-base: solid;
+	--border-color-base: var(--color-dark);
+	--border-base: var(--border-width-base) var(--border-style-base) var(--color-text);
+	--border-radius-base: 0.625rem;
 	--color-focus: var(--color-primary);
 	--font-family-headings: 'Oswald', sans-serif;
 	--font-family-text: 'Atkinson Hyperlegible Next', sans-serif;

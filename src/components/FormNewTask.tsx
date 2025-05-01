@@ -39,8 +39,8 @@ export default function FormNewTask() {
 		<>
 			<form className="form-new-todo" onSubmit={handleAddTask}>
 				<input type="text" onChange={handleChangeNewItemTitle} value={newItemTitle} />
-				<div className="inside">
-					<button className="button-icon-only" type="submit" value="create to do">
+				<div className="append">
+					<button className="btn-icon-only" type="submit" value="create to do">
 						<IconSubmit size="28" />
 					</button>
 				</div>

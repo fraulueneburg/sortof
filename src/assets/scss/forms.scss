@@ -1,7 +1,44 @@
+form {
+	position: relative;
+
+	input:has(+ .append) {
+		padding-right: 3rem;
+	}
+
+	.append {
+		display: flex;
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+
+		.dropdown-list {
+			align-self: center;
+		}
+
+		button[type='submit'] {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+
+			&:hover,
+			&:focus,
+			&:active {
+				background-color: var(--color-text);
+				color: var(--color-text-inverted);
+			}
+
+			&:focus {
+				border-radius: var(--border-radius-base);
+			}
+		}
+	}
+}
+
 input,
 textarea {
 	background-color: var(--color-surface);
-	border: var(--border-width-base) solid var(--border-color-base);
+	border: var(--border-base);
 	border-radius: var(--border-radius-base);
 	color: var(--color-text);
 	font-family: var(--font-family-text);
@@ -16,7 +53,7 @@ textarea {
 
 .form-new-todo,
 .form-new-list {
-	position: relative;
+	margin-bottom: 1rem;
 	width: fit-content;
 	z-index: 1;
 
@@ -29,43 +66,14 @@ textarea {
 			max-width: 550px;
 		}
 	}
-
-	.inside {
-		display: flex;
-		position: absolute;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		z-index: 1;
-
-		.dropdown-list {
-			align-self: center;
-		}
-	}
-
-	button[type='submit'] {
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-
-		&:hover,
-		&:focus,
-		&:active {
-			background-color: var(--color-text);
-			color: var(--color-text-inverted);
-		}
-
-		&:focus {
-			border-radius: var(--border-radius-base);
-		}
-	}
 }
 
 .form-new-todo {
-	margin: 0 auto;
+	margin-left: auto;
+	margin-right: auto;
 
 	input[type='text'] {
 		max-width: 400px;
-		padding-right: 3rem;
 		width: calc(100dvw - 2 * var(--padding-page-x));
 
 		@media (min-width: 1024px) {
@@ -78,4 +86,8 @@ textarea {
 	input[type='text'] {
 		padding-right: 7rem;
 	}
+}
+
+input.rename-list {
+	width: fit-content;
 }

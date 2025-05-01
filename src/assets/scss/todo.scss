@@ -17,9 +17,10 @@
 	border-radius: var(--border-radius);
 	color: var(--color-text-inverted);
 	cursor: grab;
-	min-height: var(--min-height);
 	display: flex;
 	gap: 0.5rem;
+	min-height: var(--min-height);
+	width: fit-content;
 	z-index: 10;
 
 	&[aria-pressed='true'] {

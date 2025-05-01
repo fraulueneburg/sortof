@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useId } from 'react'
 
 export default function DropdownList() {
 	const [isExpanded, setIsExpanded] = useState(false)
+	const uniqueId = useId()
 
 	return (
 		<>
@@ -9,12 +11,12 @@ export default function DropdownList() {
 				<button
 					type="button"
 					className="toggle-color"
-					aria-controls=""
+					aria-controls={uniqueId}
 					aria-expanded={isExpanded}
 					onClick={() => setIsExpanded((prev) => !prev)}>
 					<div className="color-option" style={{ color: 'var(--purple)' }}></div>
 				</button>
-				<ul>
+				<ul id={uniqueId}>
 					<li>purple</li>
 					<li>green</li>
 					<li>yellow</li>

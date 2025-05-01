@@ -1,0 +1,60 @@
+import { useState, useId, ReactNode, useEffect, useRef } from 'react'
+import Button from './Button'
+
+type SubmenuProps = {
+	children: ReactNode
+	title: string
+	hideTitle?: boolean
+	icon?: ReactNode
+}
+
+export default function Submenu({ children, title, hideTitle, icon }: SubmenuProps) {
+	const [isOpen, setIsOpen] = useState(false)
+	const menuId = useId()
+	const ref = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		const handleEscape = (event: KeyboardEvent) => {
+			if (event.key === 'Escape' || event.key === 'Enter') {
+				setIsOpen(false)
+			}
+		}
+		const handleClickOutside = (event: MouseEvent | FocusEvent) => {
+			if (ref.current && !ref.current.contains(event.target as Node)) {
+				setIsOpen(false)
+			}
+		}
+		const listeners = [
+			{ target: window, type: 'keydown', handler: handleEscape },
+			{ target: document, type: 'mousedown', handler: handleClickOutside },
+			{ target: document, type: 'focusin', handler: handleClickOutside },
+		]
+
+		listeners.forEach(({ target, type, handler }) => target.addEventListener(type, handler as EventListener))
+
+		return () => {
+			listeners.forEach(({ target, type, handler }) => target.removeEventListener(type, handler as EventListener))
+		}
+	}, [isOpen])
+
+	return (
+		<>
+			<div className="submenu" ref={ref}>
+				<Button
+					title={title}
+					hideTitle={hideTitle}
+					iconBefore={icon}
+					ariaHasPopup="menu"
+					ariaControls={menuId}
+					ariaExpanded={isOpen}
+					onClick={() => setIsOpen((prev) => !prev)}
+				/>
+				{isOpen && (
+					<div role="menu" id={menuId}>
+						{children}
+					</div>
+				)}
+			</div>
+		</>
+	)
+}
