@@ -1,29 +1,22 @@
-import { useContext } from 'react'
-import { ListContext } from '../context/List.context'
 import { DndContext, DragEndEvent, useSensor, useSensors, MouseSensor, TouchSensor } from '@dnd-kit/core'
 import { TaskData } from '../types'
 import { nanoid } from 'nanoid'
+import useListContext from '../hooks/useListContext'
 
 import Button from '../components/Button'
-import Task from '../components/Task'
 import FormNewTask from '../components/FormNewTask'
-import List from '../components/List'
-import { ArrowLeft as IconPrev, ArrowRight as IconNext, Plus as IconAddList } from '@phosphor-icons/react'
 import FormNewList from '../components/FormNewList'
+import List from '../components/List'
+import Task from '../components/Task'
+import { ArrowLeft as IconPrev, ArrowRight as IconNext } from '@phosphor-icons/react'
 
 export default function Home() {
-	const { allTasksArr, setAllTasksArr, listsArr, setListsArr, step, setStep, minStep, maxStep } = useContext(ListContext)
+	const { allTasksArr, setAllTasksArr, listsArr, step, setStep, minStep, maxStep } = useListContext()
 
 	const handleNextStep = (dir: 'next' | 'prev') => {
 		if (!['next', 'prev'].includes(dir)) return
 		const diff = dir === 'next' ? 1 : -1
-		setStep((prev) => prev + diff)
-	}
-
-	const handleCreateList = () => {
-		const newList = { _id: nanoid(), title: `New List ${listsArr.length + 1}`, color: 'purple', tasks: [] }
-
-		setListsArr((prevArr) => [newList, ...prevArr])
+		setStep((prev) => (prev !== null ? prev + diff : Math.abs(diff)))
 	}
 
 	function handleDragEnd(event: DragEndEvent) {
@@ -72,7 +65,7 @@ export default function Home() {
 					<FormNewTask />{' '}
 					{allTasksArr ? (
 						<ul className="todo-list">
-							{allTasksArr.map((elem: TaskData) => (
+							{allTasksArr.map((elem) => (
 								<Task key={elem._id} data={elem} />
 							))}
 						</ul>
@@ -103,7 +96,7 @@ export default function Home() {
 					className="btn-prev"
 				/>
 			) : null}
-			{step < maxStep ? (
+			{step !== null && step < maxStep ? (
 				<Button
 					onClick={() => handleNextStep('next')}
 					title="next step"

@@ -1,22 +1,23 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react'
 import { TaskData, ListData } from '../types'
 
-// interface ListContextType {
-//   allTasksArr: any[] // You can replace `any` with your actual item type
-//   setAllTasksArr: React.Dispatch<React.SetStateAction<any[]>>
-//   deleteMode: boolean
-//   setDeleteMode: React.Dispatch<React.SetStateAction<boolean>>
-//   colorMode: string
-//   setColorMode: React.Dispatch<React.SetStateAction<string>>
-//   step: number
-//   setStep: React.Dispatch<React.SetStateAction<number>>
-//   minStep: number
-//   maxStep: number
-// }
+interface ListContextType {
+	allTasksArr: TaskData[]
+	setAllTasksArr: React.Dispatch<React.SetStateAction<TaskData[]>>
+	listsArr: ListData[]
+	setListsArr: React.Dispatch<React.SetStateAction<ListData[]>>
+	colorMode: string
+	setColorMode: React.Dispatch<React.SetStateAction<string>>
+	step: number | null
+	setStep: React.Dispatch<React.SetStateAction<number | null>>
+	minStep: number
+	maxStep: number
+	defaultListId: string
+}
 
-const ListContext = createContext('list')
+const ListContext = createContext<ListContextType | undefined>(undefined)
 
-const ListContextWrapper = ({ children }) => {
+const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_00'
 	const [allTasksArr, setAllTasksArr] = useState<TaskData[]>([])
 	const [listsArr, setListsArr] = useState<ListData[]>([])

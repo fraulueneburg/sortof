@@ -1,13 +1,12 @@
 import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { useContext } from 'react'
+import { TaskData } from '../types'
+import useListContext from '../hooks/useListContext'
 
 import List from '../components/List'
-import { TaskData } from '../types'
-import { ListContext } from '../context/List.context'
 import FormNewTask from '../components/FormNewTask'
 
 export default function Settings() {
-	const { allTasksArr, setAllTasksArr, listsArr } = useContext(ListContext)
+	const { allTasksArr, setAllTasksArr, listsArr } = useListContext()
 
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event
@@ -47,7 +46,7 @@ export default function Settings() {
 	return (
 		<>
 			<FormNewTask />
-			<DndContext onDragEnd={handleDragEnd} /*sensors={sensors}*/>
+			<DndContext onDragEnd={handleDragEnd} sensors={sensors}>
 				{listsArr.map((col) => {
 					return <List key={col._id} data={col} tasks={allTasksArr.filter((task) => task.list === col._id)} />
 				})}

@@ -1,8 +1,8 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { ListContext } from '../context/List.context'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import { TaskData, ListData } from '../types'
 import debounce from 'lodash/debounce'
+import useListContext from '../hooks/useListContext'
 
 import Task from './Task'
 import Button from './Button'
@@ -16,7 +16,7 @@ type ListProps = {
 }
 
 export default function List({ data, tasks }: ListProps) {
-	const { setListsArr, setAllTasksArr, defaultListId } = useContext(ListContext)
+	const { setListsArr, setAllTasksArr, defaultListId } = useListContext()
 
 	const [renameMode, setRenameMode] = useState(false)
 	const [listName, setListName] = useState(data.title)
@@ -84,7 +84,7 @@ export default function List({ data, tasks }: ListProps) {
 								<input
 									type="text"
 									className="rename-list"
-									onChange={() => handleChange(event)}
+									onChange={(event) => handleChange(event)}
 									value={listName}
 									ref={inputRef}
 								/>

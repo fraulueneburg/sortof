@@ -1,8 +1,7 @@
-import { useContext } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { TaskData } from '../types'
 import { X as IconDelete } from '@phosphor-icons/react'
-import { ListContext } from '../context/List.context'
+import useListContext from '../hooks/useListContext'
 
 type TaskProps = {
 	data: TaskData
@@ -11,7 +10,7 @@ type TaskProps = {
 export default function Task({ data }: TaskProps) {
 	const { title, _id } = data
 
-	const { setAllTasksArr } = useContext(ListContext)
+	const { setAllTasksArr } = useListContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})

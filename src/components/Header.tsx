@@ -1,18 +1,17 @@
-import { useContext, useState } from 'react'
-import { ListContext } from '../context/List.context'
+import { useState } from 'react'
+import useListContext from '../hooks/useListContext'
 
 import Link from './Link'
 import Button from './Button'
-
 import { Hand as IconHand } from '@phosphor-icons/react'
 import { ArrowsClockwise as IconStartover } from '@phosphor-icons/react'
 
 export default function Header() {
 	const [startOver, setStartOver] = useState(false)
-	const { setAllTasksArr, step, setStep } = useContext(ListContext)
+	const { step, setStep } = useListContext()
 
-	const handleStep = (num: Number) => {
-		setStep(num)
+	const handleStep = (navNum: number) => {
+		setStep(navNum)
 	}
 
 	const checkCurrStep = (navNum: number) => {

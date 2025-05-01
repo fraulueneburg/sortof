@@ -1,15 +1,16 @@
-import { useState, useRef, useContext } from 'react'
+import { useState } from 'react'
 import { ListContext } from '../context/List.context'
 import { nanoid } from 'nanoid'
 import { ArrowUDownLeft as IconSubmit } from '@phosphor-icons/react'
 import { TaskData } from '../types'
+import useListContext from '../hooks/useListContext'
 
 export default function FormNewTask() {
-	const { setAllTasksArr, defaultListId, listsArr, setListsArr } = useContext(ListContext)
+	const { setAllTasksArr, defaultListId, listsArr, setListsArr } = useListContext()
 
 	const [newItemTitle, setNewItemTitle] = useState('')
 
-	const handleAddTask = (event) => {
+	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 
 		const trimmedName = newItemTitle.trim().length
@@ -30,7 +31,7 @@ export default function FormNewTask() {
 		}
 	}
 
-	const handleChangeNewItemTitle = (event) => {
+	const handleChangeNewItemTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault()
 		setNewItemTitle(event.target.value)
 	}
