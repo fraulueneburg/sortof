@@ -48,8 +48,7 @@ export default function Header() {
 							/>
 						</li>
 						<li>
-							<Link href="/settings" title="Settings" />
-							{/* <Button title="Settings" onClick={() => {}} /> */}
+							<Button title="Settings" onClick={() => {}} />
 						</li>
 					</ul>
 				</nav>
