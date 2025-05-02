@@ -8,6 +8,7 @@ import Task from './Task'
 import Button from './Button'
 import Submenu from './Submenu'
 import Link from './Link'
+import DropdownList from './DropdownList'
 import { DotsThree as IconSubmenu, Check as IconSubmit } from '@phosphor-icons/react'
 
 type ListProps = {
@@ -75,7 +76,7 @@ export default function List({ data, tasks }: ListProps) {
 	}, [renameMode])
 
 	return (
-		<section className="list" ref={setNodeRef}>
+		<article className="list" ref={setNodeRef}>
 			{data._id == defaultListId ? null : (
 				<header>
 					{renameMode ? (
@@ -100,8 +101,8 @@ export default function List({ data, tasks }: ListProps) {
 					)}
 					<aside>
 						<>
-							<div>{data.color}</div>
-							<Submenu title={'open list actions'} hideTitle={true} icon={<IconSubmenu />}>
+							<DropdownList />
+							<Submenu title={'list actions'} hideTitle={true} icon={<IconSubmenu />}>
 								<ul>
 									<li>
 										<Link title="delete" onClick={handleDeleteList} size="sm" />
@@ -123,6 +124,6 @@ export default function List({ data, tasks }: ListProps) {
 				</ul>
 			) : null}
 			{data._id !== defaultListId && tasks?.length > 4 ? <Button title="Prioritize" onClick={() => {}} /> : null}
-		</section>
+		</article>
 	)
 }
