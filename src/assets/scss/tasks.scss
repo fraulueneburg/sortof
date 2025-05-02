@@ -1,4 +1,4 @@
-.todo-list {
+.task-list {
 	align-items: flex-start;
 	display: flex;
 	flex-direction: row;
@@ -9,7 +9,7 @@
 	padding: 0;
 }
 
-.todo-item {
+.task-item {
 	--border-radius: 1.25rem;
 	--min-height: 2.5rem;
 
