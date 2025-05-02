@@ -20,7 +20,6 @@
 
 	--color-surface: var(--color-white);
 	--color-surface-inverted: var(--color-dark);
-
 	--color-text: var(--color-dark);
 	--color-text-inverted: var(--color-light);
 
@@ -35,6 +34,9 @@
 	--font-family-menus: 'Atkinson Hyperlegible Mono', sans-serif;
 	--font-size-base: 1rem;
 	--font-size-xxl: 3rem;
+	--outline-color: var(--color-primary);
+	--outline-style: solid;
+	--outline-width: var(--border-width-base);
 
 	--box-shadow: var(--box-shadow-base);
 

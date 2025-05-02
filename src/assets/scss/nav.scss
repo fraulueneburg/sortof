@@ -1,6 +1,6 @@
 :focus-visible {
-	outline: calc(var(--border-width-base) + 1px) var(--border-style-base) var(--color-primary);
-	outline-offset: var(--border-width-base);
+	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
+	outline-offset: var(--outline-width);
 }
 
 nav {

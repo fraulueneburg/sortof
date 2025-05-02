@@ -8,15 +8,20 @@ type TaskProps = {
 }
 
 export default function Task({ data }: TaskProps) {
-	const { title, _id } = data
+	const { title, _id, list, checked } = data
 
-	const { setAllTasksArr } = useListContext()
+	const { setAllTasksArr, defaultListId } = useListContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})
 
+	const handleChangeCheck = () => {
+		const updatedTask = { ...data, checked: !checked }
+		setAllTasksArr((prevTasks) => prevTasks.map((task) => (task._id === _id ? updatedTask : task)))
+	}
+
 	const handleDelete = () => {
-		setAllTasksArr((prevTasks) => prevTasks.filter((item) => item._id !== _id))
+		setAllTasksArr((prevTasks) => prevTasks.filter((task) => task._id !== _id))
 	}
 
 	const style = transform
@@ -26,7 +31,12 @@ export default function Task({ data }: TaskProps) {
 		: undefined
 
 	return (
-		<li className="task-item" style={style}>
+		<li className={`task-item${checked ? ' checked' : ''}${style ? ' is-dragging' : ''}`} style={style}>
+			{list !== defaultListId ? (
+				<>
+					<input type="checkbox" aria-label={title} checked={checked} onChange={handleChangeCheck} />
+				</>
+			) : null}
 			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
 				{title}
 			</div>
