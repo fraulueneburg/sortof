@@ -26,8 +26,10 @@ export default function Task({ data }: TaskProps) {
 		: undefined
 
 	return (
-		<li className="task-item" style={style} ref={setNodeRef} {...listeners} {...attributes}>
-			<span className="title">{title}</span>
+		<li className="task-item" style={style}>
+			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
+				{title}
+			</div>
 			<button className="btn-icon-only" type="button" aria-label={'delete "' + title + '"'} onClick={handleDelete}>
 				<IconDelete />
 			</button>

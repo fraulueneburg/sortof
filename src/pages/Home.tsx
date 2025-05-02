@@ -39,21 +39,6 @@ export default function Home() {
 		)
 	}
 
-	const sensors = useSensors(
-		useSensor(MouseSensor, {
-			activationConstraint: {
-				delay: 75,
-				tolerance: 0,
-			},
-		}),
-		useSensor(TouchSensor, {
-			activationConstraint: {
-				delay: 75,
-				tolerance: 0,
-			},
-		})
-	)
-
 	return (
 		<>
 			<h1>
@@ -64,7 +49,7 @@ export default function Home() {
 				<>
 					<FormNewTask />{' '}
 					{allTasksArr ? (
-						<ul className="todo-list">
+						<ul className="task-list">
 							{allTasksArr.map((elem) => (
 								<Task key={elem._id} data={elem} />
 							))}
@@ -73,7 +58,7 @@ export default function Home() {
 				</>
 			) : null}
 
-			<DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+			<DndContext onDragEnd={handleDragEnd}>
 				{step === 2 ? (
 					<>
 						<FormNewList />

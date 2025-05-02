@@ -26,6 +26,7 @@
 	padding: 1rem;
 
 	header {
+		align-items: center;
 		display: flex;
 		gap: 1rem;
 		justify-content: space-between;
@@ -39,7 +40,7 @@
 	> ul {
 		display: flex;
 		flex-direction: column;
-		gap: 0.25rem;
+		gap: 0.5rem;
 		margin: 0;
 		padding: 0;
 	}
