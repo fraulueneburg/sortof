@@ -6,6 +6,7 @@ type SharedProps = {
 	iconBefore?: ReactNode
 	iconAfter?: ReactNode
 	target?: string
+	ariaLabel?: string
 	ariaCurrent?: 'page' | 'step'
 	className?: string
 	size?: 'sm' | 'md' | 'lg'
@@ -30,6 +31,7 @@ export default function Link({
 	iconAfter,
 	target,
 	ariaCurrent,
+	ariaLabel,
 	className,
 	size,
 	href,
@@ -37,10 +39,22 @@ export default function Link({
 }: LinkProps) {
 	const classNames = `pill${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
 
+	const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+		if (onClick) {
+			event.preventDefault()
+			onClick(event)
+		}
+	}
+
 	return (
 		<>
 			<div className={classNames} aria-label={hideTitle ? title : undefined}>
-				<a href={href || '#	'} target={target} aria-current={ariaCurrent} onClick={onClick}>
+				<a
+					href={href || '#	'}
+					target={target}
+					aria-current={ariaCurrent}
+					aria-label={ariaLabel}
+					onClick={onClick ? handleClick : undefined}>
 					{iconBefore}
 					{!hideTitle ? <span>{title}</span> : null}
 					{iconAfter}
