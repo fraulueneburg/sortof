@@ -13,6 +13,7 @@ type ButtonProps = {
 	ariaHasPopup?: 'true' | 'false' | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog'
 	ariaControls?: string
 	ariaExpanded?: boolean
+	ariaDescribedBy?: string
 }
 
 export default function Button({
@@ -28,6 +29,7 @@ export default function Button({
 	ariaControls,
 	ariaHasPopup,
 	ariaExpanded,
+	ariaDescribedBy,
 }: ButtonProps) {
 	const classNames = `${unstyled ? 'unstyled' : 'pill'}${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
 

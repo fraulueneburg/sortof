@@ -1,7 +1,10 @@
 .list-container {
 	display: grid;
+	margin-top: 1rem;
 	gap: 1rem;
 	grid-template-columns: 1fr;
+	max-width: 100%;
+	overflow: hidden;
 
 	@media (min-width: 768px) {
 		grid-template-columns: repeat(2, 1fr);
@@ -18,22 +21,38 @@
 
 .list {
 	background-color: var(--color-surface);
-	border: var(--border-width-base) var(--border-style-base) currentColor;
+	border: var(--border-base);
 	border-radius: var(--border-radius-base);
 	display: flex;
 	flex-direction: column;
+	min-width: 0;
 	gap: 1rem;
 	padding: 1rem;
 
 	header {
-		align-items: center;
+		align-items: flex-start;
 		display: flex;
 		gap: 1rem;
 		justify-content: space-between;
 
-		aside {
+		> * {
+			flex: 0 1 auto;
+			min-width: 0;
+			max-width: 100%;
+			word-break: break-word;
+		}
+
+		// > .list-name {
+		// 	overflow: hidden;
+		// 	text-overflow: ellipsis;
+		// 	white-space: nowrap;
+		// }
+
+		> aside {
 			align-items: center;
 			display: flex;
+			flex: 0 0 auto;
+			width: min-content;
 			gap: 0.5rem;
 			position: relative;
 		}
@@ -45,5 +64,27 @@
 		gap: 0.5rem;
 		margin: 0;
 		padding: 0;
+	}
+}
+
+textarea.list-name {
+	background-color: hsl(242.91deg 40% 87.65%);
+	border: none;
+	font-family: var(--font-family-headings);
+	font-size: var(--font-size-h2);
+	padding: 0 0.5rem;
+	margin-left: -0.5rem;
+	height: fit-content;
+	resize: none;
+	width: 100%;
+	height: 1lh;
+
+	@supports (field-sizing: content) {
+		field-sizing: content;
+		height: auto;
+	}
+
+	&::placeholder {
+		opacity: 0.5;
 	}
 }

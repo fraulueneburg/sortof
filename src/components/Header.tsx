@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import useListContext from '../hooks/useListContext'
+import { nanoid } from 'nanoid'
 
 import Link from './Link'
 import Button from './Button'
@@ -7,8 +7,14 @@ import { Hand as IconHand } from '@phosphor-icons/react'
 import { ArrowsClockwise as IconStartover } from '@phosphor-icons/react'
 
 export default function Header() {
-	const [startOver, setStartOver] = useState(false)
-	const { step, setStep } = useListContext()
+	const { step, setStep, setListsArr, setAllTasksArr } = useListContext()
+
+	const startoverDescId = nanoid()
+
+	const handleStartOver = () => {
+		setListsArr([])
+		setAllTasksArr([])
+	}
 
 	const handleStep = (navNum: number) => {
 		setStep(navNum)
@@ -43,9 +49,13 @@ export default function Header() {
 							<Button
 								title="Start over"
 								hideTitle={true}
-								onClick={() => setStartOver(true)}
+								ariaDescribedBy={startoverDescId}
+								onClick={handleStartOver}
 								iconBefore={<IconStartover />}
 							/>
+							<p className="sr-only" id={startoverDescId}>
+								This deletes all tasks and lists
+							</p>
 						</li>
 						<li>
 							<Button title="Settings" onClick={() => {}} />

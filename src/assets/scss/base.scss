@@ -17,3 +17,15 @@ main {
 	flex: 1;
 	padding: 1.875rem 0;
 }
+
+.hidden,
+.sr-only {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	position: absolute;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	width: 1px;
+}

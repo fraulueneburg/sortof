@@ -34,6 +34,7 @@
 		--offset-y: 10px;
 		--offset-x: 10px;
 
+		margin: 0;
 		position: absolute;
 		top: var(--offset-y);
 		left: var(--offset-x);
@@ -41,8 +42,8 @@
 		&:before,
 		&:after {
 			position: absolute;
-			top: calc(var(--offset-y) * -1);
-			left: calc(var(--offset-x) * -1);
+			top: calc(var(--offset-y) * -1 + var(--border-width-base));
+			left: calc(var(--offset-x) * -1 + var(--border-width-base));
 			height: calc(var(--min-height) - var(--border-width-base) * 2);
 			aspect-ratio: 1 / 1;
 		}
@@ -60,10 +61,6 @@
 			-webkit-mask: url(../../../public/icons/check-bold.svg) no-repeat center / 70% auto;
 		}
 
-		+ .title {
-			padding-left: calc(var(--min-height) + var(--spacing));
-		}
-
 		&:focus-visible {
 			&:before {
 				background-color: var(--color-surface-inverted);
@@ -77,12 +74,21 @@
 		}
 	}
 
+	input[type='checkbox'] + .title {
+		padding-left: calc(var(--min-height) + var(--spacing));
+	}
+
 	.title {
 		align-self: center;
 		border-radius: var(--border-radius);
 		box-sizing: border-box;
-		padding: 0.25rem calc(var(--min-height) + var(--spacing) + 1px) 0 1rem;
+		padding: 0.5rem calc(var(--min-height) + var(--spacing) + 1px) 0.5rem 1rem;
 		min-height: var(--min-height);
+
+		@media (min-width: 1024px) {
+			padding-bottom: 0.25rem;
+			padding-top: 0.25rem;
+		}
 	}
 
 	&.checked .title,

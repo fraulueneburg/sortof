@@ -32,7 +32,7 @@
 	--font-family-headings: 'Oswald', sans-serif;
 	--font-family-text: 'Atkinson Hyperlegible Next', sans-serif;
 	--font-family-menus: 'Atkinson Hyperlegible Mono', sans-serif;
-	--font-size-base: 1rem;
+	--font-size-base: 1.2rem;
 	--font-size-xxl: 3rem;
 	--outline-color: var(--color-primary);
 	--outline-style: solid;
@@ -43,6 +43,7 @@
 	/* ELEMENT-SPECIFIC */
 
 	--color-bg: var(--color-light);
+	--font-size-h2: 1.5rem;
 	--padding-page-x: 1.25rem;
 	--padding-page-y: 0.9rem;
 
@@ -56,5 +57,9 @@
 		--border-width-base: 3px;
 		--padding-page-x: 2.5rem;
 		--padding-page-y: 1.875rem;
+
+		/* ELEMENT-SPECIFIC */
+
+		--font-size-h2: 1.5rem;
 	}
 }

@@ -34,10 +34,10 @@ export default function FormNewList() {
 	return (
 		<>
 			<form className="form-new-list" onSubmit={handleAddList}>
-				<input type="text" onChange={handleChangeNewListTitle} value={newListTitle} />
+				<input type="text" aria-label="new list name" onChange={handleChangeNewListTitle} value={newListTitle} />
 				<div className="append">
 					<DropdownList />
-					<button className="btn-icon-only" type="submit" value="create to do">
+					<button className="btn-icon-only" type="submit" value="create to do" aria-label="create new list">
 						<IconSubmit size="28" />
 					</button>
 				</div>
