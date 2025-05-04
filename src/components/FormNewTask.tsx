@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ListContext } from '../context/List.context'
 import { nanoid } from 'nanoid'
 import { ArrowUDownLeft as IconSubmit } from '@phosphor-icons/react'
 import { TaskData } from '../types'
@@ -7,7 +6,6 @@ import useListContext from '../hooks/useListContext'
 
 export default function FormNewTask() {
 	const { setAllTasksArr, defaultListId, listsArr, setListsArr } = useListContext()
-
 	const [newItemTitle, setNewItemTitle] = useState('')
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,9 +37,9 @@ export default function FormNewTask() {
 	return (
 		<>
 			<form className="form-new-todo" onSubmit={handleAddTask}>
-				<input type="text" onChange={handleChangeNewItemTitle} value={newItemTitle} />
+				<input type="text" aria-label="new task name" onChange={handleChangeNewItemTitle} value={newItemTitle} />
 				<div className="append">
-					<button className="btn-icon-only" type="submit" value="create to do">
+					<button className="btn-icon-only" type="submit" aria-label="add task">
 						<IconSubmit size="28" />
 					</button>
 				</div>
