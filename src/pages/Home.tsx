@@ -13,7 +13,8 @@ import Task from '../components/Task'
 import { ArrowLeft as IconPrev, ArrowRight as IconNext, Plus as IconAdd } from '@phosphor-icons/react'
 
 export default function Home() {
-	const { allTasksArr, setAllTasksArr, listsArr, setListsArr, step, setStep, minStep, maxStep } = useListContext()
+	const { allTasksArr, setAllTasksArr, listsArr, setListsArr, step, setStep, minStep, maxStep, defaultListId } =
+		useListContext()
 
 	const [newListId, setNewListId] = useState<string | null>(null)
 
@@ -24,31 +25,6 @@ export default function Home() {
 	}
 
 	const handleCreateNewList = () => {
-		const adjectives = [
-			'amazing',
-			'ambitious',
-			'awesome',
-			'fabulous',
-			'fantastic',
-			'formidable',
-			'gorgeous',
-			'impressive',
-			'magnificent',
-			'outstanding',
-			'phenomenal',
-			'spectacular',
-			'splendid',
-			'sublime',
-			'super-duper',
-			'terrific',
-		]
-
-		// const pickRandomItem (arr) = {
-		// 	Math.random()
-		// }
-
-		console.log('new list')
-
 		const newId = nanoid()
 
 		const emptyList: ListData = {
@@ -87,17 +63,42 @@ export default function Home() {
 				{step === 1 ? 'What do you need to do today?' : step === 2 ? 'Let’s create some lists' : 'Alright, let’s hustle'}
 			</h1>
 			<FormNewTask />
+
 			{step === 1 ? (
 				<>
 					{allTasksArr ? (
 						<ul className="task-list">
-							{allTasksArr.map((elem) => (
-								<Task key={elem._id} data={elem} />
-							))}
+							{allTasksArr
+								.filter((elem) => elem.list === defaultListId)
+								.map((elem) => (
+									<Task key={elem._id} data={elem} />
+								))}
 						</ul>
 					) : null}
 				</>
 			) : null}
+
+			{step !== minStep ? (
+				<Button
+					onClick={() => handleNextStep('prev')}
+					title="previous step"
+					hideTitle={true}
+					iconBefore={<IconPrev />}
+					size="lg"
+					className="btn-icon-only btn-prev"
+				/>
+			) : null}
+			{step !== null && step < maxStep ? (
+				<Button
+					onClick={() => handleNextStep('next')}
+					title="next step"
+					hideTitle={true}
+					iconBefore={<IconNext />}
+					size="lg"
+					className="btn-icon-only btn-next"
+				/>
+			) : null}
+
 			<DndContext onDragEnd={handleDragEnd}>
 				{step === 2 ? (
 					<>
@@ -124,26 +125,6 @@ export default function Home() {
 					</>
 				) : null}
 			</DndContext>
-			{step !== minStep ? (
-				<Button
-					onClick={() => handleNextStep('prev')}
-					title="previous step"
-					hideTitle={true}
-					iconBefore={<IconPrev />}
-					size="lg"
-					className="btn-icon-only btn-prev"
-				/>
-			) : null}
-			{step !== null && step < maxStep ? (
-				<Button
-					onClick={() => handleNextStep('next')}
-					title="next step"
-					hideTitle={true}
-					iconBefore={<IconNext />}
-					size="lg"
-					className="btn-icon-only btn-next"
-				/>
-			) : null}
 		</>
 	)
 }
