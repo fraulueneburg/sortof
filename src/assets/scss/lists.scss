@@ -30,6 +30,8 @@
 	padding: 1rem;
 
 	header {
+		--padding-y: 0.5rem;
+
 		align-items: flex-start;
 		display: flex;
 		gap: 1rem;
@@ -42,16 +44,17 @@
 			word-break: break-word;
 		}
 
-		// > .list-name {
-		// 	overflow: hidden;
-		// 	text-overflow: ellipsis;
-		// 	white-space: nowrap;
-		// }
+		> .list-name {
+			margin-top: calc(-1 * var(--padding-y));
+			padding-top: var(--padding-y);
+			padding-bottom: var(--padding-y);
+		}
 
 		> aside {
 			align-items: center;
 			display: flex;
 			flex: 0 0 auto;
+			padding-top: calc(var(--padding-y) / 2);
 			width: min-content;
 			gap: 0.5rem;
 			position: relative;
@@ -68,20 +71,23 @@
 }
 
 textarea.list-name {
+	--padding-x: 0.5rem;
+
 	background-color: hsl(242.91deg 40% 87.65%);
 	border: none;
 	font-family: var(--font-family-headings);
 	font-size: var(--font-size-h2);
-	padding: 0 0.5rem;
-	margin-left: -0.5rem;
-	height: fit-content;
-	resize: none;
-	width: 100%;
 	height: 1lh;
+	margin-left: calc(-1 * var(--padding-x));
+	padding-left: var(--padding-x);
+	resize: none;
+	white-space: nowrap;
+	width: 100%;
 
 	@supports (field-sizing: content) {
 		field-sizing: content;
 		height: auto;
+		white-space: normal;
 	}
 
 	&::placeholder {
