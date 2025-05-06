@@ -5,8 +5,12 @@ import { TaskData } from '../types'
 import useListContext from '../hooks/useListContext'
 
 export default function FormNewTask() {
-	const { setAllTasksArr, defaultListId, listsArr, setListsArr } = useListContext()
+	const { allTasksArr, setAllTasksArr, defaultListId, listsArr, setListsArr } = useListContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
+
+	const maxTasksNum = 5
+	const maxTasksReached = allTasksArr.length >= maxTasksNum
+	const maxTasksErrorMessage = `You have created the maximum number of tasks possible (${maxTasksNum} tasks). Maybe this is a good time to get to work so you can delete some tasks off your lists?`
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -37,7 +41,16 @@ export default function FormNewTask() {
 	return (
 		<>
 			<form className="form-new-todo" onSubmit={handleAddTask}>
-				<input type="text" aria-label="new task name" onChange={handleChangeNewItemTitle} value={newItemTitle} />
+				<input
+					type="text"
+					aria-label="new task name"
+					onChange={handleChangeNewItemTitle}
+					value={newItemTitle}
+					disabled={maxTasksReached}
+					aria-describedby={maxTasksReached ? maxTasksErrorMessage : undefined}
+					aria-invalid={maxTasksReached}
+				/>
+				{maxTasksReached ? <p className="error-message">{maxTasksErrorMessage}</p> : null}
 				<div className="append">
 					<button className="btn-icon-only" type="submit" aria-label="add task">
 						<IconSubmit size="28" />

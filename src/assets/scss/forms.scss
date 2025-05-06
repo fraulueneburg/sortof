@@ -45,6 +45,10 @@ textarea {
 	font-size: var(--font-size-base);
 	padding: 0.75rem 1rem;
 
+	&:disabled {
+		border-color: var(--border-color-disabled);
+	}
+
 	&:focus {
 		border-color: var(--color-focus);
 		outline: none;
@@ -86,4 +90,10 @@ textarea {
 	input[type='text'] {
 		padding-right: 7rem;
 	}
+}
+
+.error-message {
+	font-size: 1.2rem;
+	color: var(--red);
+	position: absolute;
 }
