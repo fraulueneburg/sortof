@@ -10,7 +10,6 @@ export default function FormNewTask() {
 
 	const maxTasksNum = 5
 	const maxTasksReached = allTasksArr.length >= maxTasksNum
-	const maxTasksErrorMessage = `You have created the maximum number of tasks possible (${maxTasksNum} tasks). Maybe this is a good time to get to work so you can delete some tasks off your lists?`
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -47,10 +46,16 @@ export default function FormNewTask() {
 					onChange={handleChangeNewItemTitle}
 					value={newItemTitle}
 					disabled={maxTasksReached}
-					aria-describedby={maxTasksReached ? maxTasksErrorMessage : undefined}
+					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}
+					aria-describedby={maxTasksReached ? 'task-limit-message' : undefined}
 					aria-invalid={maxTasksReached}
 				/>
-				{maxTasksReached ? <p className="error-message">{maxTasksErrorMessage}</p> : null}
+				{maxTasksReached ? (
+					<p className="error-message" id="task-limit-message" role="alert" aria-live="assertive">
+						You have created the maximum number of tasks possible ({maxTasksNum} tasks). Maybe this is a good time to get to
+						work so you can delete some tasks off your lists?
+					</p>
+				) : null}
 				<div className="append">
 					<button className="btn-icon-only" type="submit" aria-label="add task">
 						<IconSubmit size="28" />
