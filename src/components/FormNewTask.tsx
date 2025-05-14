@@ -8,7 +8,7 @@ export default function FormNewTask() {
 	const { allTasksArr, setAllTasksArr, defaultListId, listsArr, setListsArr } = useListContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
 
-	const maxTasksNum = 5
+	const maxTasksNum = 150
 	const maxTasksReached = allTasksArr.length >= maxTasksNum
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
