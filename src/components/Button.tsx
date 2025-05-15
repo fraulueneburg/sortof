@@ -7,13 +7,14 @@ type ButtonProps = {
 	iconBefore?: ReactNode
 	iconAfter?: ReactNode
 	className?: string
-	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 	size?: 'sm' | 'md' | 'lg'
 	unstyled?: boolean
 	ariaHasPopup?: 'true' | 'false' | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog'
 	ariaControls?: string
-	ariaExpanded?: boolean
 	ariaDescribedBy?: string
+	ariaExpanded?: boolean
+	ariaLabel?: string
 }
 
 export default function Button({
@@ -30,19 +31,21 @@ export default function Button({
 	ariaHasPopup,
 	ariaExpanded,
 	ariaDescribedBy,
+	ariaLabel,
 }: ButtonProps) {
 	const classNames = `${unstyled ? 'unstyled' : 'pill'}${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
 
 	return (
 		<>
 			<button
-				aria-label={hideTitle ? title : undefined}
 				className={classNames}
 				disabled={disabled}
-				aria-haspopup={ariaHasPopup}
-				aria-controls={ariaControls}
 				onClick={onClick}
-				aria-expanded={ariaExpanded}>
+				aria-controls={ariaControls}
+				aria-describedby={ariaDescribedBy}
+				aria-expanded={ariaExpanded}
+				aria-haspopup={ariaHasPopup}
+				aria-label={ariaLabel ? ariaLabel : title}>
 				{iconBefore}
 				{!hideTitle ? <span>{title}</span> : null}
 				{iconAfter}
