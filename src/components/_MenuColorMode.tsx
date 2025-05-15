@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react'
 import { ListContext } from '../context/List.context'
-import { nanoid } from 'nanoid'
 import { Sun as IconLightMode, LampPendant as IconSepiaMode, MoonStars as IconDarkMode } from '@phosphor-icons/react'
 
 export default function MenuColorMode() {
@@ -42,7 +41,7 @@ export default function MenuColorMode() {
 				</button>
 				<ul role="menu" id="menu-color-mode" aria-label="Color Mode">
 					{menuItems.map((item) => (
-						<li key={nanoid()}>
+						<li key={item.id}>
 							<input
 								type="radio"
 								id={item.id}
