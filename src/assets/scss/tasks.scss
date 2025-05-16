@@ -54,11 +54,16 @@
 			content: '';
 		}
 
+		&:not(:checked):hover:after,
 		&:checked:after {
 			content: '';
 			background-color: var(--color-text);
 			mask: url(../../../public/icons/check-bold.svg) no-repeat center / 70% auto;
 			-webkit-mask: url(../../../public/icons/check-bold.svg) no-repeat center / 70% auto;
+		}
+
+		&:not(:checked):hover:after {
+			opacity: 0.2;
 		}
 
 		&:focus-visible {

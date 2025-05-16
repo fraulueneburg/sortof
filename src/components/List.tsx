@@ -7,9 +7,8 @@ import useListContext from '../hooks/useListContext'
 import Task from './Task'
 import Button from './Button'
 import Submenu from './Submenu'
-import Link from './Link'
-import DropdownList from './DropdownList'
-import { DotsThree as IconSubmenu, Check as IconSubmit } from '@phosphor-icons/react'
+import DropdownListColor from './DropdownListColor'
+import { DotsThree as IconSubmenu } from '@phosphor-icons/react'
 import { nanoid } from 'nanoid'
 
 type ListProps = {
@@ -19,21 +18,25 @@ type ListProps = {
 }
 
 export default function List({ data, tasks, isNew }: ListProps) {
-	const { setListsArr, setAllTasksArr, defaultListId } = useListContext()
+	const { _id, title, color } = data
+	const { listsArr, setListsArr, setAllTasksArr, defaultListId } = useListContext()
 
 	const [renameMode, setRenameMode] = useState(isNew || false)
-	const [listName, setListName] = useState(data.title)
+	const [listName, setListName] = useState(title)
+	const [listColor, setListColor] = useState(color)
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = nanoid()
+	const prioritizeStartCount = 3
+	const emptyListName = 'Unnamed list'
 
 	const { setNodeRef } = useDroppable({
-		id: data._id,
+		id: _id,
 	})
 
 	const debouncedUpdate = useCallback(
 		debounce((updatedName) => {
-			setListsArr((prevArr) => prevArr.map((list) => (list._id === data._id ? { ...list, title: updatedName } : list)))
+			setListsArr((prevArr) => prevArr.map((list) => (list._id === _id ? { ...list, title: updatedName } : list)))
 		}, 250),
 		[]
 	)
@@ -49,7 +52,7 @@ export default function List({ data, tasks, isNew }: ListProps) {
 		if (!input) return
 
 		const trimmed = input.value.trim()
-		const finalName = trimmed === '' ? 'Unnamed list' : trimmed
+		const finalName = trimmed === '' ? emptyListName : trimmed
 
 		setListName(finalName)
 		debouncedUpdate(finalName)
@@ -57,11 +60,15 @@ export default function List({ data, tasks, isNew }: ListProps) {
 		setRenameMode(false)
 	}
 
+	const handleColorChange = (newColor: string) => {
+		console.log('changing color to', newColor)
+		setListColor(newColor)
+		setListsArr((prevArr) => prevArr.map((list) => (list._id === _id ? { ...list, color: newColor } : list)))
+	}
+
 	const handleDeleteList = () => {
-		setListsArr((prevArr) => prevArr.filter((list) => list._id !== data._id))
-		setAllTasksArr((prevTasks) =>
-			prevTasks.map((task) => (task.list === data._id ? { ...task, list: defaultListId } : task))
-		)
+		setListsArr((prevArr) => prevArr.filter((list) => list._id !== _id))
+		setAllTasksArr((prevTasks) => prevTasks.filter((task) => task.list !== _id))
 	}
 
 	useEffect(() => {
@@ -94,15 +101,15 @@ export default function List({ data, tasks, isNew }: ListProps) {
 	}, [renameMode])
 
 	return (
-		<article className="list" ref={setNodeRef}>
-			{data._id == defaultListId ? null : (
+		<article className={`list ${_id}`} ref={setNodeRef}>
+			{_id == defaultListId ? null : (
 				<header>
 					{renameMode ? (
 						<>
 							<textarea
 								className="list-name"
 								aria-label="list name"
-								placeholder="My fabulous list"
+								placeholder={emptyListName}
 								aria-describedby={inputDescriptionId}
 								onChange={(event) => handleLiveRename(event)}
 								value={listName}
@@ -114,19 +121,19 @@ export default function List({ data, tasks, isNew }: ListProps) {
 						</>
 					) : (
 						<h2 className="list-name" onClick={() => setRenameMode(true)}>
-							{data.title}
+							{title}
 						</h2>
 					)}
 					<aside>
 						<>
-							<DropdownList />
+							<DropdownListColor selected={listColor} onColorChange={handleColorChange} />
 							<Submenu title={'list actions'} hideTitle={true} icon={<IconSubmenu />}>
 								<ul>
 									<li>
-										<Link title="delete" ariaLabel="delete list" onClick={handleDeleteList} size="sm" />
+										<Button title="delete" ariaLabel="delete list" onClick={handleDeleteList} size="sm" />
 									</li>
 									<li>
-										<Link title="rename" ariaLabel="rename list" onClick={() => setRenameMode(true)} size="sm" />
+										<Button title="rename" ariaLabel="rename list" onClick={() => setRenameMode(true)} size="sm" />
 									</li>
 								</ul>
 							</Submenu>
@@ -134,14 +141,16 @@ export default function List({ data, tasks, isNew }: ListProps) {
 					</aside>
 				</header>
 			)}
-			{tasks?.length > 0 ? (
+			{tasks?.length > 0 && (
 				<ul>
 					{tasks.map((task) => {
-						return <Task key={task._id} data={task} />
+						return <Task key={task._id} data={task} color={listColor} />
 					})}
 				</ul>
-			) : null}
-			{data._id !== defaultListId && tasks?.length > 4 ? <Button title="Prioritize" onClick={() => {}} size="sm" /> : null}
+			)}
+			{_id !== defaultListId && tasks?.length >= prioritizeStartCount && (
+				<Button title="Prioritize" onClick={() => {}} size="sm" />
+			)}
 		</article>
 	)
 }

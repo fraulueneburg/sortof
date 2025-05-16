@@ -15,7 +15,7 @@ export default function Submenu({ children, title, hideTitle, icon }: SubmenuPro
 
 	useEffect(() => {
 		const handleEscape = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' || event.key === 'Enter') {
+			if (event.key === 'Escape') {
 				setIsOpen(false)
 			}
 		}
@@ -44,13 +44,12 @@ export default function Submenu({ children, title, hideTitle, icon }: SubmenuPro
 					title={title}
 					hideTitle={hideTitle}
 					iconBefore={icon}
-					ariaHasPopup="menu"
 					ariaControls={menuId}
 					ariaExpanded={isOpen}
 					onClick={() => setIsOpen((prev) => !prev)}
 				/>
 				{isOpen && (
-					<div role="menu" id={menuId}>
+					<div className="dropdown" id={menuId}>
 						{children}
 					</div>
 				)}

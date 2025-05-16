@@ -6,26 +6,53 @@ button.toggle-color {
 }
 
 .dropdown-list {
+	--color-option-width: 2.25rem;
 	display: flex;
 
-	button[aria-expanded='true'] + ul {
-		display: block;
+	:focus-visible {
+		z-index: 10;
 	}
 
-	ul {
+	button[aria-expanded='true'] + .color-list {
+		display: flex;
+	}
+
+	.color-list {
+		background-color: var(--color-surface);
+		border-radius: var(--border-radius-base);
+		border: var(--border-base);
 		display: none;
-		list-style: none;
-		margin: 0;
-		padding: 0;
+		flex-direction: column;
+		flex-wrap: wrap;
+		gap: calc(var(--outline-width) * 3);
+		margin-top: calc(var(--outline-width) * 2);
+		margin-left: calc(var(--outline-width) * -4);
+		max-height: calc((var(--color-option-width) + var(--outline-width) * 3) * 4);
+		padding: calc(var(--outline-width) * 3);
 		position: absolute;
 		top: 100%;
-		z-index: 10;
+		width: max-content;
+		z-index: 5;
 	}
 
 	.color-option {
 		background-color: currentColor;
 		border-radius: 50%;
-		width: 2.25rem;
-		height: 2.25rem;
+		cursor: pointer;
+		height: var(--color-option-width);
+		position: relative;
+		width: var(--color-option-width);
+
+		&[aria-selected='true']:after {
+			aspect-ratio: 1 / 1;
+			background-color: var(--color-text-inverted);
+			content: '';
+			height: 80%;
+			left: 10%;
+			top: 10%;
+			position: absolute;
+			mask: url(../../../public/icons/check-bold.svg) no-repeat center / 70% auto;
+			-webkit-mask: url(../../../public/icons/check-bold.svg) no-repeat center / 70% auto;
+		}
 	}
 }

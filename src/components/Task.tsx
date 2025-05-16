@@ -5,9 +5,10 @@ import useListContext from '../hooks/useListContext'
 
 type TaskProps = {
 	data: TaskData
+	color: string
 }
 
-export default function Task({ data }: TaskProps) {
+export default function Task({ data, color }: TaskProps) {
 	const { title, _id, list, checked } = data
 
 	const { setAllTasksArr, defaultListId } = useListContext()
@@ -24,19 +25,20 @@ export default function Task({ data }: TaskProps) {
 		setAllTasksArr((prevTasks) => prevTasks.filter((task) => task._id !== _id))
 	}
 
-	const style = transform
-		? {
-				transform: `translate(${transform.x}px, ${transform.y}px)`,
-		  }
-		: undefined
+	const style = {
+		...(transform && {
+			transform: `translate(${transform.x}px, ${transform.y}px)`,
+		}),
+		backgroundColor: `var(--${color})`,
+	}
 
 	return (
-		<li className={`task-item${checked ? ' checked' : ''}${style ? ' is-dragging' : ''}`} style={style}>
-			{list !== defaultListId ? (
+		<li className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`} style={style}>
+			{list !== defaultListId && (
 				<>
 					<input type="checkbox" aria-label={title} checked={checked} onChange={handleChangeCheck} />
 				</>
-			) : null}
+			)}
 			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
 				{title}
 			</div>
