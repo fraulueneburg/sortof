@@ -47,7 +47,7 @@ export default function Button({
 				aria-haspopup={ariaHasPopup}
 				aria-label={ariaLabel ? ariaLabel : title}>
 				{iconBefore}
-				{!hideTitle ? <span>{title}</span> : null}
+				{!hideTitle && <span>{title}</span>}
 				{iconAfter}
 			</button>
 		</>

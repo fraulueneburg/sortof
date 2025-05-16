@@ -50,12 +50,12 @@ export default function FormNewTask() {
 					aria-describedby={maxTasksReached ? 'task-limit-message' : undefined}
 					aria-invalid={maxTasksReached}
 				/>
-				{maxTasksReached ? (
+				{maxTasksReached && (
 					<p className="error-message" id="task-limit-message" role="alert" aria-live="assertive">
 						You have created the maximum number of tasks possible ({maxTasksNum} tasks). In order to create new tasks, you
 						need to delete some tasks off your lists. Maybe this is a good time to take a break and get to work?
 					</p>
-				) : null}
+				)}
 				<div className="append">
 					<button className="btn-icon-only" type="submit" aria-label="add task">
 						<IconSubmit size="28" />

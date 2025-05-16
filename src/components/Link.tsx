@@ -56,7 +56,7 @@ export default function Link({
 					aria-label={ariaLabel}
 					onClick={onClick ? handleClick : undefined}>
 					{iconBefore}
-					{!hideTitle ? <span>{title}</span> : null}
+					{!hideTitle && <span>{title}</span>}
 					{iconAfter}
 				</a>
 			</div>
