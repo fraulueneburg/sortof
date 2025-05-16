@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useId } from 'react'
 
 type DropdownListProps = {
@@ -11,19 +11,22 @@ export default function DropdownListColor({ selected, onColorChange }: DropdownL
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [selectedColor, setSelectedColor] = useState(selected)
 
-	const ref = useRef<HTMLUListElement>(null)
+	const ref = useRef<HTMLDivElement>(null)
 	const uniqueId = useId()
 
-	const colorsArr: singleColorType[] = [
-		{ name: 'green-dark', value: '#04725D' },
-		{ name: 'green', value: '#15bca6' },
-		{ name: 'blue-light', value: '#1392ec' },
-		{ name: 'blue-dark', value: '#1254d9' },
-		{ name: 'purple', value: '#625aff' },
-		{ name: 'red', value: '#f54772' },
-		{ name: 'orange', value: '#ff930f' },
-		{ name: 'yellow', value: '#f9c406' },
-	]
+	const colorsArr: singleColorType[] = useMemo(
+		() => [
+			{ name: 'green-dark', value: '#04725D' },
+			{ name: 'green', value: '#15bca6' },
+			{ name: 'blue-light', value: '#1392ec' },
+			{ name: 'blue-dark', value: '#1254d9' },
+			{ name: 'purple', value: '#625aff' },
+			{ name: 'red', value: '#f54772' },
+			{ name: 'orange', value: '#ff930f' },
+			{ name: 'yellow', value: '#f9c406' },
+		],
+		[]
+	)
 
 	const handleColorChange = (newColor: string) => {
 		onColorChange(newColor)
@@ -62,9 +65,13 @@ export default function DropdownListColor({ selected, onColorChange }: DropdownL
 		}
 	}, [isExpanded])
 
+	useEffect(() => {
+		setSelectedColor(selected)
+	}, [selected])
+
 	return (
 		<>
-			<div className="dropdown-list">
+			<div className="dropdown-list" ref={ref}>
 				<button
 					type="button"
 					className="toggle-color"
@@ -81,8 +88,7 @@ export default function DropdownListColor({ selected, onColorChange }: DropdownL
 						className="color-list"
 						role="listbox"
 						tabIndex={-1}
-						aria-activedescendant={selectedColor}
-						ref={ref}>
+						aria-activedescendant={selectedColor}>
 						{colorsArr.map((color) => (
 							<li
 								key={color.name}
