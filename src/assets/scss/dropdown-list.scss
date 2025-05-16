@@ -25,7 +25,7 @@ button.toggle-color {
 		flex-direction: column;
 		flex-wrap: wrap;
 		gap: calc(var(--outline-width) * 3);
-		margin-top: calc(var(--outline-width) * 2);
+		margin-top: calc(var(--outline-width) * 3);
 		margin-left: calc(var(--outline-width) * -4);
 		max-height: calc((var(--color-option-width) + var(--outline-width) * 3) * 4);
 		padding: calc(var(--outline-width) * 3);
