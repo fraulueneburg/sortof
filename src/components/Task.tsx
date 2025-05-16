@@ -5,10 +5,10 @@ import useListContext from '../hooks/useListContext'
 
 type TaskProps = {
 	data: TaskData
-	color: string
+	color?: string
 }
 
-export default function Task({ data, color }: TaskProps) {
+export default function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked } = data
 
 	const { setAllTasksArr, defaultListId } = useListContext()
