@@ -64,7 +64,28 @@ export default function Home() {
 			</h1>
 			<FormNewTask />
 
-			{step === 1 ? (
+			{step !== minStep && (
+				<Button
+					onClick={() => handleNextStep('prev')}
+					title="previous step"
+					hideTitle={true}
+					iconBefore={<IconPrev />}
+					size="lg"
+					className="btn-icon-only btn-prev"
+				/>
+			)}
+			{step !== null && step < maxStep && (
+				<Button
+					onClick={() => handleNextStep('next')}
+					title="next step"
+					hideTitle={true}
+					iconBefore={<IconNext />}
+					size="lg"
+					className="btn-icon-only btn-next"
+				/>
+			)}
+
+			{step === 1 && (
 				<>
 					{allTasksArr ? (
 						<ul className="task-list">
@@ -76,31 +97,10 @@ export default function Home() {
 						</ul>
 					) : null}
 				</>
-			) : null}
-
-			{step !== minStep ? (
-				<Button
-					onClick={() => handleNextStep('prev')}
-					title="previous step"
-					hideTitle={true}
-					iconBefore={<IconPrev />}
-					size="lg"
-					className="btn-icon-only btn-prev"
-				/>
-			) : null}
-			{step !== null && step < maxStep ? (
-				<Button
-					onClick={() => handleNextStep('next')}
-					title="next step"
-					hideTitle={true}
-					iconBefore={<IconNext />}
-					size="lg"
-					className="btn-icon-only btn-next"
-				/>
-			) : null}
+			)}
 
 			<DndContext onDragEnd={handleDragEnd}>
-				{step === 2 ? (
+				{step === 2 && (
 					<>
 						<Button
 							className="btn-icon-only"
@@ -123,7 +123,7 @@ export default function Home() {
 							})}
 						</div>
 					</>
-				) : null}
+				)}
 			</DndContext>
 		</>
 	)
