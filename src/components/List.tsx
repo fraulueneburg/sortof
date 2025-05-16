@@ -130,10 +130,10 @@ export default function List({ data, tasks, isNew }: ListProps) {
 							<Submenu title={'list actions'} hideTitle={true} icon={<IconSubmenu />}>
 								<ul>
 									<li>
-										<Button title="delete" ariaLabel="delete list" onClick={handleDeleteList} size="sm" />
+										<Button title="rename" ariaLabel="rename list" onClick={() => setRenameMode(true)} size="sm" />
 									</li>
 									<li>
-										<Button title="rename" ariaLabel="rename list" onClick={() => setRenameMode(true)} size="sm" />
+										<Button title="delete" ariaLabel="delete list" onClick={handleDeleteList} size="sm" />
 									</li>
 								</ul>
 							</Submenu>
