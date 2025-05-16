@@ -1,4 +1,4 @@
-import { useModal } from '../context/Modal.context'
+import { useModal } from '../context/_Modal.context'
 
 export default function ModalButton({ children, ...props }) {
 	const { handleOpen } = useModal()

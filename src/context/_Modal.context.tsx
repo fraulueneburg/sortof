@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
+import useListContext from '../hooks/useListContext'
 
 const ModalContext = createContext({})
-const useModal = () => useContext(ModalContext)
+const useModal = () => useListContext()
 
 const ModalProvider = ({ children, ...props }) => {
 	const isSSR = typeof window === 'undefined'

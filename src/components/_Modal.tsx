@@ -1,4 +1,4 @@
-import { useModal } from '../context/Modal.context'
+import { useModal } from '../context/_Modal.context'
 import { X as IconClose } from '@phosphor-icons/react'
 
 export default function Modal(props) {
