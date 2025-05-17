@@ -27,13 +27,18 @@ ul[role='listbox'] {
 
 .list {
 	background-color: var(--color-surface);
-	border: var(--border-base);
 	border-radius: var(--border-radius-base);
+	border: var(--border-base);
 	display: flex;
 	flex-direction: column;
-	min-width: 0;
 	gap: 1rem;
+	min-width: 0;
 	padding: 1rem;
+	position: relative;
+
+	&:has(*:focus) {
+		z-index: 15;
+	}
 
 	header {
 		--padding-y: 0.5rem;
