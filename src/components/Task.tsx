@@ -16,7 +16,7 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 		id: _id,
 	})
 
-	const handleChangeCheck = () => {
+	const handleToggleCheck = () => {
 		const updatedTask = { ...data, checked: !checked }
 		setAllTasksArr((prevTasks) => prevTasks.map((task) => (task._id === _id ? updatedTask : task)))
 	}
@@ -36,7 +36,7 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 		<li className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`} style={style}>
 			{list !== defaultListId && (
 				<>
-					<input type="checkbox" aria-label={title} checked={checked} onChange={handleChangeCheck} />
+					<input type="checkbox" aria-label={title} checked={checked} onChange={handleToggleCheck} />
 				</>
 			)}
 			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
