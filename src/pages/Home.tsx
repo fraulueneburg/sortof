@@ -43,18 +43,24 @@ export default function Home() {
 		if (!over) return
 
 		const activeTaskId = active.id as string
-		const newlistId = over.id as TaskData['list']
+		const updatedListId = over.id as TaskData['list']
 
-		setAllTasksArr(() =>
-			allTasksArr.map((task) =>
-				task._id === activeTaskId
-					? {
-							...task,
-							list: newlistId,
-					  }
-					: task
-			)
-		)
+		setAllTasksArr((prevTasks) => {
+			const updatedTasks: typeof prevTasks = []
+			let movedTask: (typeof prevTasks)[number] | null = null
+
+			for (const task of prevTasks) {
+				if (task._id === activeTaskId) {
+					movedTask = { ...task, list: updatedListId }
+				} else {
+					updatedTasks.push(task)
+				}
+			}
+
+			if (movedTask) updatedTasks.push(movedTask)
+
+			return updatedTasks
+		})
 	}
 
 	return (
