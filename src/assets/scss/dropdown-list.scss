@@ -1,8 +1,13 @@
 button.toggle-color {
-	border: none;
 	border-radius: 50%;
 	overflow: hidden;
 	height: fit-content;
+
+	> .color-option {
+		aspect-ratio: 1 / 1;
+		height: calc(2rem - 2px);
+		width: auto;
+	}
 }
 
 .dropdown-list {
