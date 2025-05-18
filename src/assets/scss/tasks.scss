@@ -96,9 +96,10 @@
 		}
 	}
 
-	&.checked .title,
-	:checked + .title {
-		text-decoration: line-through 4px var(--color-text);
+	&.checked {
+		.title {
+			text-decoration: line-through 4px var(--color-text);
+		}
 	}
 
 	button {

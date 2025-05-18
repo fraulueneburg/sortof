@@ -10,6 +10,7 @@ type TaskProps = {
 
 export default function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked } = data
+	const bgColor = !checked ? color : 'color-inactive-task'
 
 	const { setAllTasksArr, defaultListId } = useListContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -29,7 +30,7 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 		...(transform && {
 			transform: `translate(${transform.x}px, ${transform.y}px)`,
 		}),
-		backgroundColor: `var(--${color})`,
+		backgroundColor: `var(--${bgColor})`,
 	}
 
 	return (
