@@ -68,7 +68,7 @@ export default function Home() {
 			<h1>
 				{step === 1 ? 'What do you need to do today?' : step === 2 ? 'Let’s create some lists' : 'Alright, let’s hustle'}
 			</h1>
-			<FormNewTask />
+			{(step === 1 || step === 2) && <FormNewTask />}
 
 			{step !== minStep && (
 				<Button
@@ -106,8 +106,8 @@ export default function Home() {
 			)}
 
 			<DndContext onDragEnd={handleDragEnd}>
-				{step === 2 && (
-					<>
+				<>
+					{step === 2 && (
 						<Button
 							className="btn-icon-only"
 							title="create new list"
@@ -116,6 +116,8 @@ export default function Home() {
 							onClick={handleCreateNewList}
 							size="lg"
 						/>
+					)}
+					{(step === 2 || step === 3) && (
 						<div className="list-container">
 							{listsArr.map((col) => {
 								return (
@@ -128,8 +130,8 @@ export default function Home() {
 								)
 							})}
 						</div>
-					</>
-				)}
+					)}
+				</>
 			</DndContext>
 		</>
 	)
