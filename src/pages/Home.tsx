@@ -43,7 +43,10 @@ export default function Home() {
 		if (!over) return
 
 		const activeTaskId = active.id as string
+		const foundActiveTask = allTasksArr.find((task) => task._id === activeTaskId)
 		const updatedListId = over.id as TaskData['list']
+
+		if (!foundActiveTask || foundActiveTask.list === updatedListId) return
 
 		setAllTasksArr((prevTasks) => {
 			const updatedTasks: typeof prevTasks = []
