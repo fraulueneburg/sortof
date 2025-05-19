@@ -27,7 +27,6 @@ export default function List({ data, tasks, isNew }: ListProps) {
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = nanoid()
-	const prioritizeStartCount = 3
 	const emptyListName = 'Unnamed list'
 
 	const { setNodeRef } = useDroppable({
@@ -147,9 +146,6 @@ export default function List({ data, tasks, isNew }: ListProps) {
 						return <Task key={task._id} data={task} color={listColor} />
 					})}
 				</ul>
-			)}
-			{_id !== defaultListId && tasks?.length >= prioritizeStartCount && (
-				<Button title="Prioritize" onClick={() => {}} size="sm" />
 			)}
 		</article>
 	)
