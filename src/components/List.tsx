@@ -8,7 +8,7 @@ import Task from './Task'
 import Button from './Button'
 import Submenu from './Submenu'
 import DropdownListColor from './DropdownListColor'
-import { DotsThree as IconSubmenu } from '@phosphor-icons/react'
+import { DotsThreeIcon as IconSubmenu } from '@phosphor-icons/react'
 import { nanoid } from 'nanoid'
 
 type ListProps = {
@@ -19,15 +19,15 @@ type ListProps = {
 
 export default function List({ data, tasks, isNew }: ListProps) {
 	const { _id, title, color } = data
-	const { listsArr, setListsArr, setAllTasksArr, defaultListId } = useListContext()
+	const { setListsArr, setAllTasksArr, defaultListId } = useListContext()
 
-	const [renameMode, setRenameMode] = useState(isNew || false)
+	const [isRenaming, setRenameMode] = useState(isNew || false)
 	const [listName, setListName] = useState(title)
 	const [listColor, setListColor] = useState(color)
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = nanoid()
-	const emptyListName = 'Unnamed list'
+	const fallbackName = 'Unnamed list'
 
 	const { setNodeRef } = useDroppable({
 		id: _id,
@@ -51,7 +51,7 @@ export default function List({ data, tasks, isNew }: ListProps) {
 		if (!input) return
 
 		const trimmed = input.value.trim()
-		const finalName = trimmed === '' ? emptyListName : trimmed
+		const finalName = trimmed === '' ? fallbackName : trimmed
 
 		setListName(finalName)
 		debouncedUpdate(finalName)
@@ -60,7 +60,6 @@ export default function List({ data, tasks, isNew }: ListProps) {
 	}
 
 	const handleColorChange = (newColor: string) => {
-		console.log('changing color to', newColor)
 		setListColor(newColor)
 		setListsArr((prevArr) => prevArr.map((list) => (list._id === _id ? { ...list, color: newColor } : list)))
 	}
@@ -71,7 +70,7 @@ export default function List({ data, tasks, isNew }: ListProps) {
 	}
 
 	useEffect(() => {
-		if (renameMode && inputRef.current) {
+		if (isRenaming && inputRef.current) {
 			const input = inputRef.current
 			const value = input.value
 			input.focus()
@@ -97,18 +96,18 @@ export default function List({ data, tasks, isNew }: ListProps) {
 		return () => {
 			listeners.forEach(({ target, type, handler }) => target.removeEventListener(type, handler as EventListener))
 		}
-	}, [renameMode])
+	}, [isRenaming])
 
 	return (
 		<article className={`list ${_id}`} ref={setNodeRef}>
 			{_id == defaultListId ? null : (
 				<header>
-					{renameMode ? (
+					{isRenaming ? (
 						<>
 							<textarea
 								className="list-name"
 								aria-label="list name"
-								placeholder={emptyListName}
+								placeholder={fallbackName}
 								aria-describedby={inputDescriptionId}
 								onChange={(event) => handleLiveRename(event)}
 								value={listName}
