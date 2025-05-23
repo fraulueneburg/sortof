@@ -1,5 +1,5 @@
 import Link from './Link'
-import { ArrowUpRight as IconExternalLink } from '@phosphor-icons/react'
+import { ArrowUpRightIcon as IconExternalLink } from '@phosphor-icons/react'
 
 export default function Footer() {
 	return (

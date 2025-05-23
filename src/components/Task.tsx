@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core'
 import { TaskData } from '../types'
-import { X as IconDelete } from '@phosphor-icons/react'
+import { XIcon as IconDelete } from '@phosphor-icons/react'
 import useListContext from '../hooks/useListContext'
 
 type TaskProps = {

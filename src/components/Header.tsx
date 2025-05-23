@@ -3,8 +3,8 @@ import { nanoid } from 'nanoid'
 
 import Link from './Link'
 import Button from './Button'
-import { Hand as IconHand } from '@phosphor-icons/react'
-import { ArrowsClockwise as IconStartover } from '@phosphor-icons/react'
+import { HandIcon as IconHand } from '@phosphor-icons/react'
+import { ArrowsClockwiseIcon as IconStartover } from '@phosphor-icons/react'
 
 export default function Header() {
 	const { step, setStep, setListsArr, setAllTasksArr } = useListContext()

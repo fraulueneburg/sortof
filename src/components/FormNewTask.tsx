@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
-import { ArrowUDownLeft as IconSubmit } from '@phosphor-icons/react'
+import { ArrowUDownLeftIcon as IconSubmit } from '@phosphor-icons/react'
 import { TaskData } from '../types'
 import useListContext from '../hooks/useListContext'
 

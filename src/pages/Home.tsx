@@ -10,7 +10,7 @@ import Button from '../components/Button'
 import FormNewTask from '../components/FormNewTask'
 import List from '../components/List'
 import Task from '../components/Task'
-import { ArrowLeft as IconPrev, ArrowRight as IconNext, Plus as IconAdd } from '@phosphor-icons/react'
+import { ArrowLeftIcon as IconPrev, ArrowRightIcon as IconNext, PlusIcon as IconAdd } from '@phosphor-icons/react'
 
 export default function Home() {
 	const { allTasksArr, setAllTasksArr, listsArr, setListsArr, step, setStep, minStep, maxStep, defaultListId } =

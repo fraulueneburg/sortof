@@ -1,4 +1,4 @@
-import { X as IconClose } from '@phosphor-icons/react'
+import { XIcon as IconClose } from '@phosphor-icons/react'
 
 export default function About() {
 	return (
