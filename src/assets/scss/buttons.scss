@@ -26,6 +26,14 @@ button {
 	&.unstyled {
 		border: none;
 	}
+
+	&:disabled,
+	&:disabled:hover {
+		background-color: inherit;
+		border-color: var(--border-color-disabled);
+		color: var(--border-color-disabled);
+		cursor: default;
+	}
 }
 
 .btn-icon-only {
@@ -41,4 +49,9 @@ button {
 		background-color: transparent;
 		color: currentColor;
 	}
+}
+
+.btn-new-list {
+	position: absolute;
+	z-index: 20;
 }

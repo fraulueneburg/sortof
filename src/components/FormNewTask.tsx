@@ -14,12 +14,12 @@ export default function FormNewTask() {
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 
-		const trimmedName = newItemTitle.trim().length
+		const trimmedName = newItemTitle.trim()
 
-		if (trimmedName > 0) {
+		if (trimmedName !== '') {
 			const newItem: TaskData = {
 				_id: nanoid(),
-				title: newItemTitle,
+				title: trimmedName,
 				checked: false,
 				list: defaultListId,
 			}
@@ -52,8 +52,8 @@ export default function FormNewTask() {
 				/>
 				{maxTasksReached && (
 					<p className="error-message" id="task-limit-message" role="alert" aria-live="assertive">
-						You have created the maximum number of tasks possible ({maxTasksNum} tasks). In order to create new tasks, you
-						need to delete some tasks off your lists. Maybe this is a good time to take a break and get to work?
+						You have created the maximum number of tasks possible ({maxTasksNum}). To create new ones, you need to delete
+						some from your lists. Maybe this is a good time to switch from creating tasks to finishing them?
 					</p>
 				)}
 				<div className="append">

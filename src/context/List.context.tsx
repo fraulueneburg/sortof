@@ -8,10 +8,6 @@ interface ListContextType {
 	setListsArr: React.Dispatch<React.SetStateAction<ListData[]>>
 	colorMode: string
 	setColorMode: React.Dispatch<React.SetStateAction<string>>
-	step: number | null
-	setStep: React.Dispatch<React.SetStateAction<number | null>>
-	minStep: number
-	maxStep: number
 	defaultListId: string
 }
 
@@ -21,9 +17,6 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_00'
 	const [allTasksArr, setAllTasksArr] = useState<TaskData[]>([])
 	const [listsArr, setListsArr] = useState<ListData[]>([])
-	const [step, setStep] = useState<number | null>(null)
-	const minStep = 1
-	const maxStep = 3
 
 	const preferredColorMode =
 		localStorage.getItem('colorMode') ||
@@ -36,13 +29,11 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const savedTodos = sessionStorage.getItem('todos')
 		const savedLists = sessionStorage.getItem('lists')
-		const savedStep = sessionStorage.getItem('step')
 
 		if (savedTodos) setAllTasksArr(JSON.parse(savedTodos))
 		if (savedLists) {
 			setListsArr(JSON.parse(savedLists))
 		}
-		setStep(savedStep !== null ? Number(savedStep) : 1)
 	}, [])
 
 	useEffect(() => {
@@ -61,12 +52,6 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 		}
 	}, [listsArr])
 
-	useEffect(() => {
-		if (step !== null) {
-			sessionStorage.setItem('step', String(step))
-		}
-	}, [step])
-
 	return (
 		<ListContext.Provider
 			value={{
@@ -76,10 +61,6 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 				setListsArr,
 				colorMode,
 				setColorMode,
-				step,
-				setStep,
-				minStep,
-				maxStep,
 				defaultListId,
 			}}>
 			{children}

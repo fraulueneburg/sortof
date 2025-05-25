@@ -8,17 +8,15 @@ import Task from './Task'
 import Button from './Button'
 import Submenu from './Submenu'
 import DropdownListColor from './DropdownListColor'
-import { DotsThreeIcon as IconSubmenu } from '@phosphor-icons/react'
 import { nanoid } from 'nanoid'
 
 type ListProps = {
 	data: ListData
 	tasks: TaskData[]
-	isNew?: boolean
 }
 
-export default function List({ data, tasks, isNew }: ListProps) {
-	const { _id, title, color } = data
+export default function List({ data, tasks }: ListProps) {
+	const { _id, title, color, isNew } = data
 	const { setListsArr, setAllTasksArr, defaultListId } = useListContext()
 
 	const [isRenaming, setRenameMode] = useState(isNew || false)
@@ -50,8 +48,8 @@ export default function List({ data, tasks, isNew }: ListProps) {
 		const input = inputRef.current
 		if (!input) return
 
-		const trimmed = input.value.trim()
-		const finalName = trimmed === '' ? fallbackName : trimmed
+		const trimmedName = input.value.trim()
+		const finalName = trimmedName === '' ? fallbackName : trimmedName
 
 		setListName(finalName)
 		debouncedUpdate(finalName)
@@ -125,7 +123,7 @@ export default function List({ data, tasks, isNew }: ListProps) {
 					<aside>
 						<>
 							<DropdownListColor selected={listColor} onColorChange={handleColorChange} />
-							<Submenu title={'list actions'} hideTitle={true} icon={<IconSubmenu />}>
+							<Submenu title={'list actions'} hideTitle={true}>
 								<ul>
 									<li>
 										<Button title="rename" ariaLabel="rename list" onClick={() => setRenameMode(true)} size="sm" />
