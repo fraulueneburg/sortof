@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { DndContext, DragEndEvent, useSensor, useSensors, MouseSensor, TouchSensor } from '@dnd-kit/core'
 import useListContext from '../hooks/useListContext'
 
-import { TaskData } from '../types'
+import { TaskData, ToDoData } from '../types'
 
 import FormNewTask from '../components/FormNewTask'
 import List from '../components/List'
@@ -10,6 +10,12 @@ import FormNewList from '../components/FormNewList'
 
 export default function Home() {
 	const { allTasksArr, setAllTasksArr, listsArr, setListsArr } = useListContext()
+
+	const [toDoData, setToDoData] = useState<ToDoData>({
+		lists: {},
+		tasksByList: {},
+		tasks: {},
+	})
 
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event
