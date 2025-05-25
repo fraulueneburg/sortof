@@ -3,26 +3,17 @@ import { DndContext, DragEndEvent, useSensor, useSensors, MouseSensor, TouchSens
 import { nanoid } from 'nanoid'
 import useListContext from '../hooks/useListContext'
 
-import { TaskData } from '../types'
-import { ListData } from '../types'
+import { ListData, TaskData } from '../types'
 
-import Button from '../components/Button'
 import FormNewTask from '../components/FormNewTask'
 import List from '../components/List'
-import Task from '../components/Task'
-import { ArrowLeftIcon as IconPrev, ArrowRightIcon as IconNext, PlusIcon as IconAdd } from '@phosphor-icons/react'
+import Button from '../components/Button'
+import { PlusIcon as IconAdd } from '@phosphor-icons/react'
 
 export default function Home() {
-	const { allTasksArr, setAllTasksArr, listsArr, setListsArr, step, setStep, minStep, maxStep, defaultListId } =
-		useListContext()
+	const { allTasksArr, setAllTasksArr, listsArr, setListsArr } = useListContext()
 
 	const [newListId, setNewListId] = useState<string | null>(null)
-
-	const handleNextStep = (dir: 'next' | 'prev') => {
-		if (!['next', 'prev'].includes(dir)) return
-		const diff = dir === 'next' ? 1 : -1
-		setStep((prev) => (prev !== null ? prev + diff : Math.abs(diff)))
-	}
 
 	const handleCreateNewList = () => {
 		const newId = nanoid()
@@ -68,72 +59,30 @@ export default function Home() {
 
 	return (
 		<>
-			<h1>
-				{step === 1 ? 'What do you need to do today?' : step === 2 ? 'Let’s create some lists' : 'Alright, let’s hustle'}
-			</h1>
-			{(step === 1 || step === 2) && <FormNewTask />}
-
-			{step !== minStep && (
-				<Button
-					onClick={() => handleNextStep('prev')}
-					title="previous step"
-					hideTitle={true}
-					iconBefore={<IconPrev />}
-					size="lg"
-					className="btn-icon-only btn-prev"
-				/>
-			)}
-			{step !== null && step < maxStep && (
-				<Button
-					onClick={() => handleNextStep('next')}
-					title="next step"
-					hideTitle={true}
-					iconBefore={<IconNext />}
-					size="lg"
-					className="btn-icon-only btn-next"
-				/>
-			)}
-
-			{step === 1 && (
-				<>
-					{allTasksArr ? (
-						<ul className="task-list">
-							{allTasksArr
-								.filter((elem) => elem.list === defaultListId)
-								.map((elem) => (
-									<Task key={elem._id} data={elem} />
-								))}
-						</ul>
-					) : null}
-				</>
-			)}
+			<h1>What do you need to do today?</h1>
 
 			<DndContext onDragEnd={handleDragEnd}>
 				<>
-					{step === 2 && (
-						<Button
-							className="btn-icon-only"
-							title="create new list"
-							hideTitle={true}
-							iconBefore={<IconAdd />}
-							onClick={handleCreateNewList}
-							size="lg"
-						/>
-					)}
-					{(step === 2 || step === 3) && (
-						<div className="list-container">
-							{listsArr.map((col) => {
-								return (
-									<List
-										key={col._id}
-										data={col}
-										isNew={col._id === newListId}
-										tasks={allTasksArr.filter((task) => task.list === col._id)}
-									/>
-								)
-							})}
-						</div>
-					)}
+					<Button
+						className="btn-icon-only"
+						title="create new list"
+						hideTitle={true}
+						iconBefore={<IconAdd />}
+						onClick={handleCreateNewList}
+						size="lg"
+					/>
+					<div className="list-container">
+						{listsArr.map((col) => {
+							return (
+								<List
+									key={col._id}
+									data={col}
+									isNew={col._id === newListId}
+									tasks={allTasksArr.filter((task) => task.list === col._id)}
+								/>
+							)
+						})}
+					</div>
 				</>
 			</DndContext>
 		</>
