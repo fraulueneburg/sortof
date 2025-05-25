@@ -14,7 +14,6 @@ export default function FormNewList() {
 			_id: newId,
 			title: '',
 			color: 'purple',
-			isNew: true,
 		}
 		setListsArr([emptyList, ...listsArr])
 	}

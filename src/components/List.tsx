@@ -16,10 +16,10 @@ type ListProps = {
 }
 
 export default function List({ data, tasks }: ListProps) {
-	const { _id, title, color, isNew } = data
+	const { _id, title, color } = data
 	const { setListsArr, setAllTasksArr, defaultListId } = useListContext()
 
-	const [isRenaming, setRenameMode] = useState(isNew || false)
+	const [isRenaming, setRenameMode] = useState(true)
 	const [listName, setListName] = useState(title)
 	const [listColor, setListColor] = useState(color)
 
