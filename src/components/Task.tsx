@@ -12,18 +12,38 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const { setAllTasksArr, defaultListId } = useListContext()
+	const { setToDoData, defaultListId, taskCount, setTaskCount } = useListContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})
 
 	const handleToggleCheck = () => {
-		const updatedTask = { ...data, checked: !checked }
-		setAllTasksArr((prevTasks) => prevTasks.map((task) => (task._id === _id ? updatedTask : task)))
+		setToDoData((prev) => {
+			return {
+				...prev,
+				tasks: {
+					...prev.tasks,
+					[_id]: {
+						...data,
+						checked: !checked,
+					},
+				},
+			}
+		})
 	}
 
 	const handleDelete = () => {
-		setAllTasksArr((prevTasks) => prevTasks.filter((task) => task._id !== _id))
+		setToDoData((prev) => {
+			return {
+				...prev,
+				tasks: Object.fromEntries(Object.entries(prev.tasks).filter(([taskId]) => taskId !== _id)),
+				tasksByList: {
+					...prev.tasksByList,
+					[list]: prev.tasksByList[list]?.filter((taskId) => taskId !== _id) || [],
+				},
+			}
+		})
+		setTaskCount((prev) => prev - 1)
 	}
 
 	const style = {

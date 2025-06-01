@@ -17,7 +17,7 @@ type ListProps = {
 
 export default function List({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
-	const { setListsArr, setAllTasksArr, defaultListId } = useListContext()
+	const { setToDoData, setTaskCount, defaultListId } = useListContext()
 
 	const isNewList = title === ''
 	const [isRenaming, setRenameMode] = useState(isNewList)
@@ -34,9 +34,18 @@ export default function List({ data, tasks }: ListProps) {
 
 	const debouncedUpdate = useCallback(
 		debounce((updatedName) => {
-			setListsArr((prevArr) => prevArr.map((list) => (list._id === _id ? { ...list, title: updatedName } : list)))
+			setToDoData((prev) => ({
+				...prev,
+				lists: {
+					...prev.lists,
+					[_id]: {
+						...prev.lists[_id],
+						title: updatedName,
+					},
+				},
+			}))
 		}, 250),
-		[]
+		[_id, setToDoData]
 	)
 
 	const handleLiveRename = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -60,12 +69,37 @@ export default function List({ data, tasks }: ListProps) {
 
 	const handleColorChange = (newColor: string) => {
 		setListColor(newColor)
-		setListsArr((prevArr) => prevArr.map((list) => (list._id === _id ? { ...list, color: newColor } : list)))
+		setToDoData((prev) => ({
+			...prev,
+			lists: {
+				...prev.lists,
+				[_id]: {
+					...prev.lists[_id],
+					color: newColor,
+				},
+			},
+		}))
 	}
 
 	const handleDeleteList = () => {
-		setListsArr((prevArr) => prevArr.filter((list) => list._id !== _id))
-		setAllTasksArr((prevTasks) => prevTasks.filter((task) => task.list !== _id))
+		setToDoData((prev) => {
+			const taskIdsToDelete = prev.tasksByList[_id] || []
+			const deleteCount = taskIdsToDelete.length
+
+			const updatedTasks = Object.fromEntries(
+				Object.entries(prev.tasks).filter(([taskId]) => !taskIdsToDelete.includes(taskId))
+			)
+			const updatedLists = Object.fromEntries(Object.entries(prev.lists).filter(([listId]) => listId !== _id))
+			const updatedTasksByList = Object.fromEntries(Object.entries(prev.tasksByList).filter(([listId]) => listId !== _id))
+
+			setTaskCount((prev) => prev - deleteCount)
+
+			return {
+				lists: updatedLists,
+				tasks: updatedTasks,
+				tasksByList: updatedTasksByList,
+			}
+		})
 	}
 
 	useEffect(() => {

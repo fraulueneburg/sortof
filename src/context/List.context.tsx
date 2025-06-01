@@ -1,22 +1,38 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { TaskData, ListData } from '../types'
+import { ToDoData } from '../types'
 
 interface ListContextType {
-	allTasksArr: TaskData[]
-	setAllTasksArr: React.Dispatch<React.SetStateAction<TaskData[]>>
-	listsArr: ListData[]
-	setListsArr: React.Dispatch<React.SetStateAction<ListData[]>>
+	toDoData: ToDoData
+	setToDoData: React.Dispatch<React.SetStateAction<ToDoData>>
+	defaultListId: string
+	taskCount: number
+	setTaskCount: React.Dispatch<React.SetStateAction<number>>
 	colorMode: string
 	setColorMode: React.Dispatch<React.SetStateAction<string>>
-	defaultListId: string
 }
 
 const ListContext = createContext<ListContextType | undefined>(undefined)
 
+const getInitialToDoData = (defaultListId: string): ToDoData => {
+	try {
+		const stored = sessionStorage.getItem('to-do-data')
+		if (stored) {
+			return JSON.parse(stored)
+		}
+	} catch (error) {
+		console.warn('Failed to parse stored todo data:', error)
+	}
+	return {
+		lists: { [defaultListId]: { _id: defaultListId, title: 'DEFAULT LIST (UNSORTED TASKS)', color: 'purple' } },
+		tasksByList: {},
+		tasks: {},
+	}
+}
+
 const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_00'
-	const [allTasksArr, setAllTasksArr] = useState<TaskData[]>([])
-	const [listsArr, setListsArr] = useState<ListData[]>([])
+	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
+	const [taskCount, setTaskCount] = useState(Object.keys(toDoData.tasks).length || 0)
 
 	const preferredColorMode =
 		localStorage.getItem('colorMode') ||
@@ -27,41 +43,23 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	document.documentElement.classList.add(preferredColorMode)
 
 	useEffect(() => {
-		const savedTodos = sessionStorage.getItem('todos')
-		const savedLists = sessionStorage.getItem('lists')
-
-		if (savedTodos) setAllTasksArr(JSON.parse(savedTodos))
-		if (savedLists) {
-			setListsArr(JSON.parse(savedLists))
+		try {
+			sessionStorage.setItem('to-do-data', JSON.stringify(toDoData))
+		} catch (error) {
+			console.warn('Failed to save todo data to session storage:', error)
 		}
-	}, [])
-
-	useEffect(() => {
-		if (allTasksArr.length > 0) {
-			sessionStorage.setItem('todos', JSON.stringify(allTasksArr))
-		} else {
-			sessionStorage.removeItem('todos')
-		}
-	}, [allTasksArr])
-
-	useEffect(() => {
-		if (listsArr.length > 0) {
-			sessionStorage.setItem('lists', JSON.stringify(listsArr))
-		} else {
-			sessionStorage.removeItem('lists')
-		}
-	}, [listsArr])
+	}, [toDoData])
 
 	return (
 		<ListContext.Provider
 			value={{
-				allTasksArr,
-				setAllTasksArr,
-				listsArr,
-				setListsArr,
+				toDoData,
+				setToDoData,
+				defaultListId,
+				taskCount,
+				setTaskCount,
 				colorMode,
 				setColorMode,
-				defaultListId,
 			}}>
 			{children}
 		</ListContext.Provider>
