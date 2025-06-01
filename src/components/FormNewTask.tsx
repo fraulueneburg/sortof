@@ -5,11 +5,11 @@ import { TaskData } from '../types'
 import useListContext from '../hooks/useListContext'
 
 export default function FormNewTask() {
-	const { allTasksArr, setAllTasksArr, defaultListId, listsArr, setListsArr } = useListContext()
+	const { setToDoData, taskCount, setTaskCount, defaultListId } = useListContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
 
 	const maxTasksNum = 150
-	const maxTasksReached = allTasksArr.length >= maxTasksNum
+	const maxTasksReached = taskCount >= maxTasksNum
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -17,22 +17,34 @@ export default function FormNewTask() {
 		const trimmedName = newItemTitle.trim()
 
 		if (trimmedName !== '') {
-			const newItem: TaskData = {
-				_id: nanoid(),
+			const newTaskId = nanoid()
+
+			const newTask: TaskData = {
+				_id: newTaskId,
 				title: trimmedName,
 				checked: false,
 				list: defaultListId,
 			}
-			setAllTasksArr((prev) => [...prev, newItem])
+
+			setToDoData((prev) => {
+				return {
+					...prev,
+					tasks: {
+						...prev.tasks,
+						[newTaskId]: newTask,
+					},
+					tasksByList: {
+						...prev.tasksByList,
+						[defaultListId]: [...(prev.tasksByList[defaultListId] || []), newTaskId],
+					},
+				}
+			})
+			setTaskCount((prev) => prev + 1)
 		}
 		setNewItemTitle('')
-
-		if (listsArr.length === 0) {
-			setListsArr([{ _id: defaultListId, title: 'NO LIST', color: 'purple' }])
-		}
 	}
 
-	const handleChangeNewItemTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeNewTaskTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault()
 		setNewItemTitle(event.target.value)
 	}
@@ -43,7 +55,7 @@ export default function FormNewTask() {
 				<input
 					type="text"
 					aria-label="new task name"
-					onChange={handleChangeNewItemTitle}
+					onChange={handleChangeNewTaskTitle}
 					value={newItemTitle}
 					disabled={maxTasksReached}
 					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}
