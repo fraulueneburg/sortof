@@ -6,7 +6,7 @@ import Button from './Button'
 import { PlusIcon as IconAdd } from '@phosphor-icons/react'
 
 export default function FormNewList() {
-	const { toDoData, setToDoData } = useListContext()
+	const { setToDoData } = useListContext()
 
 	const handleCreateNewList = () => {
 		const newId = nanoid()
@@ -36,7 +36,6 @@ export default function FormNewList() {
 			hideTitle={true}
 			iconBefore={<IconAdd />}
 			onClick={handleCreateNewList}
-			disabled={Object.keys(toDoData.tasks).length < 1}
 			size="lg"
 		/>
 	)
