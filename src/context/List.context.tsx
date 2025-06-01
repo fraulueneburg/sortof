@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { ToDoData } from '../types'
+import { getInitialToDoData } from '../utils/getInitialToDoData'
 
 interface ListContextType {
 	toDoData: ToDoData
@@ -12,22 +13,6 @@ interface ListContextType {
 }
 
 const ListContext = createContext<ListContextType | undefined>(undefined)
-
-const getInitialToDoData = (defaultListId: string): ToDoData => {
-	try {
-		const stored = sessionStorage.getItem('to-do-data')
-		if (stored) {
-			return JSON.parse(stored)
-		}
-	} catch (error) {
-		console.warn('Failed to parse stored todo data:', error)
-	}
-	return {
-		lists: { [defaultListId]: { _id: defaultListId, title: 'DEFAULT LIST (UNSORTED TASKS)', color: 'purple' } },
-		tasksByList: {},
-		tasks: {},
-	}
-}
 
 const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_00'

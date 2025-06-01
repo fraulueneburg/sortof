@@ -12,7 +12,7 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const { setToDoData, defaultListId, taskCount, setTaskCount } = useListContext()
+	const { setToDoData, defaultListId, setTaskCount } = useListContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})
