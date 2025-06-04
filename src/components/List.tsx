@@ -13,9 +13,11 @@ import { nanoid } from 'nanoid'
 type ListProps = {
 	data: ListData
 	tasks: TaskData[]
+	positions?: Record<string, { x: number; y: number }>
+	onPositionUpdate?: (taskId: string, position: { x: number; y: number }) => void
 }
 
-export default function List({ data, tasks }: ListProps) {
+export default function List({ data, tasks, positions = {}, onPositionUpdate }: ListProps) {
 	const { _id, title, color } = data
 	const { setToDoData, setTaskCount, defaultListId } = useListContext()
 
@@ -27,6 +29,51 @@ export default function List({ data, tasks }: ListProps) {
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = nanoid()
 	const fallbackName = 'Unnamed list'
+
+	const [taskPositions, setTaskPositions] = useState<Record<string, { x: number; y: number }>>({})
+	const isFirstList = _id === defaultListId
+	const containerRef = useRef<HTMLDivElement>(null)
+
+	// Generate random position only for new tasks
+	const generateRandomPosition = useCallback(() => {
+		const container = containerRef.current
+		if (!container) return { x: 0, y: 0 }
+
+		const rect = container.getBoundingClientRect()
+		return {
+			// x: Math.random() * Math.max(0, rect.width - 200), // Account for task width
+			// y: Math.random() * Math.max(0, rect.height - 60), // Account for task height
+			x: Math.random() * 80, // 0-80% of container width
+			y: Math.random() * 80, // 0-80% of container height
+		}
+	}, [])
+
+	// Only generate positions for new tasks, preserve existing ones
+	useEffect(() => {
+		if (isFirstList && tasks.length > 0) {
+			setTaskPositions((prev) => {
+				const newPositions = { ...prev }
+				let hasNewPositions = false
+
+				tasks.forEach((task) => {
+					if (!newPositions[task._id]) {
+						newPositions[task._id] = generateRandomPosition()
+						hasNewPositions = true
+					}
+				})
+
+				// Clean up positions for deleted tasks
+				Object.keys(newPositions).forEach((taskId) => {
+					if (!tasks.find((task) => task._id === taskId)) {
+						delete newPositions[taskId]
+						hasNewPositions = true
+					}
+				})
+
+				return hasNewPositions ? newPositions : prev
+			})
+		}
+	}, [tasks, isFirstList, generateRandomPosition])
 
 	const { setNodeRef } = useDroppable({
 		id: _id,
@@ -132,7 +179,7 @@ export default function List({ data, tasks }: ListProps) {
 	}, [isRenaming])
 
 	return (
-		<article className={`list ${_id}`} ref={setNodeRef}>
+		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
 			{_id == defaultListId ? null : (
 				<header>
 					{isRenaming ? (
@@ -172,13 +219,55 @@ export default function List({ data, tasks }: ListProps) {
 					</aside>
 				</header>
 			)}
-			{tasks?.length > 0 && (
+			{/* {tasks?.length > 0 && (
 				<ul>
 					{tasks.map((task) => {
 						return <Task key={task._id} data={task} color={listColor} />
 					})}
 				</ul>
-			)}
+			)} */}
+
+			{tasks?.length > 0 &&
+				(isFirstList ? (
+					<div
+						ref={containerRef}
+						style={{
+							position: 'relative',
+							height: '100%',
+							width: '100%',
+						}}>
+						{tasks.map((task) => {
+							let position = positions[task._id]
+
+							// Only generate random position if task doesn't have one AND it's a new task
+							if (!position && onPositionUpdate) {
+								position = {
+									x: Math.random() * 80,
+									y: Math.random() * 80,
+								}
+								onPositionUpdate(task._id, position)
+							}
+
+							return (
+								<ul
+									key={task._id}
+									style={{
+										position: 'absolute',
+										left: `${position.x}%`,
+										top: `${position.y}%`,
+									}}>
+									<Task data={task} color={listColor} />
+								</ul>
+							)
+						})}
+					</div>
+				) : (
+					<ul>
+						{tasks.map((task) => {
+							return <Task key={task._id} data={task} color={listColor} />
+						})}
+					</ul>
+				))}
 		</article>
 	)
 }

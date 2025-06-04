@@ -54,7 +54,10 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 	}
 
 	return (
-		<li className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`} style={style}>
+		<li
+			className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`}
+			style={style}
+			data-task-id={_id}>
 			{list !== defaultListId && (
 				<>
 					<input type="checkbox" aria-label={title} checked={checked} onChange={handleToggleCheck} />

@@ -52,6 +52,10 @@ ul[role='listbox'] {
 			flex-wrap: wrap;
 			height: 100%;
 		}
+
+		.task-item {
+			box-shadow: var(--box-shadow);
+		}
 	}
 }
 
