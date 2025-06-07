@@ -28,7 +28,7 @@ header#page-header {
 
 		&:after {
 			top: auto;
-			bottom: calc((100% - var(--spacing-y)) / 4 - var(--border-width-base) / 2);
+			bottom: calc((50% - var(--border-width-base) / 2));
 		}
 	}
 
