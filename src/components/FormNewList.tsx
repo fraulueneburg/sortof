@@ -19,8 +19,8 @@ export default function FormNewList() {
 		setToDoData((prev) => ({
 			...prev,
 			lists: {
-				[newId]: emptyList,
 				...prev.lists,
+				[newId]: emptyList,
 			},
 			tasksByList: {
 				...prev.tasksByList,

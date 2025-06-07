@@ -27,23 +27,47 @@ ul[role='listbox'] {
 	.list_00 {
 		background-color: rgba(0, 0, 0, 0.1);
 		border: none;
-		bottom: 2rem;
+		position: static;
 		padding: 0;
-		position: absolute;
-		right: 0;
-		top: 2rem;
+
+		@media (min-width: 768px) {
+			grid-column: span 2;
+		}
+
+		@media (max-width: 1023px) {
+			> div {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				height: auto !important;
+				width: 100%;
+			}
+			> div > div {
+				position: static !important;
+				transform: none !important;
+			}
+		}
+
+		@media (min-width: 1024px) {
+			bottom: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: auto;
+
+			&:only-child {
+				left: 0;
+			}
+
+			&:not(:only-child) {
+				left: 0;
+				bottom: 50%;
+			}
+		}
 
 		@media (prefers-reduced-motion: no-preference) {
 			transition: all 0.3s ease;
-		}
-
-		&:only-child {
-			left: 0;
-		}
-
-		&:not(:only-child) {
-			left: 50%;
-			bottom: 50%;
 		}
 
 		ul {
@@ -66,8 +90,9 @@ ul[role='listbox'] {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+	height: fit-content;
 	min-width: 0;
-	padding: 1rem;
+	padding: 0.75rem 1rem;
 	position: relative;
 
 	&:has(*:focus) {
@@ -75,7 +100,7 @@ ul[role='listbox'] {
 	}
 
 	header {
-		--padding-y: 0.5rem;
+		--padding-y: 0.25rem;
 
 		align-items: flex-start;
 		display: flex;
@@ -90,9 +115,15 @@ ul[role='listbox'] {
 		}
 
 		> .list-name {
+			border-bottom: calc(var(--outline-width) + 1px) var(--outline-style) transparent;
+			line-height: 1.4;
 			margin-top: calc(-1 * var(--padding-y));
 			padding-top: var(--padding-y);
-			padding-bottom: var(--padding-y);
+			padding-bottom: calc(var(--padding-y) / 2);
+
+			&:focus-visible {
+				border-bottom-color: var(--outline-color);
+			}
 		}
 
 		> aside {
@@ -117,18 +148,18 @@ ul[role='listbox'] {
 }
 
 textarea.list-name {
-	--padding-x: 0.5rem;
+	--padding-x: 0.25rem;
 
 	background-color: hsl(242.91deg 40% 87.65%);
-	border: none;
+	border-radius: 0;
 	font-family: var(--font-family-headings);
 	font-size: var(--font-size-h2);
 	height: 1lh;
 	margin-left: calc(-1 * var(--padding-x));
-	padding-left: var(--padding-x);
+	padding-inline: var(--padding-x);
 	resize: none;
 	white-space: nowrap;
-	width: 100%;
+	width: auto;
 
 	@supports (field-sizing: content) {
 		field-sizing: content;

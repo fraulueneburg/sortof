@@ -6,7 +6,7 @@
 	}
 
 	&.size-lg {
-		height: 3.75rem;
+		height: var(--pill-size-lg);
 
 		svg {
 			height: 2rem;

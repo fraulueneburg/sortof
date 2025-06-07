@@ -21,6 +21,7 @@
 	cursor: grab;
 	display: flex;
 	gap: var(--spacing);
+	max-width: 100%;
 	min-height: var(--min-height);
 	position: relative;
 	width: fit-content;

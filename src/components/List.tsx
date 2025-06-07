@@ -40,11 +40,12 @@ export default function List({ data, tasks, positions = {}, onPositionUpdate }: 
 		if (!container) return { x: 0, y: 0 }
 
 		const rect = container.getBoundingClientRect()
+
 		return {
 			// x: Math.random() * Math.max(0, rect.width - 200), // Account for task width
 			// y: Math.random() * Math.max(0, rect.height - 60), // Account for task height
-			x: Math.random() * 80, // 0-80% of container width
-			y: Math.random() * 80, // 0-80% of container height
+			x: Math.random() * 80,
+			y: Math.random() * 80,
 		}
 	}, [])
 
@@ -180,7 +181,7 @@ export default function List({ data, tasks, positions = {}, onPositionUpdate }: 
 
 	return (
 		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
-			{_id == defaultListId ? null : (
+			{isFirstList ? null : (
 				<header>
 					{isRenaming ? (
 						<>
@@ -192,6 +193,8 @@ export default function List({ data, tasks, positions = {}, onPositionUpdate }: 
 								onChange={(event) => handleLiveRename(event)}
 								value={listName}
 								ref={inputRef}
+								maxLength={90}
+								spellCheck={false}
 							/>
 							<p className="sr-only" id={inputDescriptionId}>
 								Rename your list here. The field auto-saves.
@@ -219,13 +222,6 @@ export default function List({ data, tasks, positions = {}, onPositionUpdate }: 
 					</aside>
 				</header>
 			)}
-			{/* {tasks?.length > 0 && (
-				<ul>
-					{tasks.map((task) => {
-						return <Task key={task._id} data={task} color={listColor} />
-					})}
-				</ul>
-			)} */}
 
 			{tasks?.length > 0 &&
 				(isFirstList ? (
@@ -236,8 +232,9 @@ export default function List({ data, tasks, positions = {}, onPositionUpdate }: 
 							height: '100%',
 							width: '100%',
 						}}>
-						{tasks.map((task) => {
+						{tasks.map((task, index) => {
 							let position = positions[task._id]
+							const hasOddIndex = index % 2 !== 0
 
 							// Only generate random position if task doesn't have one AND it's a new task
 							if (!position && onPositionUpdate) {
@@ -249,15 +246,15 @@ export default function List({ data, tasks, positions = {}, onPositionUpdate }: 
 							}
 
 							return (
-								<ul
-									key={task._id}
+								<div
 									style={{
 										position: 'absolute',
 										left: `${position.x}%`,
 										top: `${position.y}%`,
+										transform: hasOddIndex ? 'rotate(5deg)' : 'rotate(-5deg)',
 									}}>
-									<Task data={task} color={listColor} />
-								</ul>
+									<Task data={task} color={listColor} key={task._id} />
+								</div>
 							)
 						})}
 					</div>

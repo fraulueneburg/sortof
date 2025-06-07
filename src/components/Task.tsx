@@ -6,6 +6,7 @@ import useListContext from '../hooks/useListContext'
 type TaskProps = {
 	data: TaskData
 	color?: string
+	style?: React.CSSProperties
 }
 
 export default function Task({ data, color = 'purple' }: TaskProps) {

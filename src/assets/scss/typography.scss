@@ -3,11 +3,18 @@ h1 {
 	font-family: var(--font-family-headings);
 	font-size: var(--font-size-xxl);
 	line-height: 1.2;
-	margin: 0 0 3rem;
-	max-width: 11ch;
+	margin: 0 0 1.5rem;
 	text-transform: uppercase;
 	text-decoration: underline;
 	text-decoration-thickness: 0.15em;
+
+	@media (min-width: 1024px) {
+		margin-bottom: 3rem;
+	}
+
+	@media (min-width: 1280px) {
+		max-width: 11ch;
+	}
 }
 
 h2 {

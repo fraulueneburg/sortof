@@ -52,6 +52,8 @@ button {
 }
 
 .btn-new-list {
-	position: absolute;
+	top: calc(100dvh - var(--padding-page-y) - var(--pill-size-lg));
+	position: fixed;
+	right: var(--padding-page-x);
 	z-index: 20;
 }

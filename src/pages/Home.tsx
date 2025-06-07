@@ -110,7 +110,11 @@ export default function Home() {
 
 	return (
 		<>
-			<h1>What do you need to do today?</h1>
+			<h1>
+				What do you <br />
+				need to do <wbr />
+				today?
+			</h1>
 			<FormNewTask />
 
 			<DndContext onDragEnd={handleDragEnd}>

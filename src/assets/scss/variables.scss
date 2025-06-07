@@ -25,7 +25,7 @@
 	--color-text: var(--color-dark);
 	--color-text-inverted: var(--color-white);
 
-	--border-width-base: 2px;
+	--border-width-base: 2.5px;
 	--border-style-base: solid;
 	--border-color-base: var(--color-dark);
 	--border-color-disabled: rgba(0, 0, 0, 0.4);
@@ -37,7 +37,7 @@
 	--font-family-text: 'Atkinson Hyperlegible Next', sans-serif;
 	--font-family-menus: 'Atkinson Hyperlegible Mono', sans-serif;
 	--font-size-base: 1.2rem;
-	--font-size-xxl: 3rem;
+	--font-size-xxl: 2.5rem;
 	--outline-color: var(--color-primary);
 	--outline-style: solid;
 	--outline-width: var(--border-width-base);
@@ -50,6 +50,7 @@
 	--font-size-h2: 1.5rem;
 	--padding-page-x: 1.25rem;
 	--padding-page-y: 0.9rem;
+	--pill-size-lg: 4rem;
 
 	--border-radius-pill: 1.5rem;
 
