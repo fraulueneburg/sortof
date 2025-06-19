@@ -3,19 +3,24 @@ import useListContext from '../hooks/useListContext'
 import { DndContext, DragEndEvent, useSensor, useSensors, MouseSensor, TouchSensor, DragStartEvent } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
-import { TaskData, ToDoData } from '../types'
-
 import FormNewTask from '../components/FormNewTask'
 import List from '../components/List'
 import FormNewList from '../components/FormNewList'
 
 export default function Home() {
 	const { toDoData, setToDoData, defaultListId } = useListContext()
-	const [draggedItemRef, setDraggedItemRef] = useState<HTMLElement | null>(null)
+	const [taskMeasurements, setTaskMeasurements] = useState<{ height: number; width: number; top: number; left: number }>({
+		height: 0,
+		width: 0,
+		top: 0,
+		left: 0,
+	})
 
 	function handleDragStart(event: DragStartEvent) {
 		const taskElement = document.querySelector(`[data-task-id="${event.active.id}"]`) as HTMLElement
-		setDraggedItemRef(taskElement)
+		const taskRect = taskElement.getBoundingClientRect()
+
+		setTaskMeasurements({ height: taskRect.height, width: taskRect.width, top: taskRect.top, left: taskRect.left })
 	}
 
 	function handleDragEnd(event: DragEndEvent) {
@@ -28,19 +33,9 @@ export default function Home() {
 
 		if (!currentTask) return
 
-		const taskMeasurements = draggedItemRef
-			? {
-					height: draggedItemRef.getBoundingClientRect().height,
-					width: draggedItemRef.getBoundingClientRect().width,
-					top: draggedItemRef.getBoundingClientRect().top,
-					left: draggedItemRef.getBoundingClientRect().left,
-			  }
-			: null
-		setDraggedItemRef(null)
-
 		const oldListId = currentTask.list
 		const newListId = over.id as string
-		const isSameList = newListId === oldListId
+		const movedWithinSameList = newListId === oldListId
 		const isDefaultList = newListId === defaultListId
 
 		let newPosition = {
@@ -48,7 +43,8 @@ export default function Home() {
 			y: currentTask.position.y,
 		}
 
-		if (isSameList) {
+		if (movedWithinSameList) {
+			// moved within first list => free dragging
 			if (isDefaultList) {
 				const listWidth = over?.rect.width || 0
 				const listHeight = over?.rect.height || 0
@@ -79,9 +75,29 @@ export default function Home() {
 					}
 				})
 			}
-		}
-		if (!isSameList) {
+		} else {
+			// dropped onto first => free positioning
 			if (isDefaultList) {
+				const draggedDistance = { x: delta.x, y: delta.y }
+				const taskStartPos = { x: taskMeasurements?.left || 0, y: taskMeasurements?.top || 0 }
+				const taskEndPos = { x: taskStartPos.x + draggedDistance.x, y: taskStartPos.y + draggedDistance.y }
+
+				const listWidth = over.rect.width
+				const listHeight = over.rect.height
+				const listOffset = { x: over.rect.left, y: over.rect.top }
+
+				const taskEndPosPercent = {
+					x: (taskEndPos.x - listOffset.x) / (listWidth / 100),
+					y: (taskEndPos.y - listOffset.y) / (listHeight / 100),
+				}
+
+				const taskWidthPercent = (taskMeasurements?.width || 0) / (listWidth / 100)
+				const taskHeightPercent = (taskMeasurements?.height || 0) / (listHeight / 100)
+
+				newPosition = {
+					x: Math.max(0, Math.min(taskEndPosPercent.x, 100 - taskWidthPercent)),
+					y: Math.max(0, Math.min(taskEndPosPercent.y, 100 - taskHeightPercent)),
+				}
 			} else {
 				newPosition = {
 					x: 'unset',

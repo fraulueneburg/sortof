@@ -56,13 +56,16 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 	}
 
 	return (
-		<li className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`} style={style}>
+		<li
+			className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`}
+			style={style}
+			data-task-id={_id}>
 			{list !== defaultListId && (
 				<>
 					<input type="checkbox" aria-label={title} checked={checked} onChange={handleToggleCheck} />
 				</>
 			)}
-			<div className="title" ref={setNodeRef} {...listeners} {...attributes} data-task-id={_id}>
+			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
 				{title}
 			</div>
 			<button className="btn-icon-only" type="button" aria-label={'delete "' + title + '"'} onClick={handleDelete}>
