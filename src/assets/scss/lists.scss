@@ -47,10 +47,11 @@ ul[role='listbox'] {
 		}
 
 		ul {
-			align-content: start;
-			flex-direction: row;
-			flex-wrap: wrap;
 			height: 100%;
+
+			li {
+				position: absolute;
+			}
 		}
 	}
 }

@@ -11,6 +11,7 @@ export type TaskData = {
 	title: string
 	checked: boolean
 	list: string
+	position: { x: number; y: number }
 }
 
 export type ListData = {

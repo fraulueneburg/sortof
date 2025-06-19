@@ -19,11 +19,29 @@ export default function FormNewTask() {
 		if (trimmedName !== '') {
 			const newTaskId = nanoid()
 
+			const listElement = document.querySelector(`[data-list-id="${defaultListId}"]`) as HTMLElement
+			const listRect = listElement.getBoundingClientRect()
+			const listMeasurements = {
+				height: listRect.height,
+				width: listRect.width,
+			}
+
+			const estimatedTaskWidth = trimmedName.length * 11 + 60 // 11 = average char width, 60 = rest of UI width
+			const estimatedTaskHeight = 40
+			const taskWidthPercent = estimatedTaskWidth / (listMeasurements.width / 100)
+			const taskHeightPercent = estimatedTaskHeight / (listMeasurements.height / 100)
+
+			const getRandomPercentInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+
 			const newTask: TaskData = {
 				_id: newTaskId,
 				title: trimmedName,
 				checked: false,
 				list: defaultListId,
+				position: {
+					x: getRandomPercentInt(0, 100 - taskWidthPercent),
+					y: getRandomPercentInt(0, 100 - taskHeightPercent),
+				},
 			}
 
 			setToDoData((prev) => {
@@ -44,7 +62,7 @@ export default function FormNewTask() {
 		setNewItemTitle('')
 	}
 
-	const handleChangeNewTaskTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault()
 		setNewItemTitle(event.target.value)
 	}
@@ -55,7 +73,7 @@ export default function FormNewTask() {
 				<input
 					type="text"
 					aria-label="new task name"
-					onChange={handleChangeNewTaskTitle}
+					onChange={handleChangeTitle}
 					value={newItemTitle}
 					disabled={maxTasksReached}
 					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}

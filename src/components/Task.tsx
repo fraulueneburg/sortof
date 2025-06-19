@@ -9,7 +9,7 @@ type TaskProps = {
 }
 
 export default function Task({ data, color = 'purple' }: TaskProps) {
-	const { title, _id, list, checked } = data
+	const { title, _id, list, checked, position } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
 	const { setToDoData, defaultListId, setTaskCount } = useListContext()
@@ -51,6 +51,8 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 			transform: `translate(${transform.x}px, ${transform.y}px)`,
 		}),
 		backgroundColor: `var(--${bgColor})`,
+		left: `${position.x}%`,
+		top: `${position.y}%`,
 	}
 
 	return (
@@ -60,7 +62,7 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 					<input type="checkbox" aria-label={title} checked={checked} onChange={handleToggleCheck} />
 				</>
 			)}
-			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
+			<div className="title" ref={setNodeRef} {...listeners} {...attributes} data-task-id={_id}>
 				{title}
 			</div>
 			<button className="btn-icon-only" type="button" aria-label={'delete "' + title + '"'} onClick={handleDelete}>

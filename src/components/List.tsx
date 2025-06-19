@@ -132,7 +132,7 @@ export default function List({ data, tasks }: ListProps) {
 	}, [isRenaming])
 
 	return (
-		<article className={`list ${_id}`} ref={setNodeRef}>
+		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
 			{_id == defaultListId ? null : (
 				<header>
 					{isRenaming ? (
