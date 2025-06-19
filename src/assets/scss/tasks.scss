@@ -28,6 +28,10 @@
 	&.is-dragging {
 		box-shadow: var(--box-shadow);
 		z-index: 10;
+
+		.title {
+			outline-color: var(--color-text);
+		}
 	}
 
 	input[type='checkbox'] {
