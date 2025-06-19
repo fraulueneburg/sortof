@@ -28,6 +28,11 @@ This is my latest project – a simple React web app that helps you clear your m
 - @dnd-kit
 - @phosphor-icons/react
 
+## Starting the app
+
+use `npm start` to run it locally
+and `npm run start -- --host` if you also want to test it on your local network
+
 ## About Me
 
 I’m Wiebke, a Full Stack Web Developer and UI/UX Designer, currently living in Hamburg, Germany. I love working on web apps that are intuitive to use. Usability is a top priority in my work and I am also strongly advocating for (and keep learning about) web accessibility.

@@ -20,6 +20,7 @@ form {
 		button[type='submit'] {
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
+			height: 100%;
 
 			&:hover,
 			&:focus,
@@ -55,9 +56,8 @@ textarea {
 	}
 }
 
-textarea:focus-visible {
-	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
-	outline-offset: 0;
+textarea {
+	border: none;
 }
 
 .form-new-todo,

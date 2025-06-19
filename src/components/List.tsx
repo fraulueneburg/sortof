@@ -145,6 +145,8 @@ export default function List({ data, tasks }: ListProps) {
 								onChange={(event) => handleLiveRename(event)}
 								value={listName}
 								ref={inputRef}
+								maxLength={90}
+								spellCheck={false}
 							/>
 							<p className="sr-only" id={inputDescriptionId}>
 								Rename your list here. The field auto-saves.

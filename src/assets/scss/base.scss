@@ -1,22 +1,35 @@
+html {
+	min-height: 100dvh;
+	overflow-x: hidden;
+}
+
 body {
 	background-color: var(--color-bg);
 	color: var(--color-text);
 	font-family: var(--font-family-text);
 	font-size: var(--font-size-base);
 	margin: 0;
+	min-height: 100dvh;
+	overflow-x: hidden;
 }
 
 #root {
 	display: flex;
 	flex-direction: column;
-	min-height: calc(100dvh - 2 * 1.875rem);
+	min-height: calc(100dvh - var(--padding-page-y) * 2);
 	padding: var(--padding-page-y) var(--padding-page-x);
 }
 
 main {
 	flex: 1;
-	padding: 1.875rem 0;
+	margin: 0.5rem 0;
 	position: relative;
+}
+
+@media (min-width: 1024px) {
+	main {
+		margin-block: 1.875rem;
+	}
 }
 
 .hidden,
