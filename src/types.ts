@@ -12,6 +12,7 @@ export type TaskData = {
 	checked: boolean
 	list: string
 	position: { x: number | 'unset'; y: number | 'unset' }
+	rotation: '5deg' | '-5deg'
 }
 
 export type ListData = {
