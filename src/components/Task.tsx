@@ -9,7 +9,7 @@ type TaskProps = {
 }
 
 export default function Task({ data, color = 'purple' }: TaskProps) {
-	const { title, _id, list, checked, position } = data
+	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
 	const { setToDoData, defaultListId, setTaskCount } = useListContext()
@@ -47,9 +47,9 @@ export default function Task({ data, color = 'purple' }: TaskProps) {
 	}
 
 	const style = {
-		...(transform && {
-			transform: `translate(${transform.x}px, ${transform.y}px)`,
-		}),
+		transform: `
+			${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
+			${list === defaultListId ? `rotate(${rotation})` : ''}`,
 		backgroundColor: `var(--${bgColor})`,
 		left: `${position.x}%`,
 		top: `${position.y}%`,

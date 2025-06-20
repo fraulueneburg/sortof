@@ -31,7 +31,8 @@ export default function FormNewTask() {
 			const taskWidthPercent = estimatedTaskWidth / (listMeasurements.width / 100)
 			const taskHeightPercent = estimatedTaskHeight / (listMeasurements.height / 100)
 
-			const getRandomPercentInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+			const randomPercent = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+			const randomBool = Math.random() < 0.5
 
 			const newTask: TaskData = {
 				_id: newTaskId,
@@ -39,10 +40,13 @@ export default function FormNewTask() {
 				checked: false,
 				list: defaultListId,
 				position: {
-					x: getRandomPercentInt(0, 100 - taskWidthPercent),
-					y: getRandomPercentInt(0, 100 - taskHeightPercent),
+					x: randomPercent(0, 100 - taskWidthPercent),
+					y: randomPercent(0, 100 - taskHeightPercent),
 				},
+				rotation: randomBool ? '5deg' : '-5deg',
 			}
+
+			console.log(newTask)
 
 			setToDoData((prev) => {
 				return {
