@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useId } from 'react'
+import { colors } from '../constants/colors'
 
 type DropdownListProps = {
 	selected: string
 	onColorChange: (color: string) => void
 }
-type singleColorType = { name: string; value: string }
 
 export default function DropdownListColor({ selected, onColorChange }: DropdownListProps) {
 	const [isExpanded, setIsExpanded] = useState(false)
@@ -14,19 +14,7 @@ export default function DropdownListColor({ selected, onColorChange }: DropdownL
 	const ref = useRef<HTMLDivElement>(null)
 	const uniqueId = useId()
 
-	const colorsArr: singleColorType[] = useMemo(
-		() => [
-			{ name: 'green-dark', value: '#04725D' },
-			{ name: 'green', value: '#15bca6' },
-			{ name: 'blue-light', value: '#1392ec' },
-			{ name: 'blue-dark', value: '#1254d9' },
-			{ name: 'purple', value: '#625aff' },
-			{ name: 'red', value: '#f54772' },
-			{ name: 'orange', value: '#ff930f' },
-			{ name: 'yellow', value: '#f9c406' },
-		],
-		[]
-	)
+	const colorsArr = useMemo(() => colors, [])
 
 	const handleColorChange = (newColor: string) => {
 		onColorChange(newColor)

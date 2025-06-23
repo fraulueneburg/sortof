@@ -1,19 +1,27 @@
 import { nanoid } from 'nanoid'
-import { ListData } from '../types'
+import { useMemo } from 'react'
 import useListContext from '../hooks/useListContext'
+import { ListData } from '../types'
+import { colors } from '../constants/colors'
 
-import Button from './Button'
 import { PlusIcon as IconAdd } from '@phosphor-icons/react'
+import Button from './Button'
 
 export default function FormNewList() {
-	const { setToDoData } = useListContext()
+	const { toDoData, setToDoData, defaultListColor } = useListContext()
+
+	const totalColorsNum = useMemo(() => Object.keys(colors).length, [colors])
+	const defaultColorIndex = useMemo(() => colors.findIndex((elem) => elem.name === defaultListColor), [colors])
 
 	const handleCreateNewList = () => {
+		const totalListsNum = Object.keys(toDoData.lists).length
+		const listColorIndex = (defaultColorIndex + (totalListsNum - 1)) % totalColorsNum
+
 		const newId = nanoid()
 		const emptyList: ListData = {
 			_id: newId,
 			title: '',
-			color: 'purple',
+			color: colors[listColorIndex].name,
 		}
 
 		setToDoData((prev) => ({
