@@ -1,4 +1,4 @@
-import useListContext from '../hooks/useListContext'
+import useToDoContext from '../hooks/useToDoContext'
 import { nanoid } from 'nanoid'
 import { getInitialToDoData } from '../utils/getInitialToDoData'
 
@@ -8,7 +8,7 @@ import { HandIcon as IconHand } from '@phosphor-icons/react'
 import { ArrowsClockwiseIcon as IconStartover } from '@phosphor-icons/react'
 
 export default function Header() {
-	const { defaultListId, setToDoData, setTaskCount } = useListContext()
+	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()
 
 	const startoverDescId = nanoid()
 	const handleStartOver = () => {

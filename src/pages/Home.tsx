@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useListContext from '../hooks/useListContext'
+import useToDoContext from '../hooks/useToDoContext'
 import { DndContext, DragEndEvent, useSensor, useSensors, MouseSensor, TouchSensor, DragStartEvent } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
@@ -8,7 +8,7 @@ import List from '../components/List'
 import FormNewList from '../components/FormNewList'
 
 export default function Home() {
-	const { toDoData, setToDoData, defaultListId } = useListContext()
+	const { toDoData, setToDoData, defaultListId } = useToDoContext()
 	const [taskMeasurements, setTaskMeasurements] = useState<{ height: number; width: number; top: number; left: number }>({
 		height: 0,
 		width: 0,
@@ -44,8 +44,8 @@ export default function Home() {
 		}
 
 		if (movedWithinSameList) {
-			// moved within first list => free dragging
 			if (isDefaultList) {
+				// moved within first list => free dragging
 				const listWidth = over?.rect.width || 0
 				const listHeight = over?.rect.height || 0
 				const distancePercent = { x: (delta.x / listWidth) * 100, y: (delta.y / listHeight) * 100 }
@@ -76,8 +76,8 @@ export default function Home() {
 				})
 			}
 		} else {
-			// dropped onto first => free positioning
 			if (isDefaultList) {
+				// dropped onto first list => free positioning
 				const draggedDistance = { x: delta.x, y: delta.y }
 				const taskStartPos = { x: taskMeasurements?.left || 0, y: taskMeasurements?.top || 0 }
 				const taskEndPos = { x: taskStartPos.x + draggedDistance.x, y: taskStartPos.y + draggedDistance.y }

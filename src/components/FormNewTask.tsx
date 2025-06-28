@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { nanoid } from 'nanoid'
 import { ArrowUDownLeftIcon as IconSubmit } from '@phosphor-icons/react'
 import { TaskData } from '../types'
-import useListContext from '../hooks/useListContext'
+import useToDoContext from '../hooks/useToDoContext'
 
 export default function FormNewTask() {
-	const { setToDoData, taskCount, setTaskCount, defaultListId } = useListContext()
+	const { setToDoData, taskCount, setTaskCount, defaultListId } = useToDoContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
 
 	const maxTasksNum = 80
@@ -45,8 +45,6 @@ export default function FormNewTask() {
 				},
 				rotation: randomBool ? '5deg' : '-5deg',
 			}
-
-			console.log(newTask)
 
 			setToDoData((prev) => {
 				return {

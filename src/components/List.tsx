@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import { TaskData, ListData } from '../types'
 import debounce from 'lodash/debounce'
-import useListContext from '../hooks/useListContext'
+import useToDoContext from '../hooks/useToDoContext'
 
 import Task from './Task'
 import Button from './Button'
@@ -17,7 +17,7 @@ type ListProps = {
 
 export default function List({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
-	const { setToDoData, setTaskCount, defaultListId } = useListContext()
+	const { setToDoData, setTaskCount, defaultListId } = useToDoContext()
 
 	const isNewList = title === ''
 	const [isRenaming, setRenameMode] = useState(isNewList)

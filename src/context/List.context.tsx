@@ -2,7 +2,7 @@ import { createContext, ReactNode, useEffect, useState } from 'react'
 import { ToDoData } from '../types'
 import { getInitialToDoData } from '../utils/getInitialToDoData'
 
-interface ListContextType {
+interface ToDoContextType {
 	toDoData: ToDoData
 	setToDoData: React.Dispatch<React.SetStateAction<ToDoData>>
 	defaultListId: string
@@ -13,9 +13,9 @@ interface ListContextType {
 	setColorMode: React.Dispatch<React.SetStateAction<string>>
 }
 
-const ListContext = createContext<ListContextType | undefined>(undefined)
+const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
 
-const ListContextWrapper = ({ children }: { children: ReactNode }) => {
+const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_00'
 	const defaultListColor = 'purple'
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
@@ -38,7 +38,7 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 	}, [toDoData])
 
 	return (
-		<ListContext.Provider
+		<ToDoContext.Provider
 			value={{
 				toDoData,
 				setToDoData,
@@ -50,8 +50,8 @@ const ListContextWrapper = ({ children }: { children: ReactNode }) => {
 				setColorMode,
 			}}>
 			{children}
-		</ListContext.Provider>
+		</ToDoContext.Provider>
 	)
 }
 
-export { ListContext, ListContextWrapper }
+export { ToDoContext, ToDoContextWrapper }

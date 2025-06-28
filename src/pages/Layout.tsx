@@ -1,4 +1,4 @@
-import { ListContextWrapper } from '../context/List.context'
+import { ToDoContextWrapper } from '../context/List.context'
 import { Outlet } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -13,13 +13,13 @@ export default function Layout() {
 					weight: 'bold',
 					size: 24,
 				}}>
-				<ListContextWrapper>
+				<ToDoContextWrapper>
 					<Header />
 					<main>
 						<Outlet />
 					</main>
 					<Footer />
-				</ListContextWrapper>
+				</ToDoContextWrapper>
 			</IconContext.Provider>
 		</>
 	)
