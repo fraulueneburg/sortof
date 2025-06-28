@@ -24,12 +24,11 @@ ul[role='listbox'] {
 		grid-template-columns: repeat(4, 1fr);
 	}
 
-	.list_00 {
+	.list_unsorted {
 		background-color: rgba(0, 0, 0, 0.1);
 		border: none;
 		position: static;
 		padding: 0;
-		position: absolute;
 		right: 0;
 		top: 2rem;
 
@@ -48,6 +47,10 @@ ul[role='listbox'] {
 				left: 0;
 				bottom: 50%;
 			}
+
+			.task-item {
+				position: absolute;
+			}
 		}
 
 		@media (prefers-reduced-motion: no-preference) {
@@ -56,10 +59,6 @@ ul[role='listbox'] {
 
 		ul {
 			height: 100%;
-
-			li {
-				position: absolute;
-			}
 		}
 
 		.task-item {

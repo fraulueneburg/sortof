@@ -16,7 +16,7 @@ interface ToDoContextType {
 const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
 
 const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
-	const defaultListId = 'list_00'
+	const defaultListId = 'list_unsorted'
 	const defaultListColor = 'purple'
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
 	const [taskCount, setTaskCount] = useState(Object.keys(toDoData.tasks).length || 0)
