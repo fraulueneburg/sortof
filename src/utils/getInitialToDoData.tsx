@@ -10,7 +10,7 @@ export const getInitialToDoData = (defaultListId: string): ToDoData => {
 		console.warn('Failed to parse stored todo data:', error)
 	}
 	return {
-		lists: { [defaultListId]: { _id: defaultListId, title: 'DEFAULT LIST (UNSORTED TASKS)', color: 'purple' } },
+		lists: { [defaultListId]: { _id: defaultListId, title: 'Default List (unsorted tasks)', color: 'purple' } },
 		tasksByList: {},
 		tasks: {},
 	}

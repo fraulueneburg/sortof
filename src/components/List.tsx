@@ -133,7 +133,9 @@ export default function List({ data, tasks }: ListProps) {
 
 	return (
 		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
-			{_id == defaultListId ? null : (
+			{_id === defaultListId ? (
+				<h2 className="list-name sr-only">{title}</h2>
+			) : (
 				<header>
 					{isRenaming ? (
 						<>
