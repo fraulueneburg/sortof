@@ -1,5 +1,5 @@
+import { useId } from 'react'
 import useToDoContext from '../hooks/useToDoContext'
-import { nanoid } from 'nanoid'
 import { getInitialToDoData } from '../utils/getInitialToDoData'
 
 import Link from './Link'
@@ -10,7 +10,7 @@ import { ArrowsClockwiseIcon as IconStartover } from '@phosphor-icons/react'
 export default function Header() {
 	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()
 
-	const startoverDescId = nanoid()
+	const startoverDescId = useId()
 	const handleStartOver = () => {
 		sessionStorage.removeItem('to-do-data')
 		setToDoData(getInitialToDoData(defaultListId))

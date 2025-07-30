@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useId } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import { TaskData, ListData } from '../types'
 import debounce from 'lodash/debounce'
@@ -8,7 +8,6 @@ import Task from './Task'
 import Button from './Button'
 import Submenu from './Submenu'
 import DropdownListColor from './DropdownListColor'
-import { nanoid } from 'nanoid'
 
 type ListProps = {
 	data: ListData
@@ -25,7 +24,7 @@ export default function List({ data, tasks }: ListProps) {
 	const [listColor, setListColor] = useState(color)
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
-	const inputDescriptionId = nanoid()
+	const inputDescriptionId = useId()
 	const fallbackName = 'Unnamed list'
 
 	const { setNodeRef } = useDroppable({
