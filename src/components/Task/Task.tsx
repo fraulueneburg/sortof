@@ -21,6 +21,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
+	const taskRef = useRef<HTMLLIElement>(null)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const { setToDoData, defaultListId, setTaskCount } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -102,9 +103,26 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	}
 
 	useEffect(() => {
-		if (isEditing === true) {
-			inputRef.current?.focus()
-			inputRef.current?.setSelectionRange(title.length, title.length)
+		if (!isEditing) return
+
+		inputRef.current?.focus()
+		inputRef.current?.setSelectionRange(title.length, title.length)
+
+		const handleKeyDownGlobal = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') setIsEditing(false)
+		}
+
+		const handlePointerDownGlobal = (event: PointerEvent) => {
+			const targetNode = event.target as Node | null
+			if (!taskRef.current) return
+			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
+		}
+
+		document.addEventListener('keydown', handleKeyDownGlobal)
+		document.addEventListener('pointerdown', handlePointerDownGlobal)
+		return () => {
+			document.removeEventListener('keydown', handleKeyDownGlobal)
+			document.removeEventListener('pointerdown', handlePointerDownGlobal)
 		}
 	}, [isEditing])
 
@@ -112,7 +130,8 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		<li
 			className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`}
 			style={style}
-			data-task-id={_id}>
+			data-task-id={_id}
+			ref={taskRef}>
 			{list !== defaultListId && (
 				<>
 					<input type="checkbox" aria-label={taskName} checked={checked} onChange={handleToggleCheck} />
