@@ -1,14 +1,15 @@
+import './task.scss'
 import { useDraggable } from '@dnd-kit/core'
-import { TaskData } from '../types'
+import { TaskData } from '../../types'
 import { XIcon as IconDelete } from '@phosphor-icons/react'
-import useToDoContext from '../hooks/useToDoContext'
+import useToDoContext from '../../hooks/useToDoContext'
 
 type TaskProps = {
 	data: TaskData
 	color?: string
 }
 
-export default function Task({ data, color = 'purple' }: TaskProps) {
+export function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 

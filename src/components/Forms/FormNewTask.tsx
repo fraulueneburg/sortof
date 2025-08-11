@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { nanoid } from 'nanoid'
 import { ArrowUDownLeftIcon as IconSubmit } from '@phosphor-icons/react'
-import { TaskData } from '../types'
-import useToDoContext from '../hooks/useToDoContext'
+import { TaskData } from '../../types'
+import useToDoContext from '../../hooks/useToDoContext'
+import Button from '../Button'
 
-export default function FormNewTask() {
+export function FormNewTask() {
 	const { setToDoData, taskCount, setTaskCount, defaultListId } = useToDoContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
 

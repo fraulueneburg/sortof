@@ -1,5 +1,6 @@
+import './submenu.scss'
 import { useState, useId, ReactNode, useEffect, useRef } from 'react'
-import Button from './Button'
+import Button from '../Button'
 import { DotsThreeIcon as FallbackMenuIcon } from '@phosphor-icons/react'
 
 type SubmenuProps = {
@@ -8,7 +9,7 @@ type SubmenuProps = {
 	hideTitle?: boolean
 }
 
-export default function Submenu({ children, title, hideTitle }: SubmenuProps) {
+export function Submenu({ children, title, hideTitle }: SubmenuProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const menuId = useId()
 	const ref = useRef<HTMLDivElement>(null)

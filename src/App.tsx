@@ -1,4 +1,4 @@
-import './assets/styles.scss'
+import './assets/scss/styles.scss'
 import { Routes, Route } from 'react-router-dom'
 
 import Layout from './pages/Layout'

@@ -1,4 +1,4 @@
-import { ToDoData } from '../types'
+import { ToDoData } from '../types/listdata'
 
 export const getInitialToDoData = (defaultListId: string): ToDoData => {
 	try {
