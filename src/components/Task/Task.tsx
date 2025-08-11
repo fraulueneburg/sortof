@@ -11,7 +11,6 @@ import {
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
 import { TaskData } from '../../types'
-import { ToDoContext } from '../../context/List.context'
 
 type TaskProps = {
 	data: TaskData
@@ -23,7 +22,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const bgColor = !checked ? color : 'color-inactive-task'
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
-	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
+	const { setToDoData, defaultListId, setTaskCount } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})
@@ -47,15 +46,9 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		})
 	}
 
-	const handleEdit = () => {
-		setIsEditing(true)
-		console.log(inputRef)
-	}
-
 	const handleChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
 		event.preventDefault()
-		const { value } = event.currentTarget
-		setTaskName(value)
+		setTaskName(event.currentTarget.value)
 	}
 
 	const handleSaveChanges = () => {
@@ -180,7 +173,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 						hideTitle={true}
 						unstyled={true}
 						iconBefore={<IconEdit />}
-						onClick={handleEdit}
+						onClick={() => setIsEditing(true)}
 					/>
 				)}
 			</div>
