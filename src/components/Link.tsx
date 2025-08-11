@@ -50,7 +50,7 @@ export default function Link({
 		<>
 			<div className={classNames} aria-label={hideTitle ? title : undefined}>
 				<a
-					href={href || '#	'}
+					href={href || '#'}
 					target={target}
 					aria-current={ariaCurrent}
 					aria-label={ariaLabel}

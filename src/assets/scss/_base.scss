@@ -43,3 +43,8 @@ main {
 	padding: 0;
 	width: 1px;
 }
+
+:focus-visible {
+	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
+	outline-offset: var(--outline-width);
+}

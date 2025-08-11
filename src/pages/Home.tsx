@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import useToDoContext from '../hooks/useToDoContext'
-import { DndContext, DragEndEvent, useSensor, useSensors, MouseSensor, TouchSensor, DragStartEvent } from '@dnd-kit/core'
+import { DndContext, DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
-import FormNewTask from '../components/FormNewTask'
-import List from '../components/List'
-import FormNewList from '../components/FormNewList'
+import { FormNewTask, FormNewList } from '../components/Forms'
+import { List } from '../components/List'
 
 export default function Home() {
 	const { toDoData, setToDoData, defaultListId } = useToDoContext()

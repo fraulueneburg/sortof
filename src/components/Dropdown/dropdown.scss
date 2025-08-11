@@ -11,6 +11,12 @@ button.toggle-color {
 	}
 }
 
+ul[role='listbox'] {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 .dropdown-list {
 	--color-option-width: 2.25rem;
 	display: flex;

@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useId } from 'react'
-import { colors } from '../constants/colors'
+import './dropdown.scss'
+import { useEffect, useMemo, useRef, useState, useId } from 'react'
+import { colors } from '../../constants/colors'
 
-type DropdownListProps = {
+type ColorDropdownProps = {
 	selected: string
 	onColorChange: (color: string) => void
 }
 
-export default function DropdownListColor({ selected, onColorChange }: DropdownListProps) {
+export function ColorDropdown({ selected, onColorChange }: ColorDropdownProps) {
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [selectedColor, setSelectedColor] = useState(selected)
 

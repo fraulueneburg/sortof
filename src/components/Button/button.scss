@@ -24,6 +24,8 @@ button {
 	}
 
 	&.unstyled {
+		background-color: transparent;
+		border-radius: unset;
 		border: none;
 	}
 

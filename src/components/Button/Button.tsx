@@ -1,13 +1,15 @@
+import './button.scss'
 import { ReactNode } from 'react'
 
 type ButtonProps = {
+	type?: 'button' | 'submit'
 	title: string
 	hideTitle?: boolean
 	disabled?: boolean
 	iconBefore?: ReactNode
 	iconAfter?: ReactNode
 	className?: string
-	onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+	onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 	size?: 'sm' | 'md' | 'lg'
 	unstyled?: boolean
 	ariaHasPopup?: 'true' | 'false' | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog'
@@ -17,7 +19,8 @@ type ButtonProps = {
 	ariaLabel?: string
 }
 
-export default function Button({
+export function Button({
+	type = 'button',
 	title,
 	hideTitle,
 	iconBefore,
@@ -38,6 +41,7 @@ export default function Button({
 	return (
 		<>
 			<button
+				type={type}
 				className={classNames}
 				disabled={disabled}
 				onClick={onClick}
@@ -45,7 +49,7 @@ export default function Button({
 				aria-describedby={ariaDescribedBy}
 				aria-expanded={ariaExpanded}
 				aria-haspopup={ariaHasPopup}
-				aria-label={ariaLabel ? ariaLabel : title}>
+				aria-label={ariaLabel ?? title}>
 				{iconBefore}
 				{!hideTitle && <span>{title}</span>}
 				{iconAfter}
