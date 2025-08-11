@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 import { ArrowUDownLeftIcon as IconSubmit } from '@phosphor-icons/react'
 import { TaskData } from '../../types'
 import useToDoContext from '../../hooks/useToDoContext'
-import Button from '../Button'
+import { Button } from '../Button'
 
 export function FormNewTask() {
 	const { setToDoData, taskCount, setTaskCount, defaultListId } = useToDoContext()
@@ -90,9 +90,14 @@ export function FormNewTask() {
 					</p>
 				)}
 				<div className="append">
-					<button className="btn-icon-only" type="submit" aria-label="add task">
-						<IconSubmit size="28" />
-					</button>
+					<Button
+						className="btn-icon-only"
+						type="submit"
+						title="add task"
+						hideTitle={true}
+						unstyled={true}
+						iconBefore={<IconSubmit size="28" />}
+					/>
 				</div>
 			</form>
 		</>

@@ -18,6 +18,7 @@ form {
 		}
 
 		button[type='submit'] {
+			border-radius: var(--border-radius-base);
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
 			height: 100%;

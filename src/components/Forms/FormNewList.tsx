@@ -5,7 +5,7 @@ import { ListData, ToDoData } from '../../types'
 import { colors } from '../../constants/colors'
 
 import { PlusIcon as IconAdd } from '@phosphor-icons/react'
-import Button from './../Button'
+import { Button } from '../Button'
 
 export function FormNewList() {
 	const { toDoData, setToDoData, defaultListColor } = useToDoContext()

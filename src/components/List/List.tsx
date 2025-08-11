@@ -6,7 +6,7 @@ import debounce from 'lodash/debounce'
 import useToDoContext from '../../hooks/useToDoContext'
 
 import { Task } from '../Task'
-import Button from '../Button'
+import { Button } from '../Button'
 import { Submenu } from '../Submenu'
 import { ColorDropdown } from '../Dropdown'
 
