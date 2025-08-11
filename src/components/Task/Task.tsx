@@ -118,11 +118,19 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
 		}
 
+		const handleFocusInGlobal = (event: FocusEvent) => {
+			const targetNode = event.target as Node | null
+			if (!taskRef.current) return
+			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
+		}
+
 		document.addEventListener('keydown', handleKeyDownGlobal)
 		document.addEventListener('pointerdown', handlePointerDownGlobal)
+		document.addEventListener('focusin', handleFocusInGlobal)
 		return () => {
 			document.removeEventListener('keydown', handleKeyDownGlobal)
 			document.removeEventListener('pointerdown', handlePointerDownGlobal)
+			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
 	}, [isEditing])
 
