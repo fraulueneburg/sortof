@@ -33,6 +33,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const [isEditing, setIsEditing] = useState(false)
 
 	const handleToggleCheck = () => {
+		setIsEditing(false)
 		setToDoData((prev) => {
 			return {
 				...prev,
@@ -173,6 +174,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 							unstyled={true}
 							iconBefore={<IconDelete />}
 							onClick={handleDelete}
+							style={{ backgroundColor: `var(--${bgColor})` }}
 						/>
 						<Button
 							type="button"
@@ -182,6 +184,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 							unstyled={true}
 							iconBefore={<IconCancel />}
 							onClick={() => setIsEditing(false)}
+							style={{ backgroundColor: `var(--${bgColor})` }}
 						/>
 					</>
 				) : (
