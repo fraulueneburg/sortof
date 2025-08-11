@@ -140,7 +140,7 @@ export function List({ data, tasks }: ListProps) {
 					{isRenaming ? (
 						<>
 							<textarea
-								className="list-name"
+								className="list-name as-input"
 								aria-label="list name"
 								placeholder={fallbackName}
 								aria-describedby={inputDescriptionId}

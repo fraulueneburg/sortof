@@ -150,18 +150,11 @@ textarea.list-name {
 	border-radius: 0;
 	font-family: var(--font-family-headings);
 	font-size: var(--font-size-h2);
-	height: 1lh;
+
 	margin-left: calc(-1 * var(--padding-x));
 	padding-inline: var(--padding-x);
-	resize: none;
-	white-space: nowrap;
-	width: auto;
 
-	@supports (field-sizing: content) {
-		field-sizing: content;
-		height: auto;
-		white-space: normal;
-	}
+	width: auto;
 
 	&::placeholder {
 		opacity: 0.7;
