@@ -45,8 +45,8 @@ export function Submenu({ children, title, hideTitle }: SubmenuProps) {
 					title={title}
 					hideTitle={hideTitle}
 					iconBefore={<FallbackMenuIcon />}
-					ariaControls={menuId}
-					ariaExpanded={isOpen}
+					aria-controls={menuId}
+					aria-expanded={isOpen}
 					onClick={() => setIsOpen((prev) => !prev)}
 				/>
 				{isOpen && (

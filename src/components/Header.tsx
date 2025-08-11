@@ -29,7 +29,7 @@ export default function Header() {
 							<Button
 								title="Start over"
 								hideTitle={true}
-								ariaDescribedBy={startoverDescId}
+								aria-describedby={startoverDescId}
 								onClick={handleStartOver}
 								iconBefore={<IconStartover />}
 							/>
