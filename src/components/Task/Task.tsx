@@ -23,16 +23,15 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 
 	const taskRef = useRef<HTMLLIElement>(null)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
-	const { setToDoData, defaultListId, setTaskCount } = useToDoContext()
+	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})
 
 	const componentId = useId()
-	const [taskName, setTaskName] = useState(title)
 	const [isEditing, setIsEditing] = useState(false)
 
-	const handleToggleCheck = () => {
+	const updateTaskStatus = () => {
 		setIsEditing(false)
 		setToDoData((prev) => {
 			return {
@@ -48,13 +47,14 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		})
 	}
 
-	const handleChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
-		event.preventDefault()
-		setTaskName(event.currentTarget.value)
-	}
+	const updateTask = () => {
+		const newTaskName = inputRef.current?.value.trim()
+		const prevName = toDoData.tasks[_id].title
 
-	const handleSaveChanges = () => {
-		if (taskName.trim() === '') return
+		if (!newTaskName || newTaskName === '' || prevName === newTaskName) {
+			setIsEditing(false)
+			return
+		}
 
 		setToDoData((prev) => ({
 			...prev,
@@ -62,14 +62,14 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 				...prev.tasks,
 				[_id]: {
 					...prev.tasks[_id],
-					title: taskName,
+					title: newTaskName,
 				},
 			},
 		}))
 		setIsEditing(false)
 	}
 
-	const handleDelete = () => {
+	const deleteTask = () => {
 		setToDoData((prev) => {
 			return {
 				...prev,
@@ -86,11 +86,10 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const { key } = event
-		const trimmedValue = event.currentTarget.value.trim()
 
 		if (key === 'Enter' && !event.shiftKey) {
 			event.preventDefault()
-			if (trimmedValue !== '') handleSaveChanges()
+			updateTask()
 		}
 	}
 
@@ -135,7 +134,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 			ref={taskRef}>
 			{list !== defaultListId && (
 				<>
-					<input type="checkbox" aria-label={taskName} checked={checked} onChange={handleToggleCheck} />
+					<input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />
 				</>
 			)}
 			{isEditing ? (
@@ -144,14 +143,13 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 						id={`${componentId}title-field`}
 						ref={inputRef}
 						className="as-input"
-						value={taskName}
-						onChange={handleChange}
+						defaultValue={title}
 						onKeyDown={handleKeyDown}
 					/>
 				</div>
 			) : (
 				<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
-					{taskName}
+					{title}
 				</div>
 			)}
 			<div className="actions">
@@ -164,16 +162,16 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 							hideTitle={true}
 							unstyled={true}
 							iconBefore={<IconSubmit />}
-							onClick={handleSaveChanges}
+							onClick={updateTask}
 						/>
 						<Button
 							type="button"
 							className="btn-icon-only btn-delete"
-							title={'delete "' + taskName + '"'}
+							title={'delete task'}
 							hideTitle={true}
 							unstyled={true}
 							iconBefore={<IconDelete />}
-							onClick={handleDelete}
+							onClick={deleteTask}
 							style={{ backgroundColor: `var(--${bgColor})` }}
 						/>
 						<Button
@@ -191,7 +189,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 					<Button
 						type="button"
 						className="btn-icon-only btn-edit"
-						title={'edit "' + taskName + '"'}
+						title={'edit task'}
 						hideTitle={true}
 						unstyled={true}
 						iconBefore={<IconEdit />}
