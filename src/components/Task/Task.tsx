@@ -1,9 +1,17 @@
 import './task.scss'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useDraggable } from '@dnd-kit/core'
-import { TaskData } from '../../types'
-import { XIcon as IconDelete } from '@phosphor-icons/react'
 import useToDoContext from '../../hooks/useToDoContext'
+
 import { Button } from '../Button'
+import {
+	TrashIcon as IconDelete,
+	PencilIcon as IconEdit,
+	ArrowUDownLeftIcon as IconSubmit,
+	XIcon as IconCancel,
+} from '@phosphor-icons/react'
+import { TaskData } from '../../types'
+import { ToDoContext } from '../../context/List.context'
 
 type TaskProps = {
 	data: TaskData
@@ -14,10 +22,15 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const { setToDoData, defaultListId, setTaskCount } = useToDoContext()
+	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: _id,
 	})
+
+	const componentId = useId()
+	const [taskName, setTaskName] = useState(title)
+	const [isEditing, setIsEditing] = useState(false)
 
 	const handleToggleCheck = () => {
 		setToDoData((prev) => {
@@ -34,6 +47,33 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		})
 	}
 
+	const handleEdit = () => {
+		setIsEditing(true)
+		console.log(inputRef)
+	}
+
+	const handleChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+		event.preventDefault()
+		const { value } = event.currentTarget
+		setTaskName(value)
+	}
+
+	const handleSaveChanges = () => {
+		if (taskName.trim() === '') return
+
+		setToDoData((prev) => ({
+			...prev,
+			tasks: {
+				...prev.tasks,
+				[_id]: {
+					...prev.tasks[_id],
+					title: taskName,
+				},
+			},
+		}))
+		setIsEditing(false)
+	}
+
 	const handleDelete = () => {
 		setToDoData((prev) => {
 			return {
@@ -46,6 +86,17 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 			}
 		})
 		setTaskCount((prev) => prev - 1)
+		setIsEditing(false)
+	}
+
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		const { key } = event
+		const trimmedValue = event.currentTarget.value.trim()
+
+		if (key === 'Enter' && !event.shiftKey) {
+			event.preventDefault()
+			if (trimmedValue !== '') handleSaveChanges()
+		}
 	}
 
 	const style = {
@@ -57,6 +108,13 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		top: `${position.y}%`,
 	}
 
+	useEffect(() => {
+		if (isEditing === true) {
+			inputRef.current?.focus()
+			inputRef.current?.setSelectionRange(title.length, title.length)
+		}
+	}, [isEditing])
+
 	return (
 		<li
 			className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`}
@@ -64,22 +122,68 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 			data-task-id={_id}>
 			{list !== defaultListId && (
 				<>
-					<input type="checkbox" aria-label={title} checked={checked} onChange={handleToggleCheck} />
+					<input type="checkbox" aria-label={taskName} checked={checked} onChange={handleToggleCheck} />
 				</>
 			)}
-			<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
-				{title}
+			{isEditing ? (
+				<div className="title">
+					<textarea
+						id={`${componentId}title-field`}
+						ref={inputRef}
+						className="as-input"
+						value={taskName}
+						onChange={handleChange}
+						onKeyDown={handleKeyDown}
+					/>
+				</div>
+			) : (
+				<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
+					{taskName}
+				</div>
+			)}
+			<div className="actions">
+				{isEditing ? (
+					<>
+						<Button
+							type="button"
+							className="btn-icon-only btn-save"
+							title={'save changes'}
+							hideTitle={true}
+							unstyled={true}
+							iconBefore={<IconSubmit />}
+							onClick={handleSaveChanges}
+						/>
+						<Button
+							type="button"
+							className="btn-icon-only btn-delete"
+							title={'delete "' + taskName + '"'}
+							hideTitle={true}
+							unstyled={true}
+							iconBefore={<IconDelete />}
+							onClick={handleDelete}
+						/>
+						<Button
+							type="button"
+							className="btn-icon-only btn-cancel"
+							title={'cancel editing'}
+							hideTitle={true}
+							unstyled={true}
+							iconBefore={<IconCancel />}
+							onClick={() => setIsEditing(false)}
+						/>
+					</>
+				) : (
+					<Button
+						type="button"
+						className="btn-icon-only btn-edit"
+						title={'edit "' + taskName + '"'}
+						hideTitle={true}
+						unstyled={true}
+						iconBefore={<IconEdit />}
+						onClick={handleEdit}
+					/>
+				)}
 			</div>
-			<Button
-				type="button"
-				className="btn-icon-only"
-				title={'delete "' + title + '"'}
-				hideTitle={true}
-				ariaLabel={'delete "' + title + '"'}
-				unstyled={true}
-				iconBefore={<IconDelete />}
-				onClick={handleDelete}
-			/>
 		</li>
 	)
 }

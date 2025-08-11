@@ -15,12 +15,14 @@
 	--title-max-width: 240px;
 	--spacing: 0.5rem;
 
+	--title-padding-inline: 0.5rem;
+
 	background-color: var(--color-primary);
 	border-radius: var(--border-radius);
 	color: var(--color-text-inverted);
 	cursor: grab;
 	display: flex;
-	gap: var(--spacing);
+	gap: 0;
 	max-width: 100%;
 	min-height: var(--min-height);
 	position: relative;
@@ -96,13 +98,19 @@
 		max-width: var(--title-max-width);
 		min-height: var(--min-height);
 		overflow: hidden;
-		padding: 0.5rem calc(var(--min-height) + var(--spacing) + 1px) 0.5rem 1rem;
+		padding: var(--title-padding-inline);
+		padding-left: 1rem;
+		padding-right: var(--spacing);
 		word-wrap: break-word;
 
 		@media (min-width: 1024px) {
 			--title-max-width: 500px;
-			padding-bottom: 0.25rem;
-			padding-top: 0.25rem;
+			--title-padding-inline: 0.25rem;
+		}
+
+		&:has(textarea) {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 	}
 
@@ -112,12 +120,27 @@
 		}
 	}
 
+	textarea {
+		border: none;
+		border-radius: 0.4rem;
+		background-color: rgba(255, 255, 255, 0.5);
+		display: block;
+		padding: var(--title-padding-inline);
+		margin: calc(var(--title-padding-inline) * -1);
+		width: 100%;
+	}
+
+	.actions {
+		display: flex;
+		gap: 0;
+	}
+
 	button {
 		border-radius: var(--border-radius);
 		padding: 0;
 		height: var(--min-height);
-		position: absolute;
-		right: 0;
+		// position: absolute;
+		// right: 0;
 		aspect-ratio: 1 / 1;
 
 		&:hover,
