@@ -1,20 +1,21 @@
+import './list.scss'
 import { useCallback, useEffect, useRef, useState, useId } from 'react'
 import { useDroppable } from '@dnd-kit/core'
-import { TaskData, ListData } from '../types'
+import { TaskData, ListData } from '../../types'
 import debounce from 'lodash/debounce'
-import useToDoContext from '../hooks/useToDoContext'
+import useToDoContext from '../../hooks/useToDoContext'
 
-import Task from './Task'
-import Button from './Button'
-import Submenu from './Submenu'
-import DropdownListColor from './DropdownListColor'
+import { Task } from '../Task'
+import { Button } from '../Button'
+import { Submenu } from '../Submenu'
+import { ColorDropdown } from '../Dropdown'
 
 type ListProps = {
 	data: ListData
 	tasks: TaskData[]
 }
 
-export default function List({ data, tasks }: ListProps) {
+export function List({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
 	const { setToDoData, setTaskCount, defaultListId } = useToDoContext()
 
@@ -139,7 +140,7 @@ export default function List({ data, tasks }: ListProps) {
 					{isRenaming ? (
 						<>
 							<textarea
-								className="list-name"
+								className="list-name as-input"
 								aria-label="list name"
 								placeholder={fallbackName}
 								aria-describedby={inputDescriptionId}
@@ -160,7 +161,7 @@ export default function List({ data, tasks }: ListProps) {
 					)}
 					<aside>
 						<>
-							<DropdownListColor selected={listColor} onColorChange={handleColorChange} />
+							<ColorDropdown selected={listColor} onColorChange={handleColorChange} />
 							<Submenu title={'list actions'} hideTitle={true}>
 								<ul>
 									<li>

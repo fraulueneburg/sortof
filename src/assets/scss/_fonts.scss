@@ -1,0 +1,19 @@
+@font-face {
+	font-family: Oswald;
+	src: url('src/assets/fonts//oswald-bold.woff2') format('woff2'), url('src/assets/fonts//oswald-bold.woff') format('woff');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: Atkinson Hyperlegible Mono;
+	src: url('src/assets/fonts//AtkinsonHyperlegibleMono-SemiBold.woff2') format('woff2'),
+		url('src/assets/fonts//AtkinsonHyperlegibleMono-SemiBold.woff') format('woff');
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: Atkinson Hyperlegible Next;
+	src: url('src/assets/fonts//AtkinsonHyperlegibleNext-Medium.woff2') format('woff2'),
+		url('src/assets/fonts//AtkinsonHyperlegibleNext-Medium.woff') format('woff');
+	font-weight: 600;
+}

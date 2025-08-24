@@ -18,6 +18,7 @@ form {
 		}
 
 		button[type='submit'] {
+			border-radius: var(--border-radius-base);
 			border-top-left-radius: 0;
 			border-bottom-left-radius: 0;
 			height: 100%;
@@ -58,6 +59,18 @@ textarea {
 
 textarea {
 	border: none;
+
+	&.as-input {
+		height: 1lh;
+		resize: none;
+		white-space: nowrap;
+
+		@supports (field-sizing: content) {
+			field-sizing: content;
+			height: auto;
+			white-space: normal;
+		}
+	}
 }
 
 .form-new-todo,

@@ -3,7 +3,7 @@ import useToDoContext from '../hooks/useToDoContext'
 import { getInitialToDoData } from '../utils/getInitialToDoData'
 
 import Link from './Link'
-import Button from './Button'
+import { Button } from './Button'
 import { HandIcon as IconHand } from '@phosphor-icons/react'
 import { ArrowsClockwiseIcon as IconStartover } from '@phosphor-icons/react'
 
@@ -29,7 +29,7 @@ export default function Header() {
 							<Button
 								title="Start over"
 								hideTitle={true}
-								ariaDescribedBy={startoverDescId}
+								aria-describedby={startoverDescId}
 								onClick={handleStartOver}
 								iconBefore={<IconStartover />}
 							/>
