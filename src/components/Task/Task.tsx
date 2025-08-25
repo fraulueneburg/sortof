@@ -1,6 +1,7 @@
 import './task.scss'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useDraggable } from '@dnd-kit/core'
+import { useSortable } from '@dnd-kit/sortable'
 import useToDoContext from '../../hooks/useToDoContext'
 
 import { Button } from '../Button'
@@ -10,7 +11,7 @@ import {
 	ArrowUDownLeftIcon as IconSubmit,
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
-import { TaskData } from '../../types'
+import { TaskData, DraggableItemData } from '../../types'
 
 type TaskProps = {
 	data: TaskData
@@ -24,9 +25,22 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const taskRef = useRef<HTMLLIElement>(null)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
-	const { attributes, listeners, setNodeRef, transform } = useDraggable({
+
+	const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
 		id: _id,
+		data: {
+			type: 'task',
+			item: data,
+		} satisfies DraggableItemData,
 	})
+
+	// const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+	// 	id: _id,
+	// 	data: {
+	// 		type: 'task',
+	// 		item: data,
+	// 	} satisfies DraggableItemData,
+	// })
 
 	const componentId = useId()
 	const [isEditing, setIsEditing] = useState(false)
@@ -102,6 +116,17 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		top: `${position.y}%`,
 	}
 
+	// const style = {
+	// 	transform: `
+	// 		${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
+	// 		${list === defaultListId ? `rotate(${rotation})` : ''}`,
+	// 	backgroundColor: `var(--${bgColor})`,
+	// 	left: `${position.x}%`,
+	// 	top: `${position.y}%`,
+	// 	zIndex: isDragging ? 1000 : 1,
+	// 	transition,
+	// }
+
 	useEffect(() => {
 		if (!isEditing) return
 
@@ -127,6 +152,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		document.addEventListener('keydown', handleKeyDownGlobal)
 		document.addEventListener('pointerdown', handlePointerDownGlobal)
 		document.addEventListener('focusin', handleFocusInGlobal)
+
 		return () => {
 			document.removeEventListener('keydown', handleKeyDownGlobal)
 			document.removeEventListener('pointerdown', handlePointerDownGlobal)
@@ -136,7 +162,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 
 	return (
 		<li
-			className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`}
+			className={`task-item${checked ? ' checked' : ''}${isDragging ? ' is-dragging' : ''}`}
 			style={style}
 			data-task-id={_id}
 			ref={taskRef}>

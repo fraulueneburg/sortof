@@ -22,27 +22,108 @@ export default function Home() {
 		setTaskMeasurements({ height: taskRect.height, width: taskRect.width, top: taskRect.top, left: taskRect.left })
 	}
 
+	// function handleDragEnd(event: DragEndEvent) {
+	// 	const { active, over, delta } = event
+	// 	// setActiveTask(null)
+
+	// 	if (!over?.data.current) return
+	// 	if (!delta || (delta.x === 0 && delta.y === 0)) return
+
+	// 	const currentTaskId = active.id as string
+	// 	const currentTask = toDoData.tasks[currentTaskId]
+	// 	const currentListId = currentTask.list
+	// 	const currListOrder = [...toDoData.tasksByList[currentListId]]
+
+	// 	const overType = over.data.current.type
+	// 	const overItem = over.data.current.item
+	// 	const targetListId = overType === 'task' ? overItem.list : over.id
+	// 	const targetListOrder = [...toDoData.tasksByList[targetListId]]
+
+	// 	let newPosition = { x: 0, y: 0 }
+
+	// 	const isDefaultList = targetListId === defaultListId
+	// 	const isDifferentList = currentListId !== targetListId
+	// 	const isSameList = currentListId === targetListId
+
+	// 	if (!currentTask || !targetListId) return
+	// 	if (overType === 'task' && currentTaskId === over.id && !isDefaultList) return
+
+	// 	// update position
+	// 	if (isDefaultList) {
+	// 		//
+	// 	}
+
+	// 	const moveTask = (newListOrder: string[]) => {
+	// 		const currIndex = currListOrder.indexOf(currentTaskId)
+	// 		const newIndex = overType === 'list' || isDefaultList ? newListOrder.length : newListOrder.indexOf(over.id as string)
+
+	// 		if (!isDefaultList && isSameList && currIndex === newIndex) return
+
+	// 		currListOrder.splice(currIndex, 1)
+	// 		newListOrder.splice(newIndex, 0, currentTaskId)
+	// 	}
+
+	// 	moveTask(isSameList ? currListOrder : targetListOrder)
+
+	// 	setToDoData((prev) => {
+	// 		const { tasks, tasksByList } = prev
+
+	// 		const updatedTask = {
+	// 			...tasks[currentTaskId],
+	// 			...(isDifferentList ? { list: targetListId } : {}),
+	// 			...(isDefaultList ? { position: newPosition } : {}),
+	// 		}
+
+	// 		return {
+	// 			...prev,
+	// 			tasks: {
+	// 				...tasks,
+	// 				[currentTaskId]: updatedTask,
+	// 			},
+	// 			tasksByList: {
+	// 				...tasksByList,
+	// 				[currentListId]: [...currListOrder],
+	// 				...(isDifferentList && { [targetListId]: [...targetListOrder] }),
+	// 			},
+	// 		}
+	// 	})
+
+	// 	// setDraggedItemRef(null)
+	// }
+
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over, delta } = event
 
-		if (!over || !delta || (delta.x === 0 && delta.y === 0)) return
+		if (!over?.data.current) return
+		if (!delta || (delta.x === 0 && delta.y === 0)) return
 
-		const taskId = active.id as string
-		const currentTask = toDoData.tasks[taskId]
+		const currentTaskId = active.id as string
+		const currentTask = toDoData.tasks[currentTaskId]
+		const currentListId = currentTask.list
+		const currListOrder = [...toDoData.tasksByList[currentListId]]
+
+		const overType = over.data.current.type
+		const overItem = over.data.current.item
+		const targetListId = overType === 'task' ? overItem.list : over.id
+		const targetListOrder = [...toDoData.tasksByList[targetListId]]
+
+		const isDefaultList = targetListId === defaultListId
+		const isDifferentList = currentListId !== targetListId
+		const isSameList = currentListId === targetListId
 
 		if (!currentTask) return
 
-		const oldListId = currentTask.list
-		const newListId = over.id as string
-		const movedWithinSameList = newListId === oldListId
-		const isDefaultList = newListId === defaultListId
+		// 	let newPosition = { x: 0, y: 0 }
 
 		let newPosition = {
 			x: currentTask.position.x,
 			y: currentTask.position.y,
 		}
 
-		if (movedWithinSameList) {
+		console.log('over', over)
+		console.log('overType', overType)
+
+		if (isSameList) {
 			if (isDefaultList) {
 				// moved within first list => free dragging
 				const listWidth = over?.rect.width || 0
@@ -66,7 +147,7 @@ export default function Home() {
 						...prev,
 						tasks: {
 							...prev.tasks,
-							[taskId]: {
+							[currentTaskId]: {
 								...currentTask,
 								position: newPosition,
 							},
@@ -75,8 +156,9 @@ export default function Home() {
 				})
 			}
 		} else {
+			// IS DIFFERENT LIST
+			// dropped onto first list => free positioning
 			if (isDefaultList) {
-				// dropped onto first list => free positioning
 				const draggedDistance = { x: delta.x, y: delta.y }
 				const taskStartPos = { x: taskMeasurements?.left || 0, y: taskMeasurements?.top || 0 }
 				const taskEndPos = { x: taskStartPos.x + draggedDistance.x, y: taskStartPos.y + draggedDistance.y }
@@ -98,26 +180,28 @@ export default function Home() {
 					y: Math.max(0, Math.min(taskEndPosPercent.y, 100 - taskHeightPercent)),
 				}
 			} else {
+				// dropped onto other list => reset positioning
 				newPosition = {
 					x: 'unset',
 					y: 'unset',
 				}
 			}
+
 			setToDoData((prev) => {
 				return {
 					...prev,
 					tasks: {
 						...prev.tasks,
-						[taskId]: {
+						[currentTaskId]: {
 							...currentTask,
-							list: newListId,
+							list: targetListId,
 							position: newPosition,
 						},
 					},
 					tasksByList: {
 						...prev.tasksByList,
-						[oldListId]: prev.tasksByList[oldListId]?.filter((id) => id !== taskId) || [],
-						[newListId]: [...(prev.tasksByList[newListId] || []), taskId],
+						[currentListId]: prev.tasksByList[currentListId]?.filter((id) => id !== currentTaskId) || [],
+						[targetListId]: [...(prev.tasksByList[targetListId] || []), currentTaskId],
 					},
 				}
 			})
@@ -138,7 +222,7 @@ export default function Home() {
 					<FormNewList />
 					<div className="list-container">
 						{Object.values(toDoData.lists).map((list) => {
-							const listTasks = toDoData.tasksByList[list._id]?.map((taskId) => toDoData.tasks[taskId]) || []
+							const listTasks = toDoData.tasksByList[list._id]?.map((currentTaskId) => toDoData.tasks[currentTaskId]) || []
 							return <List key={list._id} data={list} tasks={listTasks} />
 						})}
 					</div>
