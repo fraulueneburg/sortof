@@ -14,7 +14,7 @@ import { TaskData, DraggableItemData } from '../../types'
 
 type TaskProps = {
 	data: TaskData
-	color?: string
+	color?: string | null
 }
 
 export function Task({ data, color = 'purple' }: TaskProps) {

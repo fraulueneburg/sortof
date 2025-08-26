@@ -1,13 +1,22 @@
 import { useState } from 'react'
 import useToDoContext from '../hooks/useToDoContext'
-import { DndContext, DragEndEvent, DragStartEvent } from '@dnd-kit/core'
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
 import { FormNewTask, FormNewList } from '../components/Forms'
 import { List } from '../components/List'
+import { Task } from '../components/Task'
+import { TaskData } from '../types'
+
+type activeItemType = {
+	data: TaskData | null
+	color: string | null
+}
 
 export default function Home() {
 	const { toDoData, setToDoData, defaultListId } = useToDoContext()
+	const emptyActiveTask = { data: null, color: null }
+	const [activeTask, setActiveTask] = useState<activeItemType>(emptyActiveTask)
 	const [taskMeasurements, setTaskMeasurements] = useState<{ height: number; width: number; top: number; left: number }>({
 		height: 0,
 		width: 0,
@@ -16,9 +25,18 @@ export default function Home() {
 	})
 
 	function handleDragStart(event: DragStartEvent) {
-		const taskElement = document.querySelector(`[data-task-id="${event.active.id}"]`) as HTMLElement
+		const activeId = event.active.id
+		const task = toDoData.tasks[activeId as string]
+		const listId = task.list
+		const listColor = toDoData.lists[listId].color
+
+		const taskElement = document.querySelector(`[data-task-id="${activeId}"]`) as HTMLElement
 		const taskRect = taskElement.getBoundingClientRect()
 
+		setActiveTask({
+			data: task,
+			color: listColor,
+		})
 		setTaskMeasurements({ height: taskRect.height, width: taskRect.width, top: taskRect.top, left: taskRect.left })
 	}
 
@@ -93,6 +111,7 @@ export default function Home() {
 
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over, delta } = event
+		setActiveTask(emptyActiveTask)
 
 		if (!over?.data.current) return
 		if (!delta || (delta.x === 0 && delta.y === 0)) return
@@ -227,6 +246,7 @@ export default function Home() {
 						})}
 					</div>
 				</>
+				<DragOverlay>{activeTask.data ? <Task data={activeTask.data} color={activeTask.color} /> : null}</DragOverlay>
 			</DndContext>
 		</>
 	)
