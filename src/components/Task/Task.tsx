@@ -1,16 +1,15 @@
 import './task.scss'
 import { useEffect, useId, useRef, useState } from 'react'
-import { useDraggable } from '@dnd-kit/core'
 import { useSortable } from '@dnd-kit/sortable'
 import useToDoContext from '../../hooks/useToDoContext'
 
-import { Button } from '../Button'
 import {
 	TrashIcon as IconDelete,
 	PencilIcon as IconEdit,
 	ArrowUDownLeftIcon as IconSubmit,
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
+import { Button } from '../Button'
 import { TaskData, DraggableItemData } from '../../types'
 
 type TaskProps = {
@@ -26,21 +25,14 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
 
-	const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
+	const isDefaultList = list === defaultListId
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
 		data: {
 			type: 'task',
 			item: data,
 		} satisfies DraggableItemData,
 	})
-
-	// const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-	// 	id: _id,
-	// 	data: {
-	// 		type: 'task',
-	// 		item: data,
-	// 	} satisfies DraggableItemData,
-	// })
 
 	const componentId = useId()
 	const [isEditing, setIsEditing] = useState(false)
@@ -109,23 +101,15 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 
 	const style = {
 		transform: `
-			${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
-			${list === defaultListId ? `rotate(${rotation})` : ''}`,
+        	${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
+        	${isDefaultList ? `rotate(${rotation})` : ''}`,
 		backgroundColor: `var(--${bgColor})`,
-		left: `${position.x}%`,
-		top: `${position.y}%`,
+		left: isDefaultList ? `${position.x}%` : 'unset',
+		top: isDefaultList ? `${position.y}%` : 'unset',
+		opacity: isDragging ? 0 : 1,
+		zIndex: isDragging ? 1000 : 1,
+		transition: isDefaultList ? undefined : transition,
 	}
-
-	// const style = {
-	// 	transform: `
-	// 		${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
-	// 		${list === defaultListId ? `rotate(${rotation})` : ''}`,
-	// 	backgroundColor: `var(--${bgColor})`,
-	// 	left: `${position.x}%`,
-	// 	top: `${position.y}%`,
-	// 	zIndex: isDragging ? 1000 : 1,
-	// 	transition,
-	// }
 
 	useEffect(() => {
 		if (!isEditing) return
