@@ -15,9 +15,10 @@ import { TaskData, DraggableItemData } from '../../types'
 type TaskProps = {
 	data: TaskData
 	color?: string | null
+	isDraggedCopy?: boolean
 }
 
-export function Task({ data, color = 'purple' }: TaskProps) {
+export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
@@ -109,11 +110,11 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 
 	const style = {
 		transform: `
-        	${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
+			${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
         	${isDefaultList ? `rotate(${rotation})` : ''}`,
 		backgroundColor: `var(--${bgColor})`,
-		left: isDefaultList ? `${position.x}%` : 'unset',
-		top: isDefaultList ? `${position.y}%` : 'unset',
+		left: isDefaultList && !isDraggedCopy ? `${position.x}%` : undefined,
+		top: isDefaultList && !isDraggedCopy ? `${position.y}%` : undefined,
 		opacity: isDragging ? 0 : 1,
 		zIndex: isDragging ? 1000 : 1,
 		transition: isDefaultList ? undefined : transition,

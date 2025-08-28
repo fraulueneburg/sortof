@@ -1,6 +1,15 @@
 import { useState } from 'react'
 import useToDoContext from '../hooks/useToDoContext'
-import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from '@dnd-kit/core'
+import {
+	DndContext,
+	DragEndEvent,
+	DragStartEvent,
+	DragOverlay,
+	useSensors,
+	useSensor,
+	PointerSensor,
+	rectIntersection,
+} from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
 import { FormNewTask, FormNewList } from '../components/Forms'
@@ -23,6 +32,12 @@ export default function Home() {
 		top: 0,
 		left: 0,
 	})
+
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: { distance: 8 },
+		})
+	)
 
 	function handleDragStart(event: DragStartEvent) {
 		const activeId = event.active.id
@@ -236,7 +251,12 @@ export default function Home() {
 			</h1>
 			<FormNewTask />
 
-			<DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
+			<DndContext
+				onDragStart={handleDragStart}
+				onDragEnd={handleDragEnd}
+				modifiers={[restrictToWindowEdges]}
+				collisionDetection={rectIntersection}
+				sensors={sensors}>
 				<>
 					<FormNewList />
 					<div className="list-container">
@@ -246,7 +266,9 @@ export default function Home() {
 						})}
 					</div>
 				</>
-				<DragOverlay>{activeTask.data ? <Task data={activeTask.data} color={activeTask.color} /> : null}</DragOverlay>
+				<DragOverlay>
+					{activeTask.data ? <Task data={activeTask.data} color={activeTask.color} isDraggedCopy={true} /> : null}
+				</DragOverlay>
 			</DndContext>
 		</>
 	)
