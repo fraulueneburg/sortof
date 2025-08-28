@@ -33,6 +33,14 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 			item: data,
 		} satisfies DraggableItemData,
 	})
+	const isDefaultList = list === defaultListId
+
+	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const taskRef = useRef<HTMLLIElement>(null)
+	const mergeRefs = (node: HTMLLIElement | null) => {
+		taskRef.current = node
+		setNodeRef(node)
+	}
 
 	const componentId = useId()
 	const [isEditing, setIsEditing] = useState(false)
@@ -149,7 +157,9 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 			className={`task-item${checked ? ' checked' : ''}${isDragging ? ' is-dragging' : ''}`}
 			style={style}
 			data-task-id={_id}
-			ref={taskRef}>
+			ref={mergeRefs}
+			{...listeners}
+			{...attributes}>
 			{list !== defaultListId && (
 				<>
 					<input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />
@@ -166,9 +176,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 					/>
 				</div>
 			) : (
-				<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
-					{title}
-				</div>
+				<div className="title">{title}</div>
 			)}
 			<div className="actions">
 				{isEditing ? (
