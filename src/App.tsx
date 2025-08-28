@@ -1,5 +1,5 @@
 import './assets/scss/styles.scss'
-import { Routes, Route } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { Layout, Home, About } from './pages'
 
 export default function App() {

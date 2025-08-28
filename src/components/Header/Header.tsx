@@ -1,11 +1,11 @@
 import { useId } from 'react'
 
+import { ArrowsClockwiseIcon as IconStartover, HandIcon as IconHand } from '@phosphor-icons/react'
+
 import useToDoContext from '../../hooks/useToDoContext'
 import { getInitialToDoData } from '../../utils/getInitialToDoData'
 
-import { Link, Button } from '../../components'
-import { HandIcon as IconHand } from '@phosphor-icons/react'
-import { ArrowsClockwiseIcon as IconStartover } from '@phosphor-icons/react'
+import { Button, Link } from '../../components'
 
 export function Header() {
 	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()

@@ -1,7 +1,8 @@
 import './submenu.scss'
-import { useState, useId, ReactNode, useEffect, useRef } from 'react'
-import { Button } from '../../components'
+
+import { ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { DotsThreeIcon as FallbackMenuIcon } from '@phosphor-icons/react'
+import { Button } from '../../components'
 
 type SubmenuProps = {
 	children: ReactNode

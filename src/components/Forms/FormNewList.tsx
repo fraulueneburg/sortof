@@ -1,10 +1,11 @@
-import { nanoid } from 'nanoid'
 import { useMemo } from 'react'
+
+import { nanoid } from 'nanoid'
+import { PlusIcon as IconAdd } from '@phosphor-icons/react'
+
 import useToDoContext from '../../hooks/useToDoContext'
 import { ListData, ToDoData } from '../../types'
 import { colors } from '../../constants/colors'
-
-import { PlusIcon as IconAdd } from '@phosphor-icons/react'
 import { Button } from '../../components'
 
 export function FormNewList() {

@@ -1,4 +1,4 @@
-import { ReactNode, MouseEvent } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 
 type SharedProps = {
 	title: string

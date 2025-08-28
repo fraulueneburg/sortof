@@ -1,13 +1,15 @@
 import './list.scss'
 
-import { useCallback, useEffect, useRef, useState, useId } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
+
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import debounce from 'lodash/debounce'
+
 import useToDoContext from '../../hooks/useToDoContext'
+import { TaskData, ListData, DraggableItemData } from '../../types'
 
 import { Button, Task, Submenu, ColorDropdown } from '../../components'
-import { TaskData, ListData, DraggableItemData } from '../../types'
 
 type ListProps = {
 	data: ListData

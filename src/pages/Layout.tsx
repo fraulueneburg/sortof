@@ -1,7 +1,7 @@
-import { ToDoContextWrapper } from '../context/List.context'
 import { Outlet } from 'react-router-dom'
-import { Header, Footer } from '../components'
 import { IconContext } from '@phosphor-icons/react'
+import { ToDoContextWrapper } from '../context/List.context'
+import { Header, Footer } from '../components'
 
 export function Layout() {
 	return (
