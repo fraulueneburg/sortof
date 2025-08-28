@@ -1,7 +1,7 @@
 import { XIcon as IconClose } from '@phosphor-icons/react'
 import { Button } from '../components'
 
-export default function About() {
+export function About() {
 	return (
 		<>
 			<h1>About</h1>

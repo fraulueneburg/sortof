@@ -1,9 +1,6 @@
 import './assets/scss/styles.scss'
 import { Routes, Route } from 'react-router-dom'
-
-import Layout from './pages/Layout'
-import Home from './pages/Home'
-import About from './pages/About'
+import { Layout, Home, About } from './pages'
 
 export default function App() {
 	return (

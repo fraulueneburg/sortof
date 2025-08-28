@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import { Header, Footer } from '../components'
 import { IconContext } from '@phosphor-icons/react'
 
-export default function Layout() {
+export function Layout() {
 	return (
 		<>
 			<IconContext.Provider

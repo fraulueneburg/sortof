@@ -21,7 +21,7 @@ type activeItemType = {
 	color: string | null
 }
 
-export default function Home() {
+export function Home() {
 	const { toDoData, setToDoData, defaultListId } = useToDoContext()
 	const emptyActiveTask = { data: null, color: null }
 	const [activeTask, setActiveTask] = useState<activeItemType>(emptyActiveTask)
