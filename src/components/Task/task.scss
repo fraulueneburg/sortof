@@ -100,6 +100,8 @@
 	}
 
 	.title {
+		--actions-width: 40px;
+
 		align-self: center;
 		border-radius: var(--border-radius);
 		box-sizing: border-box;
@@ -108,7 +110,7 @@
 		overflow: hidden;
 		padding: var(--title-padding-inline);
 		padding-left: 1rem;
-		padding-right: var(--spacing);
+		padding-right: calc(var(--spacing) + var(--actions-width));
 		word-wrap: break-word;
 
 		@media (min-width: 1024px) {
@@ -143,6 +145,9 @@
 	.actions {
 		display: flex;
 		gap: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
 	}
 
 	button {

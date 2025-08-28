@@ -1,32 +1,43 @@
 import './task.scss'
 import { useEffect, useId, useRef, useState } from 'react'
-import { useDraggable } from '@dnd-kit/core'
+import { useSortable } from '@dnd-kit/sortable'
 import useToDoContext from '../../hooks/useToDoContext'
 
-import { Button } from '../Button'
 import {
 	TrashIcon as IconDelete,
 	PencilIcon as IconEdit,
 	ArrowUDownLeftIcon as IconSubmit,
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
-import { TaskData } from '../../types'
+import { Button } from '../Button'
+import { TaskData, DraggableItemData } from '../../types'
 
 type TaskProps = {
 	data: TaskData
-	color?: string
+	color?: string | null
+	isDraggedCopy?: boolean
 }
 
-export function Task({ data, color = 'purple' }: TaskProps) {
+export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const taskRef = useRef<HTMLLIElement>(null)
-	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
-	const { attributes, listeners, setNodeRef, transform } = useDraggable({
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
+		data: {
+			type: 'task',
+			item: data,
+		} satisfies DraggableItemData,
 	})
+	const isDefaultList = list === defaultListId
+
+	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const taskRef = useRef<HTMLLIElement>(null)
+	const mergeRefs = (node: HTMLLIElement | null) => {
+		taskRef.current = node
+		setNodeRef(node)
+	}
 
 	const componentId = useId()
 	const [isEditing, setIsEditing] = useState(false)
@@ -96,10 +107,13 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 	const style = {
 		transform: `
 			${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
-			${list === defaultListId ? `rotate(${rotation})` : ''}`,
+        	${isDefaultList ? `rotate(${rotation})` : ''}`,
 		backgroundColor: `var(--${bgColor})`,
-		left: `${position.x}%`,
-		top: `${position.y}%`,
+		left: isDefaultList && !isDraggedCopy ? `${position.x}%` : undefined,
+		top: isDefaultList && !isDraggedCopy ? `${position.y}%` : undefined,
+		opacity: isDragging ? 0 : 1,
+		transition: isDefaultList ? undefined : transition,
+		zIndex: isDragging ? 1000 : 1,
 	}
 
 	useEffect(() => {
@@ -127,6 +141,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 		document.addEventListener('keydown', handleKeyDownGlobal)
 		document.addEventListener('pointerdown', handlePointerDownGlobal)
 		document.addEventListener('focusin', handleFocusInGlobal)
+
 		return () => {
 			document.removeEventListener('keydown', handleKeyDownGlobal)
 			document.removeEventListener('pointerdown', handlePointerDownGlobal)
@@ -136,10 +151,12 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 
 	return (
 		<li
-			className={`task-item${checked ? ' checked' : ''}${transform ? ' is-dragging' : ''}`}
+			className={`task-item${checked ? ' checked' : ''}${isDragging ? ' is-dragging' : ''}`}
 			style={style}
 			data-task-id={_id}
-			ref={taskRef}>
+			ref={mergeRefs}
+			{...listeners}
+			{...attributes}>
 			{list !== defaultListId && (
 				<>
 					<input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />
@@ -156,9 +173,7 @@ export function Task({ data, color = 'purple' }: TaskProps) {
 					/>
 				</div>
 			) : (
-				<div className="title" ref={setNodeRef} {...listeners} {...attributes}>
-					{title}
-				</div>
+				<div className="title">{title}</div>
 			)}
 			<div className="actions">
 				{isEditing ? (

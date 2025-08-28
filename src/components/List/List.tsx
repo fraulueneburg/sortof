@@ -1,9 +1,12 @@
 import './list.scss'
+
 import { useCallback, useEffect, useRef, useState, useId } from 'react'
 import { useDroppable } from '@dnd-kit/core'
-import { TaskData, ListData } from '../../types'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import debounce from 'lodash/debounce'
 import useToDoContext from '../../hooks/useToDoContext'
+
+import { TaskData, ListData, DraggableItemData } from '../../types'
 
 import { Task } from '../Task'
 import { Button } from '../Button'
@@ -17,7 +20,17 @@ type ListProps = {
 
 export function List({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
-	const { setToDoData, setTaskCount, defaultListId } = useToDoContext()
+	const { toDoData, setToDoData, setTaskCount, defaultListId } = useToDoContext()
+
+	const isDefaultList = _id === defaultListId
+
+	const { setNodeRef } = useDroppable({
+		id: _id,
+		data: {
+			type: 'list',
+			item: data,
+		} satisfies DraggableItemData,
+	})
 
 	const isNewList = title === ''
 	const [isRenaming, setRenameMode] = useState(isNewList)
@@ -27,10 +40,6 @@ export function List({ data, tasks }: ListProps) {
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = useId()
 	const fallbackName = 'Unnamed list'
-
-	const { setNodeRef } = useDroppable({
-		id: _id,
-	})
 
 	const debouncedUpdate = useCallback(
 		debounce((updatedName) => {
@@ -133,7 +142,7 @@ export function List({ data, tasks }: ListProps) {
 
 	return (
 		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
-			{_id === defaultListId ? (
+			{isDefaultList ? (
 				<h2 className="list-name sr-only">{title}</h2>
 			) : (
 				<header>
@@ -176,11 +185,20 @@ export function List({ data, tasks }: ListProps) {
 					</aside>
 				</header>
 			)}
+
 			{tasks?.length > 0 && (
 				<ul>
-					{tasks.map((task) => {
-						return <Task key={task._id} data={task} color={listColor} />
-					})}
+					{isDefaultList ? (
+						tasks.map((task) => {
+							return <Task key={task._id} data={task} color={listColor} />
+						})
+					) : (
+						<SortableContext items={toDoData.tasksByList[_id]} strategy={verticalListSortingStrategy}>
+							{tasks.map((task) => {
+								return <Task key={task._id} data={task} color={listColor} />
+							})}
+						</SortableContext>
+					)}
 				</ul>
 			)}
 		</article>
