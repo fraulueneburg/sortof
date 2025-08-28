@@ -111,9 +111,9 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 		backgroundColor: `var(--${bgColor})`,
 		left: isDefaultList && !isDraggedCopy ? `${position.x}%` : undefined,
 		top: isDefaultList && !isDraggedCopy ? `${position.y}%` : undefined,
-		opacity: isDragging ? 0 : 1,
+		opacity: isDragging ? 0 : undefined,
 		transition: isDefaultList ? undefined : transition,
-		zIndex: isDragging ? 1000 : 1,
+		zIndex: isDragging ? 1000 : undefined,
 	}
 
 	useEffect(() => {
