@@ -22,11 +22,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const taskRef = useRef<HTMLLIElement>(null)
-	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
-
-	const isDefaultList = list === defaultListId
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
 		data: {
@@ -116,8 +112,8 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 		left: isDefaultList && !isDraggedCopy ? `${position.x}%` : undefined,
 		top: isDefaultList && !isDraggedCopy ? `${position.y}%` : undefined,
 		opacity: isDragging ? 0 : 1,
-		zIndex: isDragging ? 1000 : 1,
 		transition: isDefaultList ? undefined : transition,
+		zIndex: isDragging ? 1000 : 1,
 	}
 
 	useEffect(() => {
