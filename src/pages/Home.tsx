@@ -8,7 +8,7 @@ import {
 	useSensors,
 	useSensor,
 	PointerSensor,
-	rectIntersection,
+	closestCenter,
 } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
@@ -162,7 +162,7 @@ export default function Home() {
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 				modifiers={[restrictToWindowEdges]}
-				collisionDetection={rectIntersection}
+				collisionDetection={closestCenter}
 				sensors={sensors}>
 				<>
 					<FormNewList />
