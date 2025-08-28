@@ -24,7 +24,7 @@ type WithOnClick = {
 
 type LinkProps = SharedProps & (WithHref | WithOnClick)
 
-export default function Link({
+export function Link({
 	title,
 	hideTitle,
 	iconBefore,

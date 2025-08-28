@@ -9,7 +9,8 @@ import {
 	ArrowUDownLeftIcon as IconSubmit,
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
-import { Button } from '../Button'
+
+import { Button } from '../../components'
 import { TaskData, DraggableItemData } from '../../types'
 
 type TaskProps = {

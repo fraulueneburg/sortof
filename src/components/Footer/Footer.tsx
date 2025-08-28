@@ -1,7 +1,7 @@
-import Link from './Link'
+import { Link } from '../../components'
 import { ArrowUpRightIcon as IconExternalLink } from '@phosphor-icons/react'
 
-export default function Footer() {
+export function Footer() {
 	return (
 		<>
 			<footer id="page-footer">

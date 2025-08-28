@@ -12,9 +12,8 @@ import {
 } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
+import { List, Task } from '../components'
 import { FormNewTask, FormNewList } from '../components/Forms'
-import { List } from '../components/List'
-import { Task } from '../components/Task'
 import { TaskData } from '../types'
 
 type activeItemType = {

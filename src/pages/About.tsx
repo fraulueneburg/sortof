@@ -1,5 +1,5 @@
 import { XIcon as IconClose } from '@phosphor-icons/react'
-import { Button } from '../components/Button'
+import { Button } from '../components'
 
 export default function About() {
 	return (

@@ -6,12 +6,8 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import debounce from 'lodash/debounce'
 import useToDoContext from '../../hooks/useToDoContext'
 
+import { Button, Task, Submenu, ColorDropdown } from '../../components'
 import { TaskData, ListData, DraggableItemData } from '../../types'
-
-import { Task } from '../Task'
-import { Button } from '../Button'
-import { Submenu } from '../Submenu'
-import { ColorDropdown } from '../Dropdown'
 
 type ListProps = {
 	data: ListData
