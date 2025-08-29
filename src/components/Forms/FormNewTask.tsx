@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { ArrowUDownLeftIcon as IconSubmit } from '@phosphor-icons/react'
 import { nanoid } from 'nanoid'
@@ -10,6 +10,7 @@ import { Button } from '../../components'
 export function FormNewTask() {
 	const { setToDoData, taskCount, setTaskCount, defaultListId } = useToDoContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
+	const inputRef = useRef<HTMLInputElement>(null)
 
 	const maxTasksNum = 80
 	const maxTasksReached = taskCount >= maxTasksNum
@@ -37,14 +38,77 @@ export function FormNewTask() {
 			const randomPercent = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 			const randomBool = Math.random() < 0.5
 
+			// Check rectangle intersection with input field
+			// Calculate random position
+			const rectsIntersect = (
+				a: { left: number; top: number; width: number; height: number },
+				b: { left: number; top: number; width: number; height: number }
+			) => {
+				const aRight = a.left + a.width
+				const aBottom = a.top + a.height
+				const bRight = b.left + b.width
+				const bBottom = b.top + b.height
+				return !(aRight <= b.left || bRight <= a.left || aBottom <= b.top || bBottom <= a.top)
+			}
+
+			const inputElem = inputRef.current
+			const inputRect = inputElem ? inputElem.getBoundingClientRect() : null
+			const listRectPx = listElement.getBoundingClientRect()
+
+			let positionPercent = { x: 0, y: 0 }
+
+			if (inputRect) {
+				let attempts = 0
+				const maxAttempts = 30
+				let found = false
+				while (attempts < maxAttempts && !found) {
+					const x = randomPercent(0, Math.max(0, 100 - taskWidthPercent))
+					const y = randomPercent(0, Math.max(0, 100 - taskHeightPercent))
+
+					const taskRectPx = {
+						left: listRectPx.left + (x / 100) * listRectPx.width,
+						top: listRectPx.top + (y / 100) * listRectPx.height,
+						width: estimatedTaskWidth,
+						height: estimatedTaskHeight,
+					}
+
+					if (
+						!rectsIntersect(taskRectPx, {
+							left: inputRect.left,
+							top: inputRect.top,
+							width: inputRect.width,
+							height: inputRect.height,
+						})
+					) {
+						positionPercent = { x, y }
+						found = true
+					}
+					attempts++
+				}
+
+				// Fallback: place task just below input (if applicable) within list bounds
+				if (!found) {
+					const gutter = 8
+					const desiredTopPx = Math.max(0, inputRect.bottom + gutter - listRectPx.top)
+					const y = Math.min(100 - taskHeightPercent, Math.max(0, desiredTopPx / (listRectPx.height / 100)))
+					const x = randomPercent(0, Math.max(0, 100 - taskWidthPercent))
+					positionPercent = { x, y }
+				}
+			} else {
+				positionPercent = {
+					x: randomPercent(0, Math.max(0, 100 - taskWidthPercent)),
+					y: randomPercent(0, Math.max(0, 100 - taskHeightPercent)),
+				}
+			}
+
 			const newTask: TaskData = {
 				_id: newTaskId,
 				title: trimmedName,
 				checked: false,
 				list: defaultListId,
 				position: {
-					x: randomPercent(0, 100 - taskWidthPercent),
-					y: randomPercent(0, 100 - taskHeightPercent),
+					x: positionPercent.x,
+					y: positionPercent.y,
 				},
 				rotation: randomBool ? '5deg' : '-5deg',
 			}
@@ -78,6 +142,7 @@ export function FormNewTask() {
 				<input
 					type="text"
 					aria-label="new task name"
+					ref={inputRef}
 					onChange={handleChangeTitle}
 					value={newItemTitle}
 					disabled={maxTasksReached}
