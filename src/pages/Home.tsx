@@ -1,28 +1,29 @@
 import { useState } from 'react'
-import useToDoContext from '../hooks/useToDoContext'
+
 import {
 	DndContext,
 	DragEndEvent,
-	DragStartEvent,
 	DragOverlay,
-	useSensors,
-	useSensor,
+	DragStartEvent,
 	PointerSensor,
 	closestCenter,
+	useSensor,
+	useSensors,
 } from '@dnd-kit/core'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
-import { FormNewTask, FormNewList } from '../components/Forms'
-import { List } from '../components/List'
-import { Task } from '../components/Task'
+import useToDoContext from '../hooks/useToDoContext'
 import { TaskData } from '../types'
+
+import { List, Task } from '../components'
+import { FormNewList, FormNewTask } from '../components/Forms'
 
 type activeItemType = {
 	data: TaskData | null
 	color: string | null
 }
 
-export default function Home() {
+export function Home() {
 	const { toDoData, setToDoData, defaultListId } = useToDoContext()
 	const emptyActiveTask = { data: null, color: null }
 	const [activeTask, setActiveTask] = useState<activeItemType>(emptyActiveTask)

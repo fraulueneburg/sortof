@@ -1,16 +1,19 @@
 import './task.scss'
-import { useEffect, useId, useRef, useState } from 'react'
-import { useSortable } from '@dnd-kit/sortable'
-import useToDoContext from '../../hooks/useToDoContext'
 
+import { useEffect, useId, useRef, useState } from 'react'
+
+import { useSortable } from '@dnd-kit/sortable'
 import {
-	TrashIcon as IconDelete,
-	PencilIcon as IconEdit,
 	ArrowUDownLeftIcon as IconSubmit,
+	PencilIcon as IconEdit,
+	TrashIcon as IconDelete,
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
-import { Button } from '../Button'
-import { TaskData, DraggableItemData } from '../../types'
+
+import useToDoContext from '../../hooks/useToDoContext'
+import { DraggableItemData, TaskData } from '../../types'
+
+import { Button } from '../../components'
 
 type TaskProps = {
 	data: TaskData

@@ -1,4 +1,4 @@
-import { ReactNode, MouseEvent } from 'react'
+import { MouseEvent, ReactNode } from 'react'
 
 type SharedProps = {
 	title: string
@@ -24,7 +24,7 @@ type WithOnClick = {
 
 type LinkProps = SharedProps & (WithHref | WithOnClick)
 
-export default function Link({
+export function Link({
 	title,
 	hideTitle,
 	iconBefore,
