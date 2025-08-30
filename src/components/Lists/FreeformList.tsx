@@ -10,7 +10,6 @@ import { Task } from '../../components'
 
 export function FreeformList({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
-	const { defaultListId } = useToDoContext()
 
 	const { setNodeRef } = useDroppable({
 		id: _id,
