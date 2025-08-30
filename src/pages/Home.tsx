@@ -15,8 +15,9 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import useToDoContext from '../hooks/useToDoContext'
 import { TaskData } from '../types'
 
-import { List, Task } from '../components'
+import { Task } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
+import { FreeformList, LinearList } from '../components/Lists'
 
 type activeItemType = {
 	data: TaskData | null
@@ -28,6 +29,10 @@ export function Home() {
 	const emptyActiveTask = { data: null, color: null }
 	const [activeTask, setActiveTask] = useState<activeItemType>(emptyActiveTask)
 	const [draggedItemRef, setDraggedItemRef] = useState<HTMLElement | null>(null)
+
+	const freeformListData = toDoData.lists[defaultListId]
+	const freeformListTasks = toDoData.tasksByList[defaultListId]?.map((elem) => toDoData.tasks[elem]) || []
+	const linearListsData = Object.values(toDoData.lists).filter((elem) => elem._id !== defaultListId)
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -157,6 +162,7 @@ export function Home() {
 				need to do <wbr />
 				today?
 			</h1>
+
 			<FormNewTask />
 
 			<DndContext
@@ -165,15 +171,16 @@ export function Home() {
 				modifiers={[restrictToWindowEdges]}
 				collisionDetection={closestCenter}
 				sensors={sensors}>
-				<>
-					<FormNewList />
-					<div className="list-container">
-						{Object.values(toDoData.lists).map((list) => {
-							const listTasks = toDoData.tasksByList[list._id]?.map((currentTaskId) => toDoData.tasks[currentTaskId]) || []
-							return <List key={list._id} data={list} tasks={listTasks} />
-						})}
-					</div>
-				</>
+				<FormNewList />
+				<div className="list-container">
+					<FreeformList key={defaultListId} data={freeformListData} tasks={freeformListTasks} />
+
+					{Object.values(linearListsData).map((elem) => {
+						const listTasks = toDoData.tasksByList[elem._id]?.map((e) => toDoData.tasks[e]) || []
+
+						return <LinearList key={elem._id} data={elem} tasks={listTasks} />
+					})}
+				</div>
 				<DragOverlay>
 					{activeTask.data ? <Task data={activeTask.data} color={activeTask.color} isDraggedCopy={true} /> : null}
 				</DragOverlay>

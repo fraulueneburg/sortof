@@ -1,4 +1,4 @@
-import './list.scss'
+import './lists.scss'
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
@@ -7,16 +7,12 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import debounce from 'lodash/debounce'
 
 import useToDoContext from '../../hooks/useToDoContext'
-import { TaskData, ListData, DraggableItemData } from '../../types'
+import { DraggableItemData } from '../../types'
+import { ListProps } from '.'
 
-import { Button, Task, Submenu, ColorDropdown } from '../../components'
+import { Button, Task, Submenu, ColorDropdown } from '..'
 
-type ListProps = {
-	data: ListData
-	tasks: TaskData[]
-}
-
-export function List({ data, tasks }: ListProps) {
+export function LinearList({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
 	const { toDoData, setToDoData, setTaskCount, defaultListId } = useToDoContext()
 
