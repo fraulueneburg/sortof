@@ -14,9 +14,7 @@ import { Button, Task, Submenu, ColorDropdown } from '..'
 
 export function LinearList({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
-	const { toDoData, setToDoData, setTaskCount, defaultListId } = useToDoContext()
-
-	const isDefaultList = _id === defaultListId
+	const { toDoData, setToDoData, setTaskCount } = useToDoContext()
 
 	const { setNodeRef } = useDroppable({
 		id: _id,
@@ -136,63 +134,53 @@ export function LinearList({ data, tasks }: ListProps) {
 
 	return (
 		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
-			{isDefaultList ? (
-				<h2 className="list-name sr-only">{title}</h2>
-			) : (
-				<header>
-					{isRenaming ? (
-						<>
-							<textarea
-								className="list-name as-input"
-								aria-label="list name"
-								placeholder={fallbackName}
-								aria-describedby={inputDescriptionId}
-								onChange={(event) => handleLiveRename(event)}
-								value={listName}
-								ref={inputRef}
-								maxLength={90}
-								spellCheck={false}
-							/>
-							<p className="sr-only" id={inputDescriptionId}>
-								Rename your list here. The field auto-saves.
-							</p>
-						</>
-					) : (
-						<h2 className="list-name" onClick={() => setRenameMode(true)}>
-							{title}
-						</h2>
-					)}
-					<aside>
-						<>
-							<ColorDropdown selected={listColor} onColorChange={handleColorChange} />
-							<Submenu title={'list actions'} hideTitle={true}>
-								<ul>
-									<li>
-										<Button title="rename" aria-label="rename list" onClick={() => setRenameMode(true)} size="sm" />
-									</li>
-									<li>
-										<Button title="delete" aria-label="delete list" onClick={handleDeleteList} size="sm" />
-									</li>
-								</ul>
-							</Submenu>
-						</>
-					</aside>
-				</header>
-			)}
+			<header>
+				{isRenaming ? (
+					<>
+						<textarea
+							className="list-name as-input"
+							aria-label="list name"
+							placeholder={fallbackName}
+							aria-describedby={inputDescriptionId}
+							onChange={(event) => handleLiveRename(event)}
+							value={listName}
+							ref={inputRef}
+							maxLength={90}
+							spellCheck={false}
+						/>
+						<p className="sr-only" id={inputDescriptionId}>
+							Rename your list here. The field auto-saves.
+						</p>
+					</>
+				) : (
+					<h2 className="list-name" onClick={() => setRenameMode(true)}>
+						{title}
+					</h2>
+				)}
+				<aside>
+					<>
+						<ColorDropdown selected={listColor} onColorChange={handleColorChange} />
+						<Submenu title={'list actions'} hideTitle={true}>
+							<ul>
+								<li>
+									<Button title="rename" aria-label="rename list" onClick={() => setRenameMode(true)} size="sm" />
+								</li>
+								<li>
+									<Button title="delete" aria-label="delete list" onClick={handleDeleteList} size="sm" />
+								</li>
+							</ul>
+						</Submenu>
+					</>
+				</aside>
+			</header>
 
 			{tasks?.length > 0 && (
 				<ul>
-					{isDefaultList ? (
-						tasks.map((task) => {
-							return <Task key={task._id} data={task} color={listColor} />
-						})
-					) : (
-						<SortableContext items={toDoData.tasksByList[_id]} strategy={verticalListSortingStrategy}>
-							{tasks.map((task) => {
-								return <Task key={task._id} data={task} color={listColor} />
-							})}
-						</SortableContext>
-					)}
+					<SortableContext items={toDoData.tasksByList[_id]} strategy={verticalListSortingStrategy}>
+						{tasks.map((task) => (
+							<Task key={task._id} data={task} color={listColor} />
+						))}
+					</SortableContext>
 				</ul>
 			)}
 		</article>

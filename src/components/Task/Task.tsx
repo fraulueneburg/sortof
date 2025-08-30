@@ -160,13 +160,9 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 			ref={mergeRefs}
 			{...listeners}
 			{...attributes}>
-			{list !== defaultListId && (
-				<>
-					<input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />
-				</>
-			)}
-			{isEditing ? (
-				<div className="title">
+			{list !== defaultListId && <input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />}
+			<div className="title">
+				{isEditing ? (
 					<textarea
 						id={`${componentId}title-field`}
 						ref={inputRef}
@@ -174,10 +170,10 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 						defaultValue={title}
 						onKeyDown={handleKeyDown}
 					/>
-				</div>
-			) : (
-				<div className="title">{title}</div>
-			)}
+				) : (
+					title
+				)}
+			</div>
 			<div className="actions">
 				{isEditing ? (
 					<>
