@@ -1,4 +1,4 @@
-import { ToDoData } from '../types/listdata'
+import { ToDoData } from '../types'
 
 export const getInitialToDoData = (defaultListId: string): ToDoData => {
 	try {
@@ -11,7 +11,8 @@ export const getInitialToDoData = (defaultListId: string): ToDoData => {
 	}
 	return {
 		lists: { [defaultListId]: { _id: defaultListId, title: 'Default List (unsorted tasks)', color: 'purple' } },
-		tasksByList: {},
+		linearListOrder: [],
 		tasks: {},
+		tasksByList: {},
 	}
 }

@@ -89,8 +89,21 @@
 	padding: 0.75rem 1rem;
 	position: relative;
 
+	&.is-dragging {
+		opacity: 0.5;
+		cursor: grabbing;
+	}
+
 	&:has(*:focus) {
 		z-index: 15;
+	}
+
+	&:not(.list_unsorted) {
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
 	}
 
 	header {
@@ -110,6 +123,7 @@
 
 		> .list-name {
 			border-bottom: calc(var(--outline-width) + 1px) var(--outline-style) transparent;
+			cursor: text;
 			line-height: 1.4;
 			margin-top: calc(-1 * var(--padding-y));
 			min-height: 1.05lh;
@@ -158,5 +172,20 @@ textarea.list-name {
 
 	&::placeholder {
 		opacity: 0.7;
+	}
+}
+
+.list-drag-overlay {
+	background-color: var(--color-surface);
+	border-radius: var(--border-radius-base);
+	border: var(--border-base);
+	padding: 0.75rem 1rem;
+	box-shadow: var(--box-shadow);
+	transform: rotate(5deg);
+
+	h2 {
+		margin: 0;
+		font-size: var(--font-size-h2);
+		color: var(--color-text);
 	}
 }

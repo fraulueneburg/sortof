@@ -15,6 +15,8 @@ export function FormNewList() {
 	const defaultColorIndex = useMemo(() => colors.findIndex((elem) => elem.name === defaultListColor), [colors])
 
 	const handleCreateNewList = () => {
+		console.log('Creating new list...')
+
 		const totalListsNum = Object.keys(toDoData.lists).length
 		const listColorIndex = (defaultColorIndex + (totalListsNum - 1)) % totalColorsNum
 
@@ -35,6 +37,7 @@ export function FormNewList() {
 				...prev.tasksByList,
 				[newId]: [],
 			},
+			linearListOrder: [...prev.linearListOrder, newId],
 		}))
 	}
 

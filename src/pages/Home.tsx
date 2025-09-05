@@ -10,29 +10,31 @@ import {
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core'
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
 import useToDoContext from '../hooks/useToDoContext'
-import { TaskData } from '../types'
+import { ListData, TaskData } from '../types'
 
 import { Task } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
 import { FreeformList, LinearList } from '../components/Lists'
 
-type activeItemType = {
-	data: TaskData | null
-	color: string | null
-}
+type activeItemType =
+	| { data: TaskData | null; color: string | null; type: 'task' | null }
+	| { data: ListData | null; color: string | null; type: 'list' | null }
+	| { type: null; data: null; color: null }
 
 export function Home() {
 	const { toDoData, setToDoData, defaultListId } = useToDoContext()
-	const emptyActiveTask = { data: null, color: null }
-	const [activeTask, setActiveTask] = useState<activeItemType>(emptyActiveTask)
+	const emptyActiveItem: activeItemType = { data: null, color: null, type: null }
+	const [activeItem, setActiveItem] = useState<activeItemType>(emptyActiveItem)
 	const [draggedItemRef, setDraggedItemRef] = useState<HTMLElement | null>(null)
 
 	const freeformListData = toDoData.lists[defaultListId]
 	const freeformListTasks = toDoData.tasksByList[defaultListId]?.map((elem) => toDoData.tasks[elem]) || []
-	const linearListsData = Object.values(toDoData.lists).filter((elem) => elem._id !== defaultListId)
+
+	const linearListsIds = toDoData.linearListOrder
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -42,115 +44,157 @@ export function Home() {
 
 	function handleDragStart(event: DragStartEvent) {
 		const activeId = event.active.id
-		const task = toDoData.tasks[activeId as string]
-		const listId = task.list
-		const listColor = toDoData.lists[listId].color
+		const activeType = event.active.data.current?.type
 
-		const taskElement = document.querySelector(`[data-task-id="${activeId}"]`) as HTMLElement
+		if (activeType === 'task') {
+			const task = toDoData.tasks[activeId as string]
+			const listId = task.list
+			const listColor = toDoData.lists[listId].color
 
-		setDraggedItemRef(taskElement)
+			const taskElement = document.querySelector(`[data-task-id="${activeId}"]`) as HTMLElement
+			setDraggedItemRef(taskElement)
 
-		setActiveTask({
-			data: task,
-			color: listColor,
-		})
+			setActiveItem({
+				data: task,
+				color: listColor,
+				type: 'task',
+			})
+		} else if (activeType === 'list') {
+			const list = toDoData.lists[activeId as string]
+
+			const listElement = document.querySelector(`[data-list-id="${activeId}"]`) as HTMLElement
+			setDraggedItemRef(listElement)
+
+			setActiveItem({
+				data: list,
+				color: list.color,
+				type: 'list',
+			})
+		}
 	}
 
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over, delta } = event
-		setActiveTask(emptyActiveTask)
+		setActiveItem(emptyActiveItem)
 
 		if (!over?.data.current) return
 		if (!delta || (delta.x === 0 && delta.y === 0)) return
 
-		const currentTaskId = active.id as string
-		const currentTask = toDoData.tasks[currentTaskId]
-		const currentListId = currentTask.list
-		const currListOrder = [...toDoData.tasksByList[currentListId]]
-
+		const activeType = active.data.current?.type
 		const overType = over.data.current.type
-		const overItem = over.data.current.item
-		const targetListId = overType === 'task' ? overItem.list : over.id
-		const targetListOrder = [...toDoData.tasksByList[targetListId]]
 
-		let newPosition = { x: 0, y: 0 }
+		if (activeType === 'list') {
+			const currentListId = active.id as string
+			const targetListId = over.data.current.item._id as string
 
-		const isDefaultList = targetListId === defaultListId
-		const isDifferentList = currentListId !== targetListId
-		const isSameList = currentListId === targetListId
+			if (overType !== 'list' || !targetListId || targetListId === currentListId || targetListId === defaultListId) return
 
-		if (!currentTask || !targetListId) return
-		if (overType === 'task' && currentTaskId === over.id && !isDefaultList) return
+			const currentIndex = linearListsIds.indexOf(currentListId)
+			const targetIndex = linearListsIds.indexOf(targetListId)
 
-		// calculate position (free dragging)
-		if (isDefaultList) {
-			const taskMeasurements = draggedItemRef
-				? {
-						height: draggedItemRef.getBoundingClientRect().height,
-						width: draggedItemRef.getBoundingClientRect().width,
-						top: draggedItemRef.getBoundingClientRect().top,
-						left: draggedItemRef.getBoundingClientRect().left,
-				  }
-				: null
+			if (currentIndex === -1 || targetIndex === -1 || currentIndex === targetIndex) return
 
-			const draggedDistance = { x: delta.x, y: delta.y }
-			const taskStartPos = { x: taskMeasurements?.left || 0, y: taskMeasurements?.top || 0 }
-			const taskEndPos = { x: taskStartPos.x + draggedDistance.x, y: taskStartPos.y + draggedDistance.y }
+			const newListOrder = [...linearListsIds]
+			newListOrder.splice(currentIndex, 1)
+			newListOrder.splice(targetIndex, 0, currentListId)
 
-			const listElem = document.querySelector(`.${targetListId}`) as HTMLElement
-			const listRect = listElem.getBoundingClientRect()
-			const listWidth = listRect.width
-			const listHeight = listRect.height
-			const listOffset = { x: listRect.left, y: listRect.top }
-
-			const taskEndPosPercent = {
-				x: (taskEndPos.x - listOffset.x) / (listWidth / 100),
-				y: (taskEndPos.y - listOffset.y) / (listHeight / 100),
-			}
-
-			const taskWidthPercent = (taskMeasurements?.width || 0) / (listWidth / 100)
-			const taskHeightPercent = (taskMeasurements?.height || 0) / (listHeight / 100)
-
-			newPosition = {
-				x: Math.max(0, Math.min(taskEndPosPercent.x, 100 - taskWidthPercent)),
-				y: Math.max(0, Math.min(taskEndPosPercent.y, 100 - taskHeightPercent)),
-			}
-		}
-
-		const sortTaskIntoList = (newListOrder: string[]) => {
-			const currIndex = currListOrder.indexOf(currentTaskId)
-			const newIndex = overType === 'list' || isDefaultList ? newListOrder.length : newListOrder.indexOf(over.id as string)
-
-			if (!isDefaultList && isSameList && currIndex === newIndex) return
-
-			currListOrder.splice(currIndex, 1)
-			newListOrder.splice(newIndex, 0, currentTaskId)
-		}
-
-		sortTaskIntoList(isSameList ? currListOrder : targetListOrder)
-
-		setToDoData((prev) => {
-			const { tasks, tasksByList } = prev
-
-			const updatedTask = {
-				...tasks[currentTaskId],
-				...(isDifferentList ? { list: targetListId } : {}),
-				...(isDefaultList ? { position: newPosition } : {}),
-			}
-
-			return {
+			setToDoData((prev) => ({
 				...prev,
-				tasks: {
-					...tasks,
-					[currentTaskId]: updatedTask,
-				},
-				tasksByList: {
-					...tasksByList,
-					[currentListId]: [...currListOrder],
-					...(isDifferentList && { [targetListId]: [...targetListOrder] }),
-				},
+				linearListOrder: newListOrder,
+			}))
+
+			return
+		}
+
+		if (activeType === 'task') {
+			const currentTaskId = active.id as string
+			const currentTask = toDoData.tasks[currentTaskId]
+			const currentListId = currentTask.list
+			const currListOrder = [...toDoData.tasksByList[currentListId]]
+
+			const overItem = over.data.current.item
+			const targetListId = overType === 'task' ? overItem.list : over.id
+			const targetListOrder = [...toDoData.tasksByList[targetListId]]
+
+			let newPosition = { x: 0, y: 0 }
+
+			const isDefaultList = targetListId === defaultListId
+			const isDifferentList = currentListId !== targetListId
+			const isSameList = currentListId === targetListId
+
+			if (!currentTask || !targetListId) return
+			if (overType === 'task' && currentTaskId === over.id && !isDefaultList) return
+
+			// calculate position (free dragging)
+			if (isDefaultList) {
+				const taskMeasurements = draggedItemRef
+					? {
+							height: draggedItemRef.getBoundingClientRect().height,
+							width: draggedItemRef.getBoundingClientRect().width,
+							top: draggedItemRef.getBoundingClientRect().top,
+							left: draggedItemRef.getBoundingClientRect().left,
+					  }
+					: null
+
+				const draggedDistance = { x: delta.x, y: delta.y }
+				const taskStartPos = { x: taskMeasurements?.left || 0, y: taskMeasurements?.top || 0 }
+				const taskEndPos = { x: taskStartPos.x + draggedDistance.x, y: taskStartPos.y + draggedDistance.y }
+
+				const listElem = document.querySelector(`.${targetListId}`) as HTMLElement
+				const listRect = listElem.getBoundingClientRect()
+				const listWidth = listRect.width
+				const listHeight = listRect.height
+				const listOffset = { x: listRect.left, y: listRect.top }
+
+				const taskEndPosPercent = {
+					x: (taskEndPos.x - listOffset.x) / (listWidth / 100),
+					y: (taskEndPos.y - listOffset.y) / (listHeight / 100),
+				}
+
+				const taskWidthPercent = (taskMeasurements?.width || 0) / (listWidth / 100)
+				const taskHeightPercent = (taskMeasurements?.height || 0) / (listHeight / 100)
+
+				newPosition = {
+					x: Math.max(0, Math.min(taskEndPosPercent.x, 100 - taskWidthPercent)),
+					y: Math.max(0, Math.min(taskEndPosPercent.y, 100 - taskHeightPercent)),
+				}
 			}
-		})
+
+			const sortTaskIntoList = (newListOrder: string[]) => {
+				const currIndex = currListOrder.indexOf(currentTaskId)
+				const newIndex = overType === 'list' || isDefaultList ? newListOrder.length : newListOrder.indexOf(over.id as string)
+
+				if (!isDefaultList && isSameList && currIndex === newIndex) return
+
+				currListOrder.splice(currIndex, 1)
+				newListOrder.splice(newIndex, 0, currentTaskId)
+			}
+
+			sortTaskIntoList(isSameList ? currListOrder : targetListOrder)
+
+			setToDoData((prev) => {
+				const { tasks, tasksByList } = prev
+
+				const updatedTask = {
+					...tasks[currentTaskId],
+					...(isDifferentList ? { list: targetListId } : {}),
+					...(isDefaultList ? { position: newPosition } : {}),
+				}
+
+				return {
+					...prev,
+					tasks: {
+						...tasks,
+						[currentTaskId]: updatedTask,
+					},
+					tasksByList: {
+						...tasksByList,
+						[currentListId]: [...currListOrder],
+						...(isDifferentList && { [targetListId]: [...targetListOrder] }),
+					},
+				}
+			})
+		}
 
 		setDraggedItemRef(null)
 	}
@@ -175,14 +219,24 @@ export function Home() {
 				<div className="list-container">
 					<FreeformList key={defaultListId} data={freeformListData} tasks={freeformListTasks} />
 
-					{Object.values(linearListsData).map((elem) => {
-						const listTasks = toDoData.tasksByList[elem._id]?.map((e) => toDoData.tasks[e]) || []
+					<SortableContext items={linearListsIds} strategy={rectSortingStrategy}>
+						{linearListsIds.map((id) => {
+							const listData = toDoData.lists[id]
+							const listTasks = toDoData.tasksByList[id]?.map((e) => toDoData.tasks[e]) || []
 
-						return <LinearList key={elem._id} data={elem} tasks={listTasks} />
-					})}
+							return <LinearList key={id} data={listData} tasks={listTasks} />
+						})}
+					</SortableContext>
 				</div>
 				<DragOverlay>
-					{activeTask.data ? <Task data={activeTask.data} color={activeTask.color} isDraggedCopy={true} /> : null}
+					{activeItem.type === 'task' && activeItem.data ? (
+						<Task data={activeItem.data} color={activeItem.color} isDraggedCopy={true} />
+					) : activeItem.type === 'list' && activeItem.data ? (
+						<LinearList
+							data={activeItem.data}
+							tasks={toDoData.tasksByList[activeItem.data._id]?.map((e) => toDoData.tasks[e]) || []}
+						/>
+					) : null}
 				</DragOverlay>
 			</DndContext>
 		</>
