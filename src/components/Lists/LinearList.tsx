@@ -3,7 +3,7 @@ import './lists.scss'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
 import { useDroppable } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import debounce from 'lodash/debounce'
 
 import useToDoContext from '../../hooks/useToDoContext'
@@ -16,13 +16,33 @@ export function LinearList({ data, tasks }: ListProps) {
 	const { _id, title, color } = data
 	const { toDoData, setToDoData, setTaskCount } = useToDoContext()
 
-	const { setNodeRef } = useDroppable({
+	const { setNodeRef: setDroppableRef } = useDroppable({
 		id: _id,
 		data: {
 			type: 'list',
 			item: data,
 		} satisfies DraggableItemData,
 	})
+
+	const {
+		attributes,
+		listeners,
+		setNodeRef: setSortableRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({
+		id: _id,
+		data: {
+			type: 'list',
+			item: data,
+		} satisfies DraggableItemData,
+	})
+
+	const setNodeRef = (node: HTMLElement | null) => {
+		setDroppableRef(node)
+		setSortableRef(node)
+	}
 
 	const isNewList = title === ''
 	const [isRenaming, setRenameMode] = useState(isNewList)
@@ -92,11 +112,13 @@ export function LinearList({ data, tasks }: ListProps) {
 			)
 			const updatedLists = Object.fromEntries(Object.entries(prev.lists).filter(([listId]) => listId !== _id))
 			const updatedTasksByList = Object.fromEntries(Object.entries(prev.tasksByList).filter(([listId]) => listId !== _id))
+			const updatedListOrder = prev.linearListOrder.filter((listId) => listId !== _id)
 
 			setTaskCount((prev) => prev - deleteCount)
 
 			return {
 				lists: updatedLists,
+				linearListOrder: updatedListOrder,
 				tasks: updatedTasks,
 				tasksByList: updatedTasksByList,
 			}
@@ -132,8 +154,20 @@ export function LinearList({ data, tasks }: ListProps) {
 		}
 	}, [isRenaming])
 
+	const style = {
+		transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+		transition,
+		opacity: isDragging ? 0 : undefined,
+	}
+
 	return (
-		<article className={`list ${_id}`} ref={setNodeRef} data-list-id={_id}>
+		<article
+			className={`list ${_id}${isDragging ? ' is-dragging' : ''}`}
+			ref={setNodeRef}
+			data-list-id={_id}
+			style={style}
+			{...attributes}
+			{...listeners}>
 			<header>
 				{isRenaming ? (
 					<>
