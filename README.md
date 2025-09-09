@@ -12,7 +12,7 @@ This is my latest project – a simple React web app that helps you clear your m
 ## Features
 
 - 👏 dump all your todos on the page …
-- ✨ … then sort them via drag and drop or keyboard shortcuts
+- ✨ … then sort them via drag and drop
 - 📋 export as .json or to your favourite apps
 - 😌 no signup, no hassle – all data is stored in the browser
 - 🌈 accessible and keyboard-navigable
