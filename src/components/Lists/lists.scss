@@ -1,12 +1,12 @@
 .list-container {
-	display: grid;
-	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
 	gap: 1rem;
-	grid-template-columns: 1fr;
 	max-width: 100%;
 	overflow: visible;
 
 	@media (min-width: 768px) {
+		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 	}
 
