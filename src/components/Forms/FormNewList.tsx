@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { nanoid } from 'nanoid'
-import { PlusIcon as IconAdd } from '@phosphor-icons/react'
+import { ListPlusIcon as IconAdd } from '@phosphor-icons/react'
 
 import useToDoContext from '../../hooks/useToDoContext'
 import { ListData, ToDoData } from '../../types'
