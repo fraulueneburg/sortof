@@ -54,6 +54,11 @@
 		position: absolute;
 		top: var(--offset-y);
 		left: var(--offset-x);
+		height: 0;
+		width: 0;
+		display: block;
+
+		clip-path: rect(0, 1, 0, 1);
 
 		&:before,
 		&:after {
@@ -139,7 +144,7 @@
 		display: block;
 		padding: var(--title-padding-inline);
 		margin: calc(var(--title-padding-inline) * -1);
-		width: 100%;
+		width: auto;
 	}
 
 	.actions {
