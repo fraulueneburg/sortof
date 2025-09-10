@@ -19,6 +19,7 @@ import { ListData, TaskData } from '../types'
 import { Task } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
 import { FreeformList, LinearList } from '../components/Lists'
+import Carousel from '../components/Carousel/Carousel'
 
 type activeItemType =
 	| { data: TaskData | null; color: string | null; type: 'task' | null }
@@ -208,6 +209,8 @@ export function Home() {
 			</h1>
 
 			<FormNewTask />
+
+			<Carousel slides={[1, 2, 3]} />
 
 			<DndContext
 				onDragStart={handleDragStart}
