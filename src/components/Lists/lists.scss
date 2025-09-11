@@ -21,46 +21,25 @@
 	.list_unsorted {
 		background-color: rgba(0, 0, 0, 0.1);
 		border: none;
-		position: static;
 		padding: 0;
+
+		bottom: 0;
+		position: absolute;
 		right: 0;
-		top: 2rem;
+		top: 0;
+		height: auto;
 
-		@media (max-width: 1023px) {
-			grid-column: span 2;
-
-			// ul {
-			// 	display: flex;
-			// 	flex-direction: row;
-			// 	flex-wrap: wrap;
-			// }
-
-			// .task-item {
-			// 	top: unset !important;
-			// 	left: unset !important;
-			// 	position: relative;
-			// }
+		&:only-child {
+			left: 0;
 		}
 
-		@media (min-width: 1024px) {
-			bottom: 0;
+		&:not(:only-child) {
+			left: 0;
+			bottom: 70%;
+		}
+
+		.task-item {
 			position: absolute;
-			right: 0;
-			top: 0;
-			height: auto;
-
-			&:only-child {
-				left: 0;
-			}
-
-			&:not(:only-child) {
-				left: 0;
-				bottom: 70%;
-			}
-
-			.task-item {
-				position: absolute;
-			}
 		}
 
 		@media (prefers-reduced-motion: no-preference) {
