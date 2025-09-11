@@ -16,10 +16,9 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import useToDoContext from '../hooks/useToDoContext'
 import { ListData, TaskData } from '../types'
 
-import { Task } from '../components'
+import { Task, Carousel } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
 import { FreeformList, LinearList } from '../components/Lists'
-import Carousel from '../components/Carousel/Carousel'
 
 type activeItemType =
 	| { data: TaskData | null; color: string | null; type: 'task' | null }

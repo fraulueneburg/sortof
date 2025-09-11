@@ -9,7 +9,7 @@ type PropType = {
 	options?: EmblaOptionsType
 }
 
-const Carousel: React.FC<PropType> = (props) => {
+export function Carousel(props: PropType) {
 	const { slides, options } = props
 	const [emblaRef, emblaApi] = useEmblaCarousel(options)
 
@@ -35,5 +35,3 @@ const Carousel: React.FC<PropType> = (props) => {
 		</section>
 	)
 }
-
-export default Carousel
