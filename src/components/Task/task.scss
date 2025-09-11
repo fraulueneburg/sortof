@@ -50,15 +50,12 @@
 		--offset-y: 10px;
 		--offset-x: 10px;
 
+		border: none;
 		margin: 0;
 		position: absolute;
 		top: var(--offset-y);
 		left: var(--offset-x);
-		height: 0;
-		width: 0;
 		display: block;
-
-		clip-path: rect(0, 1, 0, 1);
 
 		&:before,
 		&:after {
