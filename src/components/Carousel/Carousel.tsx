@@ -9,7 +9,7 @@ type PropType = {
 	options?: EmblaOptionsType
 }
 
-const Carousel: React.FC<PropType> = (props) => {
+export function Carousel(props: PropType) {
 	const { slides, options } = props
 	const [emblaRef, emblaApi] = useEmblaCarousel(options)
 
@@ -17,6 +17,12 @@ const Carousel: React.FC<PropType> = (props) => {
 
 	return (
 		<section className="embla">
+			<div className="embla__controls">
+				<div className="embla__buttons">
+					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+				</div>
+			</div>
 			<div className="embla__viewport" ref={emblaRef}>
 				<div className="embla__container">
 					{slides.map((index) => (
@@ -26,15 +32,6 @@ const Carousel: React.FC<PropType> = (props) => {
 					))}
 				</div>
 			</div>
-
-			<div className="embla__controls">
-				<div className="embla__buttons">
-					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-				</div>
-			</div>
 		</section>
 	)
 }
-
-export default Carousel

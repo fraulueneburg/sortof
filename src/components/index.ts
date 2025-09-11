@@ -1,4 +1,5 @@
 export { Button } from './Button/Button'
+export { Carousel } from './Carousel/Carousel'
 export { ColorDropdown } from './ColorDropdown/ColorDropdown'
 export { Footer } from './Footer/Footer'
 export { Header } from './Header/Header'
