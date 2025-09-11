@@ -16,7 +16,7 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 import useToDoContext from '../hooks/useToDoContext'
 import { ListData, TaskData } from '../types'
 
-import { Task, Carousel } from '../components'
+import { Task } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
 import { FreeformList, LinearList } from '../components/Lists'
 
@@ -208,8 +208,6 @@ export function Home() {
 			</h1>
 
 			<FormNewTask />
-
-			<Carousel slides={[1, 2, 3]} />
 
 			<DndContext
 				onDragStart={handleDragStart}
