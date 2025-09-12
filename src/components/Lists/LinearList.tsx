@@ -12,7 +12,7 @@ import { ListProps } from '.'
 
 import { Button, Task, Submenu, ColorDropdown } from '..'
 
-export function LinearList({ data, tasks }: ListProps) {
+export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const { _id, title, color } = data
 	const { toDoData, setToDoData, setTaskCount } = useToDoContext()
 
@@ -162,7 +162,7 @@ export function LinearList({ data, tasks }: ListProps) {
 
 	return (
 		<article
-			className={`list ${_id}${isDragging ? ' is-dragging' : ''}`}
+			className={`list ${_id}${isDragging || isDraggedCopy ? ' is-dragging' : ''}`}
 			ref={setNodeRef}
 			data-list-id={_id}
 			style={style}

@@ -235,6 +235,7 @@ export function Home() {
 						<LinearList
 							data={activeItem.data}
 							tasks={toDoData.tasksByList[activeItem.data._id]?.map((e) => toDoData.tasks[e]) || []}
+							isDraggedCopy={true}
 						/>
 					) : null}
 				</DragOverlay>

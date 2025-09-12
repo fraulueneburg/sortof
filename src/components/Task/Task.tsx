@@ -154,7 +154,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 
 	return (
 		<li
-			className={`task-item${checked ? ' checked' : ''}${isDragging ? ' is-dragging' : ''}`}
+			className={`task-item${checked ? ' checked' : ''}${isDragging || isDraggedCopy ? ' is-dragging' : ''}`}
 			style={style}
 			data-task-id={_id}
 			ref={mergeRefs}
