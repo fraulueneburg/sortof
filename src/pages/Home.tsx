@@ -203,7 +203,7 @@ export function Home() {
 		<>
 			<h1>
 				What do you <br />
-				need to do <wbr />
+				need to do <br />
 				today?
 			</h1>
 
