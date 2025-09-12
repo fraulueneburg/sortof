@@ -32,7 +32,8 @@ ul[role='listbox'] {
 	}
 
 	button[aria-expanded='true'] + .color-list {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
 	}
 
 	.color-list {
@@ -40,14 +41,13 @@ ul[role='listbox'] {
 		border-radius: var(--border-radius-base);
 		border: var(--border-base);
 		display: none;
-		flex-direction: column;
-		flex-wrap: wrap;
 		gap: calc(var(--outline-width) * 3);
 		margin-top: calc(var(--outline-width) * 3);
 		margin-left: calc(var(--outline-width) * -4);
 		max-height: calc((var(--color-option-width) + var(--outline-width) * 3) * 4);
 		padding: calc(var(--outline-width) * 3);
 		position: absolute;
+		right: 0;
 		top: 100%;
 		width: max-content;
 		z-index: 5;
