@@ -73,7 +73,7 @@
 		cursor: grabbing;
 	}
 
-	&:has(*:focus) {
+	&:focus-within {
 		z-index: 15;
 	}
 
