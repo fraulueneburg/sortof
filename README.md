@@ -27,6 +27,7 @@ This is my latest project – a simple React web app that helps you clear your m
 - @dnd-kit
 - @phosphor-icons/react
 - Embla Carousel
+- clsx
 
 - React Router DOM
 - nanoid
