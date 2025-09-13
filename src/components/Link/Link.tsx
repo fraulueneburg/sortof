@@ -1,4 +1,5 @@
 import { MouseEvent, ReactNode } from 'react'
+import clsx from 'clsx'
 
 type SharedProps = {
 	title: string
@@ -37,8 +38,6 @@ export function Link({
 	href,
 	onClick,
 }: LinkProps) {
-	const classNames = `pill${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
-
 	const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
 		if (onClick) {
 			event.preventDefault()
@@ -48,7 +47,7 @@ export function Link({
 
 	return (
 		<>
-			<div className={classNames} aria-label={hideTitle ? title : undefined}>
+			<div className={clsx('pill', size && `size-${size}`, className)} aria-label={hideTitle ? title : undefined}>
 				<a
 					href={href || '#'}
 					target={target}

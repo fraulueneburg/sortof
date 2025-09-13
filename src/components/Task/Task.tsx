@@ -2,6 +2,7 @@ import './task.scss'
 
 import { useEffect, useId, useRef, useState } from 'react'
 
+import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
 import {
 	ArrowUDownLeftIcon as IconSubmit,
@@ -161,9 +162,11 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 
 	return (
 		<li
-			className={`task-item${checked ? ' checked' : ''}${isDragging || isDraggedCopy ? ' is-dragging' : ''}${
-				title === defaultTitle ? ' is-placeholder' : ''
-			}`}
+			className={clsx('task-item', {
+				'is-checked': checked,
+				'is-dragging': isDragging || isDraggedCopy,
+				'is-placeholder': title === defaultTitle,
+			})}
 			style={style}
 			data-task-id={_id}
 			ref={mergeRefs}
