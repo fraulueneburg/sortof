@@ -1,5 +1,6 @@
 import './button.scss'
 import { ButtonHTMLAttributes, ReactNode } from 'react'
+import clsx from 'clsx'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	title: string
@@ -21,7 +22,7 @@ export function Button({
 	unstyled,
 	...rest
 }: ButtonProps) {
-	const classNames = `${unstyled ? 'unstyled' : 'pill'}${size ? ` size-${size}` : ''}${className ? ` ${className}` : ''}`
+	const classNames = clsx(unstyled ? 'unstyled' : 'pill', size && `size-${size}`, className)
 
 	return (
 		<>

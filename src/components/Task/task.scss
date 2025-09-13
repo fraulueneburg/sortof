@@ -35,6 +35,10 @@
 		z-index: 10;
 	}
 
+	&.is-placeholder .title span {
+		opacity: 0.7;
+	}
+
 	&.is-dragging {
 		box-shadow: var(--box-shadow-dragging);
 		z-index: 10;

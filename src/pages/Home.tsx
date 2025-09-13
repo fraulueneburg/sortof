@@ -203,7 +203,7 @@ export function Home() {
 		<>
 			<h1>
 				What do you <br />
-				need to do <wbr />
+				need to do <br />
 				today?
 			</h1>
 
@@ -235,6 +235,7 @@ export function Home() {
 						<LinearList
 							data={activeItem.data}
 							tasks={toDoData.tasksByList[activeItem.data._id]?.map((e) => toDoData.tasks[e]) || []}
+							isDraggedCopy={true}
 						/>
 					) : null}
 				</DragOverlay>
