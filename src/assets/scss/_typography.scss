@@ -24,5 +24,22 @@ h2 {
 }
 
 p {
-	font-size: 2.25rem;
+	font-size: 1.25rem;
+	margin-top: 0;
+
+	@media (min-width: 600px) {
+		font-size: 1.5rem;
+	}
+
+	@media (min-width: 768px) {
+		font-size: 1.75rem;
+	}
+
+	@media (min-width: 1024px) {
+		font-size: 2rem;
+	}
+}
+
+a {
+	color: var(--color-text);
 }
