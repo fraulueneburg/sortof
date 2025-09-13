@@ -17,7 +17,11 @@
 	--outline-color: var(--color-text);
 	--spacing: 0.5rem;
 	--title-max-width: 240px;
-	--title-padding-inline: 0.5rem;
+	--title-padding-inline: 0.45rem;
+
+	@media (min-width: 1200px) {
+		--title-padding-inline: 0.25rem;
+	}
 
 	background-color: var(--color-primary);
 	border-radius: var(--border-radius);
@@ -130,7 +134,7 @@
 		}
 	}
 
-	&.checked {
+	&.is-checked {
 		.title {
 			text-decoration: line-through 4px var(--color-text);
 		}
