@@ -46,5 +46,5 @@ main {
 
 :focus-visible {
 	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
-	outline-offset: var(--outline-width);
+	outline-offset: calc(var(--outline-width) - 1px);
 }
