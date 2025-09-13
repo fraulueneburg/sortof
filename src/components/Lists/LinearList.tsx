@@ -4,12 +4,14 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import { nanoid } from 'nanoid'
 import debounce from 'lodash/debounce'
 
 import useToDoContext from '../../hooks/useToDoContext'
-import { DraggableItemData } from '../../types'
+import { DraggableItemData, TaskData } from '../../types'
 import { ListProps } from '.'
 
+import { PlusIcon as IconAddTask } from '@phosphor-icons/react'
 import { Button, Task, Submenu, ColorDropdown } from '..'
 
 export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
@@ -48,6 +50,7 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const [isRenaming, setRenameMode] = useState(isNewList)
 	const [listName, setListName] = useState(title)
 	const [listColor, setListColor] = useState(color)
+	const [editingTaskId, setEditingTaskId] = useState<string | null>(null)
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = useId()
@@ -123,6 +126,37 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 				tasksByList: updatedTasksByList,
 			}
 		})
+	}
+
+	const handleAddNewTask = () => {
+		const newTaskId = nanoid()
+
+		const newTask: TaskData = {
+			_id: newTaskId,
+			title: '',
+			checked: false,
+			list: _id,
+			rotation: Math.random() < 0.5 ? '5deg' : '-5deg',
+			position: { x: 0, y: 0 },
+		}
+
+		setToDoData((prev) => {
+			const { tasks, tasksByList } = prev
+
+			return {
+				...prev,
+				tasks: {
+					...tasks,
+					[newTaskId]: newTask,
+				},
+				tasksByList: {
+					...tasksByList,
+					[_id]: [...(tasksByList[_id] || []), newTaskId],
+				},
+			}
+		})
+
+		setEditingTaskId(newTaskId)
 	}
 
 	useEffect(() => {
@@ -212,11 +246,13 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 				<ul>
 					<SortableContext items={toDoData.tasksByList[_id]} strategy={verticalListSortingStrategy}>
 						{tasks.map((task) => (
-							<Task key={task._id} data={task} color={listColor} />
+							<Task key={task._id} data={task} color={listColor} isEditing={task._id === editingTaskId} />
 						))}
 					</SortableContext>
 				</ul>
 			)}
+
+			<Button title={`add task to ${title}`} hideTitle={true} iconBefore={<IconAddTask />} onClick={handleAddNewTask} />
 		</article>
 	)
 }

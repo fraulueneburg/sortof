@@ -19,11 +19,13 @@ type TaskProps = {
 	data: TaskData
 	color?: string | null
 	isDraggedCopy?: boolean
+	isEditing?: boolean
 }
 
-export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProps) {
+export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
+	const defaultTitle = 'New task'
 
 	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -43,10 +45,10 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 	}
 
 	const componentId = useId()
-	const [isEditing, setIsEditing] = useState(false)
+	const [editMode, setEditMode] = useState(isEditing)
 
 	const updateTaskStatus = () => {
-		setIsEditing(false)
+		setEditMode(false)
 		setToDoData((prev) => {
 			return {
 				...prev,
@@ -62,11 +64,15 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 	}
 
 	const updateTask = () => {
-		const newTaskName = inputRef.current?.value.trim()
-		const prevName = toDoData.tasks[_id].title
+		let newTaskName = inputRef.current?.value.trim()
+		const prevName = toDoData.tasks[_id].title.trim()
 
-		if (!newTaskName || newTaskName === '' || prevName === newTaskName) {
-			setIsEditing(false)
+		if (!newTaskName && !prevName) {
+			newTaskName = defaultTitle
+		}
+
+		if (!newTaskName || prevName === newTaskName) {
+			setEditMode(false)
 			return
 		}
 
@@ -80,7 +86,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 				},
 			},
 		}))
-		setIsEditing(false)
+		setEditMode(false)
 	}
 
 	const deleteTask = () => {
@@ -95,7 +101,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 			}
 		})
 		setTaskCount((prev) => prev - 1)
-		setIsEditing(false)
+		setEditMode(false)
 	}
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -120,25 +126,26 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 	}
 
 	useEffect(() => {
-		if (!isEditing) return
+		if (!editMode && title === '') updateTask()
+		if (!editMode) return
 
 		inputRef.current?.focus()
 		inputRef.current?.setSelectionRange(title.length, title.length)
 
 		const handleKeyDownGlobal = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') setIsEditing(false)
+			if (event.key === 'Escape') setEditMode(false)
 		}
 
 		const handlePointerDownGlobal = (event: PointerEvent) => {
 			const targetNode = event.target as Node | null
 			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
+			if (targetNode && !taskRef.current.contains(targetNode)) setEditMode(false)
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
 			const targetNode = event.target as Node | null
 			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
+			if (targetNode && !taskRef.current.contains(targetNode)) setEditMode(false)
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
@@ -150,32 +157,43 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 			document.removeEventListener('pointerdown', handlePointerDownGlobal)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
-	}, [isEditing])
+	}, [editMode])
 
 	return (
 		<li
-			className={`task-item${checked ? ' checked' : ''}${isDragging || isDraggedCopy ? ' is-dragging' : ''}`}
+			className={`task-item${checked ? ' checked' : ''}${isDragging || isDraggedCopy ? ' is-dragging' : ''}${
+				title === defaultTitle ? ' is-placeholder' : ''
+			}`}
 			style={style}
 			data-task-id={_id}
 			ref={mergeRefs}
 			{...listeners}
 			{...attributes}>
-			{list !== defaultListId && <input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />}
+			{list !== defaultListId && (
+				<input
+					type="checkbox"
+					id={`${componentId}checkbox`}
+					aria-label={title}
+					checked={checked}
+					onChange={updateTaskStatus}
+				/>
+			)}
 			<div className="title">
-				{isEditing ? (
+				{editMode ? (
 					<textarea
 						id={`${componentId}title-field`}
 						ref={inputRef}
 						className="as-input"
 						defaultValue={title}
 						onKeyDown={handleKeyDown}
+						placeholder={defaultTitle}
 					/>
 				) : (
-					title
+					<span>{title}</span>
 				)}
 			</div>
 			<div className="actions">
-				{isEditing ? (
+				{editMode ? (
 					<>
 						<Button
 							type="button"
@@ -203,7 +221,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 							hideTitle={true}
 							unstyled={true}
 							iconBefore={<IconCancel />}
-							onClick={() => setIsEditing(false)}
+							onClick={() => setEditMode(false)}
 							style={{ backgroundColor: `var(--${bgColor})` }}
 						/>
 					</>
@@ -215,7 +233,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 						hideTitle={true}
 						unstyled={true}
 						iconBefore={<IconEdit />}
-						onClick={() => setIsEditing(true)}
+						onClick={() => setEditMode(true)}
 					/>
 				)}
 			</div>
