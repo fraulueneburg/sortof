@@ -5,6 +5,7 @@ import {
 	DragEndEvent,
 	DragOverlay,
 	DragStartEvent,
+	KeyboardSensor,
 	MouseSensor,
 	TouchSensor,
 	closestCenter,
@@ -43,7 +44,8 @@ export function Home() {
 		}),
 		useSensor(MouseSensor, {
 			activationConstraint: { distance: 8 },
-		})
+		}),
+		useSensor(KeyboardSensor)
 	)
 
 	function handleDragStart(event: DragStartEvent) {
