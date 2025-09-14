@@ -9,8 +9,6 @@ interface ToDoContextType {
 	defaultListColor: string
 	taskCount: number
 	setTaskCount: React.Dispatch<React.SetStateAction<number>>
-	colorMode: string
-	setColorMode: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
@@ -20,14 +18,6 @@ const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
 	const defaultListColor = 'purple'
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
 	const [taskCount, setTaskCount] = useState(Object.keys(toDoData.tasks).length || 0)
-
-	const preferredColorMode =
-		localStorage.getItem('colorMode') ||
-		(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-mode' : 'light-mode')
-
-	const [colorMode, setColorMode] = useState(preferredColorMode)
-	localStorage.setItem('colorMode', colorMode)
-	document.documentElement.classList.add(preferredColorMode)
 
 	useEffect(() => {
 		try {
@@ -46,8 +36,6 @@ const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
 				defaultListColor,
 				taskCount,
 				setTaskCount,
-				colorMode,
-				setColorMode,
 			}}>
 			{children}
 		</ToDoContext.Provider>
