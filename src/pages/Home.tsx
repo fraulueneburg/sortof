@@ -5,7 +5,8 @@ import {
 	DragEndEvent,
 	DragOverlay,
 	DragStartEvent,
-	PointerSensor,
+	MouseSensor,
+	TouchSensor,
 	closestCenter,
 	useSensor,
 	useSensors,
@@ -37,7 +38,10 @@ export function Home() {
 	const linearListsIds = toDoData.linearListOrder
 
 	const sensors = useSensors(
-		useSensor(PointerSensor, {
+		useSensor(TouchSensor, {
+			activationConstraint: { delay: 200, tolerance: 50 },
+		}),
+		useSensor(MouseSensor, {
 			activationConstraint: { distance: 8 },
 		})
 	)
@@ -228,7 +232,7 @@ export function Home() {
 						})}
 					</SortableContext>
 				</div>
-				<DragOverlay>
+				<DragOverlay className="drag-overlay">
 					{activeItem.type === 'task' && activeItem.data ? (
 						<Task data={activeItem.data} color={activeItem.color} isDraggedCopy={true} />
 					) : activeItem.type === 'list' && activeItem.data ? (
