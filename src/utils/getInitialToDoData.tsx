@@ -2,7 +2,7 @@ import { ToDoData } from '../types'
 
 export const getInitialToDoData = (defaultListId: string): ToDoData => {
 	try {
-		const stored = sessionStorage.getItem('to-do-data')
+		const stored = localStorage.getItem('to-do-data')
 		if (stored) {
 			return JSON.parse(stored)
 		}

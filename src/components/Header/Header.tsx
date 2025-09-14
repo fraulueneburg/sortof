@@ -12,7 +12,7 @@ export function Header() {
 
 	const startoverDescId = useId()
 	const handleStartOver = () => {
-		sessionStorage.removeItem('to-do-data')
+		localStorage.removeItem('to-do-data')
 		setToDoData(getInitialToDoData(defaultListId))
 		setTaskCount(0)
 	}
