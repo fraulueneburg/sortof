@@ -20,7 +20,7 @@
 	--title-padding-inline: 0.45rem;
 
 	@media (min-width: 1200px) {
-		--title-padding-inline: 0.25rem;
+		--title-padding-inline: 0.35rem;
 	}
 
 	background-color: var(--color-primary);
@@ -32,6 +32,7 @@
 	max-width: 100%;
 	min-height: var(--min-height);
 	position: relative;
+	touch-action: manipulation;
 	width: fit-content;
 	z-index: 5;
 
@@ -121,9 +122,12 @@
 		padding-right: calc(var(--spacing) + var(--actions-width));
 		word-wrap: break-word;
 
+		user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+
 		@media (min-width: 1024px) {
 			--title-max-width: 500px;
-			--title-padding-inline: 0.25rem;
 		}
 
 		&:has(textarea) {
