@@ -21,6 +21,7 @@ import { ListData, TaskData } from '../types'
 import { Task } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
 import { FreeformList, LinearList } from '../components/Lists'
+import { dndAnnouncements } from '../utils/dndAnnouncements'
 
 type activeItemType =
 	| { data: TaskData | null; color: string | null; type: 'task' | null }
@@ -220,7 +221,8 @@ export function Home() {
 				onDragEnd={handleDragEnd}
 				modifiers={[restrictToWindowEdges]}
 				collisionDetection={closestCenter}
-				sensors={sensors}>
+				sensors={sensors}
+				accessibility={{ announcements: dndAnnouncements }}>
 				<FormNewList />
 				<div className="list-container">
 					<FreeformList key={defaultListId} data={freeformListData} tasks={freeformListTasks} />
