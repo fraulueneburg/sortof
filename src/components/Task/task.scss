@@ -92,10 +92,12 @@
 		}
 
 		&:focus-visible {
+			outline: none;
+
 			&:before {
 				background-color: var(--color-surface-inverted);
 				outline: calc(var(--outline-width) + 1px) solid var(--color-text);
-				outline-offset: calc(var(--outline-width) * 2);
+				outline-offset: calc(var(--outline-width) * 1.5);
 			}
 
 			&:after {
