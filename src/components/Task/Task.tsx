@@ -1,6 +1,7 @@
 import './task.scss'
 
 import { useEffect, useId, useRef, useState } from 'react'
+import { needsInvertedText } from '../../constants/colors'
 
 import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
@@ -13,7 +14,6 @@ import {
 
 import useToDoContext from '../../hooks/useToDoContext'
 import { DraggableItemData, TaskData } from '../../types'
-
 import { Button } from '../../components'
 
 type TaskProps = {
@@ -26,6 +26,8 @@ type TaskProps = {
 export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
 	const bgColor = !checked ? color : 'color-inactive-task'
+
+	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
 	const defaultTitle = 'New task'
 
 	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
@@ -119,6 +121,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
         	${isDefaultList ? `rotate(${rotation})` : ''}`,
 		backgroundColor: `var(--${bgColor})`,
+		color: textColor,
 		left: isDefaultList && !isDraggedCopy ? `${position.x}%` : undefined,
 		top: isDefaultList && !isDraggedCopy ? `${position.y}%` : undefined,
 		opacity: isDragging ? 0 : undefined,
