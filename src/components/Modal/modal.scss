@@ -6,6 +6,10 @@ dialog {
 	text-align: center;
 	z-index: 500;
 
+	.modal-title {
+		margin: 0;
+	}
+
 	> button:first-child + * {
 		padding-right: 3rem;
 	}

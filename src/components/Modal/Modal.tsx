@@ -5,14 +5,13 @@ import { useState } from 'react'
 
 type ModalProps = {
 	open: boolean
-	title?: string
-	description: string
+	title: string
 	submitText: string
 	submitAction: () => void
 	cancelText?: string
 }
 
-export function Modal({ open, title, description, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
+export function Modal({ open, title, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
 
 	const handleClose = () => setIsOpen(false)
 
@@ -26,8 +25,7 @@ export function Modal({ open, title, description, submitText, submitAction, canc
 					iconBefore={<IconClose />}
 					onClick={() => handleClose()}
 				/>
-				{title && <h3>{title}</h3>}
-				{description && <p>{description}</p>}
+			<h3 className="modal-title">{title}</h3>
 
 			<div className="btn-group">
 				<Button
