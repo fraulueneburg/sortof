@@ -8,13 +8,11 @@ type ModalProps = {
 	title?: string
 	description: string
 	submitText: string
-	submitAction: (event: ButtonEvent) => void
+	submitAction: () => void
 	cancelText?: string
-	cancelAction?: (event: ButtonEvent) => void
 }
 
-export default function Modal({ open, title, description, submitText, submitAction, cancelText, cancelAction }: ModalProps) {
-	const [isOpen, setIsOpen] = useState(open)
+export function Modal({ open, title, description, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
 
 	const handleClose = () => setIsOpen(false)
 
@@ -31,11 +29,18 @@ export default function Modal({ open, title, description, submitText, submitActi
 				{title && <h3>{title}</h3>}
 				{description && <p>{description}</p>}
 
-				<div className="btn-group">
-					<Button title={submitText} onClick={() => console.log('foo')} />
-					{cancelText && <Button title={cancelText} onClick={handleClose} />}
-				</div>
-			</dialog>
+			<div className="btn-group">
+				<Button
+					title={submitText}
+					onClick={() => {
+						submitAction()
+						handleClose()
+					}}
+				/>
+
+				{cancelText && <Button title={cancelText} onClick={handleClose} />}
+			</div>
+		</dialog>
 		</>
 	)
 }
