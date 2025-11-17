@@ -6,7 +6,6 @@ import { createPortal } from 'react-dom'
 
 type ModalProps = {
 	trigger: ReactElement
-	open: boolean
 	title: string
 	submitText: string
 	submitAction: () => void
