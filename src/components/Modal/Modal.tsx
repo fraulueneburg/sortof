@@ -29,6 +29,47 @@ export function Modal({ trigger, title, submitText, submitAction, cancelText = '
 		triggerRef.current?.focus()
 	}
 
+	// focus trap
+	useEffect(() => {
+		if (!isOpen || !dialogRef.current) return
+
+		const dialog = dialogRef.current
+		dialog.showModal()
+
+		document.body.style.overflow = 'hidden'
+		closeButtonRef.current?.focus()
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				e.preventDefault()
+				handleClose()
+			}
+
+			if (e.key === 'Tab') {
+				const focusable = dialog.querySelectorAll<HTMLElement>(
+					"button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
+				)
+				const first = focusable[0]
+				const last = focusable[focusable.length - 1]
+
+				if (e.shiftKey && document.activeElement === first) {
+					last.focus()
+					e.preventDefault()
+				} else if (!e.shiftKey && document.activeElement === last) {
+					first.focus()
+					e.preventDefault()
+				}
+			}
+		}
+
+		dialog.addEventListener('keydown', handleKeyDown)
+		return () => {
+			dialog.removeEventListener('keydown', handleKeyDown)
+			document.body.style.overflow = ''
+			dialog.close()
+		}
+	}, [isOpen])
+
 	// clone trigger so it opens modal
 	const triggerWithHandler = cloneElement(trigger, {
 		onClick: handleOpen,
