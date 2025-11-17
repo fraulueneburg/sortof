@@ -1,9 +1,11 @@
 import './modal.scss'
 import { Button } from '../Button/Button'
 import { XIcon as IconClose } from '@phosphor-icons/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState, cloneElement, ReactElement } from 'react'
+import { createPortal } from 'react-dom'
 
 type ModalProps = {
+	trigger: ReactElement
 	open: boolean
 	title: string
 	submitText: string
@@ -11,20 +13,38 @@ type ModalProps = {
 	cancelText?: string
 }
 
-export function Modal({ open, title, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
+export function Modal({ trigger, title, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
+	const [isOpen, setIsOpen] = useState(false)
+	const dialogRef = useRef<HTMLDialogElement>(null)
+	const closeButtonRef = useRef<HTMLButtonElement>(null)
+	const triggerRef = useRef<HTMLElement | null>(null)
 
-	const handleClose = () => setIsOpen(false)
+	const handleOpen = () => {
+		triggerRef.current = document.activeElement as HTMLElement
+		setIsOpen(true)
+	}
 
-	return (
-		<>
-			<dialog open={isOpen}>
-				<Button
-					className="btn-cancel"
-					title="close"
-					hideTitle={true}
-					iconBefore={<IconClose />}
-					onClick={() => handleClose()}
-				/>
+	const handleClose = () => {
+		setIsOpen(false)
+		triggerRef.current?.focus()
+	}
+
+	// clone trigger so it opens modal
+	const triggerWithHandler = cloneElement(trigger, {
+		onClick: handleOpen,
+	})
+
+	const modalContent = isOpen ? (
+		<dialog ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="modal-title" className="modal">
+			<Button
+				ref={closeButtonRef}
+				className="btn-cancel"
+				title="Close"
+				hideTitle={true}
+				iconBefore={<IconClose />}
+				onClick={handleClose}
+			/>
+
 			<h3 className="modal-title">{title}</h3>
 
 			<div className="btn-group">
@@ -39,6 +59,12 @@ export function Modal({ open, title, submitText, submitAction, cancelText = 'Can
 				{cancelText && <Button title={cancelText} onClick={handleClose} />}
 			</div>
 		</dialog>
+	) : null
+
+	return (
+		<>
+			{triggerWithHandler}
+			{createPortal(modalContent, document.body)}
 		</>
 	)
 }
