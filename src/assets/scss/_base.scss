@@ -48,3 +48,7 @@ main {
 	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
 	outline-offset: calc(var(--outline-width) - 1px);
 }
+
+::backdrop {
+	background-color: rgba(0, 0, 0, 0.6);
+}
