@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, cloneElement, ReactElement } from 'react'
 import { createPortal } from 'react-dom'
 
 type ModalProps = {
-	trigger: ReactElement
+	trigger: ReactElement<{ onClick?: () => void }>
 	title: string
 	submitText: string
 	submitAction: () => void
