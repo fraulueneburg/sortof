@@ -5,7 +5,7 @@ import { ArrowsClockwiseIcon as IconStartover, HandIcon as IconHand } from '@pho
 import useToDoContext from '../../hooks/useToDoContext'
 import { getInitialToDoData } from '../../utils/getInitialToDoData'
 
-import { Button, Link } from '../../components'
+import { Button, Link, Modal } from '../../components'
 
 export function Header() {
 	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()
@@ -26,13 +26,21 @@ export function Header() {
 				<nav>
 					<ul>
 						<li>
-							<Button
-								title="Start over"
-								hideTitle={true}
-								aria-describedby={startoverDescId}
-								onClick={handleStartOver}
-								iconBefore={<IconStartover />}
+							<Modal
+								trigger={
+									<Button
+										title="Start over"
+										hideTitle={true}
+										aria-describedby={startoverDescId}
+										iconBefore={<IconStartover />}
+									/>
+								}
+								title={'Delete all tasks and start over?'}
+								submitText={'Yes, start over'}
+								submitAction={handleStartOver}
+								cancelText={'No, thank you'}
 							/>
+
 							<p className="sr-only" id={startoverDescId}>
 								This deletes all tasks and lists
 							</p>
