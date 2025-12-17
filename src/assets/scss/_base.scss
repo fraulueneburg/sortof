@@ -13,6 +13,13 @@ body {
 	overflow-x: hidden;
 }
 
+html,
+body {
+	&:has(.is-dragging) {
+		overscroll-behavior-y: none !important;
+	}
+}
+
 #root {
 	display: flex;
 	flex-direction: column;
