@@ -133,8 +133,12 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		if (!editMode && title === '') updateTask()
 		if (!editMode) return
 
-		inputRef.current?.focus()
-		inputRef.current?.setSelectionRange(title.length, title.length)
+		const inputField = inputRef.current
+		if (!inputField) return
+
+		inputField.focus()
+		inputField.setSelectionRange(inputField.value.length, inputField.value.length)
+		inputField.scrollLeft = inputField.scrollWidth
 
 		const handleKeyDownGlobal = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') setEditMode(false)

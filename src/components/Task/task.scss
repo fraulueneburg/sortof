@@ -153,6 +153,7 @@
 		display: block;
 		padding: var(--title-padding-inline);
 		margin: calc(var(--title-padding-inline) * -1);
+		max-width: 100%;
 		width: auto;
 	}
 
