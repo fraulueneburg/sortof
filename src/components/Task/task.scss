@@ -176,6 +176,7 @@
 		&:active {
 			background-color: var(--color-text);
 			border: none;
+			color: var(--color-text-inverted);
 			outline-color: var(--color-text);
 		}
 
