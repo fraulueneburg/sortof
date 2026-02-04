@@ -1,0 +1,24 @@
+dialog {
+	border: var(--border-base);
+	border-radius: var(--border-radius-base);
+	box-sizing: border-box;
+	max-width: calc(100dvw - var(--padding-page-x) * 2);
+	padding: 1.5rem;
+	text-align: center;
+	z-index: 500;
+
+	.modal-title {
+		margin: 0 0 1rem;
+		text-align: left;
+	}
+
+	> button:first-child + * {
+		padding-right: 3rem;
+	}
+
+	.btn-cancel {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+	}
+}

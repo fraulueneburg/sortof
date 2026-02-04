@@ -13,6 +13,13 @@ body {
 	overflow-x: hidden;
 }
 
+html,
+body {
+	&:has(.is-dragging) {
+		overscroll-behavior-y: none !important;
+	}
+}
+
 #root {
 	display: flex;
 	flex-direction: column;
@@ -47,4 +54,8 @@ main {
 :focus-visible {
 	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
 	outline-offset: calc(var(--outline-width) - 1px);
+}
+
+::backdrop {
+	background-color: rgba(0, 0, 0, 0.6);
 }

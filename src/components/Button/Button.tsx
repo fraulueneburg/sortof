@@ -1,5 +1,5 @@
 import './button.scss'
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react'
 import clsx from 'clsx'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -11,26 +11,16 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	unstyled?: boolean
 }
 
-export function Button({
-	type = 'button',
-	title,
-	hideTitle,
-	iconBefore,
-	iconAfter,
-	size,
-	className,
-	unstyled,
-	...rest
-}: ButtonProps) {
-	const classNames = clsx(unstyled ? 'unstyled' : 'pill', size && `size-${size}`, className)
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+	({ type = 'button', title, hideTitle, iconBefore, iconAfter, size, className, unstyled, ...rest }, ref) => {
+		const classNames = clsx(unstyled ? 'unstyled' : 'pill', size && `size-${size}`, className)
 
-	return (
-		<>
-			<button type={type} className={classNames} aria-label={rest['aria-label'] ?? title} {...rest}>
+		return (
+			<button ref={ref} type={type} className={classNames} aria-label={rest['aria-label'] ?? title} {...rest}>
 				{iconBefore}
 				{!hideTitle && <span>{title}</span>}
 				{iconAfter}
 			</button>
-		</>
-	)
-}
+		)
+	}
+)
