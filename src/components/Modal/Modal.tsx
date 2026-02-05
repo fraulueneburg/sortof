@@ -13,7 +13,7 @@ type ModalProps = {
 	cancelText?: string
 }
 
-export function Modal({ trigger, title, children, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
+export function Modal({ trigger, title, children, submitText, submitAction, cancelText }: ModalProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
 	const closeButtonRef = useRef<HTMLButtonElement>(null)
