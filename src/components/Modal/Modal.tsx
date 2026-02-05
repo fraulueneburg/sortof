@@ -1,18 +1,19 @@
 import './modal.scss'
 import { Button } from '../Button/Button'
 import { XIcon as IconClose } from '@phosphor-icons/react'
-import { useEffect, useRef, useState, cloneElement, ReactElement } from 'react'
+import { useEffect, useRef, useState, cloneElement, ReactElement, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 type ModalProps = {
 	trigger: ReactElement<{ onClick?: () => void }>
 	title: string
+	children?: ReactNode
 	submitText: string
 	submitAction: () => void
 	cancelText?: string
 }
 
-export function Modal({ trigger, title, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
+export function Modal({ trigger, title, children, submitText, submitAction, cancelText = 'Cancel' }: ModalProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	const dialogRef = useRef<HTMLDialogElement>(null)
 	const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -46,7 +47,7 @@ export function Modal({ trigger, title, submitText, submitAction, cancelText = '
 
 			if (e.key === 'Tab') {
 				const focusable = dialog.querySelectorAll<HTMLElement>(
-					"button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
+					"button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
 				)
 				const first = focusable[0]
 				const last = focusable[focusable.length - 1]
@@ -86,6 +87,8 @@ export function Modal({ trigger, title, submitText, submitAction, cancelText = '
 			/>
 
 			<h3 className="modal-title">{title}</h3>
+
+			{children && <div className="modal-content">{children}</div>}
 
 			<div className="btn-group">
 				<Button
