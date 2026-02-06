@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { IconContext } from '@phosphor-icons/react'
-import { ToDoContextWrapper } from '../context/List.context'
+import { ToDoContextWrapper, SettingsContextWrapper } from '../context/'
 import { Header, Footer } from '../components'
 
 export function Layout() {
@@ -12,13 +12,15 @@ export function Layout() {
 					weight: 'bold',
 					size: 24,
 				}}>
-				<ToDoContextWrapper>
-					<Header />
-					<main>
-						<Outlet />
-					</main>
-					<Footer />
-				</ToDoContextWrapper>
+				<SettingsContextWrapper>
+					<ToDoContextWrapper>
+						<Header />
+						<main>
+							<Outlet />
+						</main>
+						<Footer />
+					</ToDoContextWrapper>
+				</SettingsContextWrapper>
 			</IconContext.Provider>
 		</>
 	)
