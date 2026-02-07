@@ -17,7 +17,7 @@ const STORAGE_KEY = 'sortof-settings'
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined)
 
-const SettingsContextWrapper = ({ children }: { children: ReactNode }) => {
+const SettingsProvider = ({ children }: { children: ReactNode }) => {
 	const [settings, setSettings] = useState<Settings>(() => {
 		try {
 			const stored = localStorage.getItem(STORAGE_KEY)
@@ -38,4 +38,4 @@ const SettingsContextWrapper = ({ children }: { children: ReactNode }) => {
 	return <SettingsContext.Provider value={{ settings, setSettings }}>{children}</SettingsContext.Provider>
 }
 
-export { SettingsContext, SettingsContextWrapper }
+export { SettingsContext, SettingsProvider }

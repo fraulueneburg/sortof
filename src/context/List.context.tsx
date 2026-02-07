@@ -13,7 +13,7 @@ interface ToDoContextType {
 
 const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
 
-const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
+const ToDoProvider = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_unsorted'
 	const defaultListColor = 'purple'
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
@@ -42,4 +42,4 @@ const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
 	)
 }
 
-export { ToDoContext, ToDoContextWrapper }
+export { ToDoContext, ToDoProvider }
