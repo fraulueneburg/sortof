@@ -7,14 +7,22 @@ import { getInitialToDoData } from '../../utils/getInitialToDoData'
 
 import { Button, Link, Modal } from '../../components'
 
+import useSettingsContext from '../../hooks/useSettingsContext'
+
 export function Header() {
 	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()
+
+	const { settings, setSettings } = useSettingsContext()
 
 	const startoverDescId = useId()
 	const handleStartOver = () => {
 		localStorage.removeItem('to-do-data')
 		setToDoData(getInitialToDoData(defaultListId))
 		setTaskCount(0)
+	}
+
+	const handleSettings = () => {
+		console.log(settings)
 	}
 
 	return (
@@ -46,7 +54,16 @@ export function Header() {
 							</p>
 						</li>
 						<li>
-							<Button title="Settings" onClick={() => {}} />
+							<Modal
+								trigger={<Button title="Settings" onClick={() => {}} />}
+								title={'Settings'}
+								submitText={'save settings'}
+								submitAction={handleSettings}>
+								<label>
+									<input type="checkbox" />
+									grey out completed tasks
+								</label>
+							</Modal>
 						</li>
 					</ul>
 				</nav>
