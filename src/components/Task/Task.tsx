@@ -12,7 +12,9 @@ import {
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
 
+import useSettingsContext from '../../hooks/useSettingsContext'
 import useToDoContext from '../../hooks/useToDoContext'
+
 import { DraggableItemData, TaskData } from '../../types'
 import { Button } from '../../components'
 
@@ -25,7 +27,9 @@ type TaskProps = {
 
 export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
-	const bgColor = !checked ? color : 'color-inactive-task'
+	const { settings } = useSettingsContext()
+	const { dimCompletedTasks } = settings
+	const bgColor = !checked || (checked && !dimCompletedTasks) ? color : 'color-inactive-task'
 
 	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
 	const defaultTitle = 'New task'
