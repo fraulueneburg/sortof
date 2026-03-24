@@ -8,8 +8,8 @@ type ModalProps = {
 	trigger: ReactElement<{ onClick?: () => void }>
 	title: string
 	children?: ReactNode
-	submitText: string
-	submitAction: () => void
+	submitText?: string
+	submitAction?: () => void
 	cancelText?: string
 }
 
@@ -90,17 +90,20 @@ export function Modal({ trigger, title, children, submitText, submitAction, canc
 
 			{children && <div className="modal-content">{children}</div>}
 
-			<div className="btn-group">
-				<Button
-					title={submitText}
-					onClick={() => {
-						submitAction()
-						handleClose()
-					}}
-				/>
-
-				{cancelText && <Button title={cancelText} onClick={handleClose} />}
-			</div>
+			{(submitAction || cancelText) && (
+				<div className="btn-group">
+					{submitAction && submitText && (
+						<Button
+							title={submitText}
+							onClick={() => {
+								submitAction()
+								handleClose()
+							}}
+						/>
+					)}
+					{cancelText && <Button title={cancelText} onClick={handleClose} />}
+				</div>
+			)}
 		</dialog>
 	) : null
 

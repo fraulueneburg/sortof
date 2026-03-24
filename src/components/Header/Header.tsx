@@ -21,8 +21,8 @@ export function Header() {
 		setTaskCount(0)
 	}
 
-	const handleSettings = () => {
-		console.log(settings)
+	const handleDimCompletedTasks = () => {
+		setSettings((prev) => ({ ...prev, dimCompletedTasks: !prev.dimCompletedTasks }))
 	}
 
 	return (
@@ -54,13 +54,9 @@ export function Header() {
 							</p>
 						</li>
 						<li>
-							<Modal
-								trigger={<Button title="Settings" onClick={() => {}} />}
-								title={'Settings'}
-								submitText={'save settings'}
-								submitAction={handleSettings}>
+							<Modal trigger={<Button title="Settings" onClick={() => {}} />} title={'Settings'}>
 								<label>
-									<input type="checkbox" />
+									<input type="checkbox" checked={settings.dimCompletedTasks} onChange={handleDimCompletedTasks} />
 									grey out completed tasks
 								</label>
 							</Modal>
