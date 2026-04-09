@@ -150,7 +150,12 @@ textarea {
 }
 
 .error-message {
-	font-size: 1.2rem;
+	background-color: var(--color-surface);
+	border: var(--border-width-base) var(--border-style-base) currentColor;
+	border-radius: var(--border-radius-base);
+	font-size: 1rem;
 	color: var(--red);
+	padding: 0.8rem 1rem;
 	position: absolute;
+	bottom: 3rem;
 }
