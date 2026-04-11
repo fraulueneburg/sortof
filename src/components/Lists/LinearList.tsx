@@ -133,8 +133,6 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	}
 
 	const handleAddNewTask = () => {
-		if (taskCount > maxTaskTotal) return
-
 		const newTaskId = nanoid()
 
 		const newTask: TaskData = {
