@@ -176,6 +176,7 @@ export function FormNewTask() {
 						title="add task"
 						hideTitle={true}
 						unstyled={true}
+						disabled={maxTasksReached}
 						iconBefore={<IconSubmit size="28" />}
 					/>
 				</div>

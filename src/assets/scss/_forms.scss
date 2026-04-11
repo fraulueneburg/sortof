@@ -23,11 +23,13 @@ form {
 			border-bottom-left-radius: 0;
 			height: 100%;
 
-			&:hover,
-			&:focus,
-			&:active {
-				background-color: var(--color-text);
-				color: var(--color-text-inverted);
+			&:not(:disabled) {
+				&:hover,
+				&:focus,
+				&:active {
+					background-color: var(--color-text);
+					color: var(--color-text-inverted);
+				}
 			}
 
 			&:focus {
