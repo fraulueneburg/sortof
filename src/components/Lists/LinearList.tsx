@@ -54,9 +54,10 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const [listColor, setListColor] = useState(color)
 	const [editingTaskId, setEditingTaskId] = useState<string | null>(null)
 
+	const taskCount = Object.keys(toDoData.tasks).length
 	const maxCharLength = MAX_LIST_CHARS
 	const maxTaskTotal = MAX_TASK_TOTAL
-	const maxTasksReached = Object.keys(toDoData.tasks).length >= maxTaskTotal
+	const maxTasksReached = taskCount >= maxTaskTotal
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = useId()
@@ -132,6 +133,8 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	}
 
 	const handleAddNewTask = () => {
+		if (taskCount > maxTaskTotal) return
+
 		const newTaskId = nanoid()
 
 		const newTask: TaskData = {
