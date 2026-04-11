@@ -14,12 +14,11 @@ import { ListProps } from '.'
 import { PlusIcon as IconAddTask } from '@phosphor-icons/react'
 import { Button, Task, Submenu, ColorDropdown } from '..'
 
-import { MAX_LIST_CHARS } from '../../config/appConfig'
+import { MAX_TASK_TOTAL, MAX_LIST_CHARS } from '../../config/appConfig'
 
 export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const { _id, title, color } = data
 	const { toDoData, setToDoData } = useToDoContext()
-	const maxCharLength = MAX_LIST_CHARS
 
 	const { setNodeRef: setDroppableRef } = useDroppable({
 		id: _id,
@@ -54,6 +53,10 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const [listName, setListName] = useState(title)
 	const [listColor, setListColor] = useState(color)
 	const [editingTaskId, setEditingTaskId] = useState<string | null>(null)
+
+	const maxCharLength = MAX_LIST_CHARS
+	const maxTaskTotal = MAX_TASK_TOTAL
+	const maxTasksReached = Object.keys(toDoData.tasks).length >= maxTaskTotal
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = useId()
@@ -241,7 +244,6 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 					</>
 				</aside>
 			</header>
-
 			{tasks?.length > 0 && (
 				<ul>
 					<SortableContext items={toDoData.tasksByList[_id]} strategy={verticalListSortingStrategy}>
@@ -251,8 +253,16 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 					</SortableContext>
 				</ul>
 			)}
-
-			<Button title={`add task to ${title}`} hideTitle={true} iconBefore={<IconAddTask />} onClick={handleAddNewTask} />
+			<div className="list-footer">
+				<Button
+					title={`add task to ${title}`}
+					hideTitle={true}
+					iconBefore={<IconAddTask />}
+					onClick={handleAddNewTask}
+					disabled={maxTasksReached}
+				/>
+				{maxTasksReached && <div>You have created the maximum total number of tasks.</div>}
+			</div>
 		</article>
 	)
 }
