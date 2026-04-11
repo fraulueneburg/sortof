@@ -152,15 +152,25 @@ textarea {
 }
 
 .error-message {
-	background-color: var(--color-surface);
-	border: var(--border-width-base) var(--border-style-base) currentColor;
-	border-radius: var(--border-radius-base);
-	bottom: 4rem;
-	color: var(--red);
+	border-radius: 0.4rem;
+	display: block;
 	font-size: 1rem;
-	padding: 0.8rem 1rem;
-	position: absolute;
-	right: 0;
+
+	.form-new-todo & {
+		background-color: var(--color-surface);
+		border: var(--border-width-base) var(--border-style-base) currentColor;
+		border-radius: var(--border-radius-base);
+		bottom: 4rem;
+		color: var(--red);
+		padding: 0.8rem 1rem;
+		position: absolute;
+		right: 0;
+	}
+
+	.task-item .title & {
+		margin: 0 -0.35rem;
+		padding-top: 0.5rem;
+	}
 
 	p {
 		font-size: inherit;

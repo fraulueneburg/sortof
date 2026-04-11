@@ -35,7 +35,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
 	const defaultTitle = 'New task'
 	const defaultListId = DEFAULT_LIST_ID
-	const maxCharLength = MAX_TASK_CHARS
 
 	const { toDoData, setToDoData } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -56,6 +55,9 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 
 	const componentId = useId()
 	const [editMode, setEditMode] = useState(isEditing)
+	const [draftTitle, setDraftTitle] = useState(title)
+	const maxCharLength = MAX_TASK_CHARS
+	const maxCharsReached = draftTitle.length >= maxCharLength
 
 	const updateTaskStatus = () => {
 		setEditMode(false)
@@ -80,6 +82,8 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		if (!newTaskName && !prevName) {
 			newTaskName = defaultTitle
 		}
+
+		if (newTaskName && newTaskName.length > maxCharLength) return
 
 		if (!newTaskName || prevName === newTaskName) {
 			setEditMode(false)
@@ -139,6 +143,8 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		if (!editMode && title === '') updateTask()
 		if (!editMode) return
 
+		setDraftTitle(title)
+
 		const inputField = inputRef.current
 		if (!inputField) return
 
@@ -171,7 +177,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			document.removeEventListener('pointerdown', handlePointerDownGlobal)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
-	}, [editMode])
+	}, [editMode, title])
 
 	return (
 		<li
@@ -196,15 +202,23 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			)}
 			<div className="title">
 				{editMode ? (
-					<textarea
-						id={`${componentId}title-field`}
-						ref={inputRef}
-						className="as-input"
-						maxLength={maxCharLength}
-						defaultValue={title}
-						onKeyDown={handleKeyDown}
-						placeholder={defaultTitle}
-					/>
+					<>
+						<textarea
+							id={`${componentId}title-field`}
+							ref={inputRef}
+							className="as-input"
+							maxLength={maxCharLength}
+							value={draftTitle}
+							onChange={(e) => setDraftTitle(e.target.value)}
+							onKeyDown={handleKeyDown}
+							placeholder={defaultTitle}
+						/>
+						{maxCharsReached && (
+							<div className="error-message" role="alert" aria-live="polite">
+								You have reached the character limit of {maxCharLength} characters.
+							</div>
+						)}
+					</>
 				) : (
 					<span>{title}</span>
 				)}
