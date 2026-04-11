@@ -153,9 +153,18 @@ textarea {
 	background-color: var(--color-surface);
 	border: var(--border-width-base) var(--border-style-base) currentColor;
 	border-radius: var(--border-radius-base);
-	font-size: 1rem;
+	bottom: 4rem;
 	color: var(--red);
+	font-size: 1rem;
 	padding: 0.8rem 1rem;
 	position: absolute;
-	bottom: 3rem;
+	right: 0;
+
+	p {
+		font-size: inherit;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 }

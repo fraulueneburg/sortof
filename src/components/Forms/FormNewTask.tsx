@@ -138,13 +138,18 @@ export function FormNewTask() {
 	return (
 		<>
 			<form className="form-new-todo" onSubmit={handleAddTask}>
-				{maxTasksReached && (
-					<p className="error-message" id="task-limit-message" role="alert" aria-live="assertive">
-						You have created the maximum number of tasks possible ({maxTasksNum}).
-						<br />
-						To create new ones, you need to delete some from your lists. Maybe this is a good time to switch from creating
-						tasks to finishing them?
-					</p>
+				{(maxTasksReached || maxCharsReached) && (
+					<div className="error-message" id="task-alert" role="alert" aria-live="polite">
+						{maxTasksReached && (
+							<>
+								You have created the maximum number of tasks possible: {maxTasksNum}.
+								<br />
+								To create any more, you will need to delete some from your lists. Perhaps this is a good time to start
+								finishing a few tasks?
+							</>
+						)}
+						{maxCharsReached && <>You have reached the character limit of {maxCharLength}.</>}
+					</div>
 				)}
 				<input
 					type="text"
@@ -155,8 +160,7 @@ export function FormNewTask() {
 					maxLength={maxCharLength}
 					disabled={maxTasksReached}
 					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}
-					aria-invalid={maxTasksReached}
-					aria-describedby={maxTasksReached ? 'task-limit-message' : undefined}
+					aria-describedby={maxTasksReached || maxCharsReached ? 'task-alert' : undefined}
 				/>
 				<div className="append">
 					<Button
