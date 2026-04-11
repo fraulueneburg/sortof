@@ -20,6 +20,13 @@ export function FormNewTask() {
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 
+		if (newItemTitle.length > maxCharLength) {
+			setNewItemTitle((prev) => prev.slice(0, maxCharLength))
+			return
+		}
+
+		if (taskCount > maxTasksNum) return
+
 		const trimmedName = newItemTitle.trim()
 
 		if (trimmedName !== '') {
