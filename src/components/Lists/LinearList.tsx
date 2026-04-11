@@ -262,7 +262,7 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 					onClick={handleAddNewTask}
 					disabled={maxTasksReached}
 				/>
-				{maxTasksReached && <div>You have created the maximum total number of tasks.</div>}
+				{maxTasksReached && <div>You have created {maxTaskTotal} tasks, which is the maximum number of tasks.</div>}
 			</div>
 		</article>
 	)
