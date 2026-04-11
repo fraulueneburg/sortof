@@ -4,20 +4,21 @@ import { ArrowUDownLeftIcon as IconSubmit } from '@phosphor-icons/react'
 import { nanoid } from 'nanoid'
 
 import useToDoContext from '../../hooks/useToDoContext'
-import { DEFAULT_LIST_ID } from '../../config/appConfig'
 import { TaskData } from '../../types'
 import { Button } from '../../components'
+
+import { DEFAULT_LIST_ID, MAX_TASK_TOTAL, MAX_TASK_CHARS } from '../../config/appConfig'
 
 export function FormNewTask() {
 	const { toDoData, setToDoData } = useToDoContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
-	const defaultListId = DEFAULT_LIST_ID
 	const inputRef = useRef<HTMLInputElement>(null)
+	const defaultListId = DEFAULT_LIST_ID
 
 	const taskCount = Object.keys(toDoData.tasks).length
-	const maxCharLength = 250
+	const maxCharLength = MAX_TASK_CHARS
+	const maxTasksNum = MAX_TASK_TOTAL
 	const maxCharsReached = newItemTitle.length >= maxCharLength
-	const maxTasksNum = 250
 	const maxTasksReached = taskCount >= maxTasksNum
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {

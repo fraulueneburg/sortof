@@ -12,7 +12,7 @@ import {
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
 
-import { DEFAULT_LIST_ID } from '../../config/appConfig'
+import { DEFAULT_LIST_ID, MAX_TASK_CHARS } from '../../config/appConfig'
 import useSettingsContext from '../../hooks/useSettingsContext'
 import useToDoContext from '../../hooks/useToDoContext'
 
@@ -35,6 +35,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
 	const defaultTitle = 'New task'
 	const defaultListId = DEFAULT_LIST_ID
+	const maxCharLength = MAX_TASK_CHARS
 
 	const { toDoData, setToDoData } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -199,7 +200,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 						id={`${componentId}title-field`}
 						ref={inputRef}
 						className="as-input"
-						maxLength={250}
+						maxLength={maxCharLength}
 						defaultValue={title}
 						onKeyDown={handleKeyDown}
 						placeholder={defaultTitle}

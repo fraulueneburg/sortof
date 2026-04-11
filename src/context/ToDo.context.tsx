@@ -21,7 +21,7 @@ const ToDoProvider = ({ children }: { children: ReactNode }) => {
 		try {
 			localStorage.setItem('to-do-data', JSON.stringify(toDoData))
 		} catch (error) {
-			console.warn('Failed to save todo data to session storage:', error)
+			console.warn('Failed to save todo data to local storage:', error)
 		}
 	}, [toDoData])
 
