@@ -138,7 +138,6 @@ export function FormNewTask() {
 	}
 
 	const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-		event.preventDefault()
 		setNewItemTitle(event.target.value)
 	}
 
