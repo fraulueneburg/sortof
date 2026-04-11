@@ -8,10 +8,11 @@ import { TaskData } from '../../types'
 import { Button } from '../../components'
 
 export function FormNewTask() {
-	const { setToDoData, taskCount, setTaskCount, defaultListId } = useToDoContext()
+	const { toDoData, setToDoData, defaultListId } = useToDoContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
 	const inputRef = useRef<HTMLInputElement>(null)
 
+	const taskCount = Object.keys(toDoData.tasks).length
 	const maxCharLength = 250
 	const maxCharsReached = newItemTitle.length >= maxCharLength
 	const maxTasksNum = 250
@@ -132,7 +133,6 @@ export function FormNewTask() {
 					},
 				}
 			})
-			setTaskCount((prev) => prev + 1)
 		}
 		setNewItemTitle('')
 	}

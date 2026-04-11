@@ -7,8 +7,6 @@ interface ToDoContextType {
 	setToDoData: React.Dispatch<React.SetStateAction<ToDoData>>
 	defaultListId: string
 	defaultListColor: string
-	taskCount: number
-	setTaskCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
@@ -17,7 +15,6 @@ const ToDoProvider = ({ children }: { children: ReactNode }) => {
 	const defaultListId = 'list_unsorted'
 	const defaultListColor = 'purple'
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
-	const [taskCount, setTaskCount] = useState(Object.keys(toDoData.tasks).length || 0)
 
 	useEffect(() => {
 		try {
@@ -34,8 +31,6 @@ const ToDoProvider = ({ children }: { children: ReactNode }) => {
 				setToDoData,
 				defaultListId,
 				defaultListColor,
-				taskCount,
-				setTaskCount,
 			}}>
 			{children}
 		</ToDoContext.Provider>

@@ -16,7 +16,7 @@ import { Button, Task, Submenu, ColorDropdown } from '..'
 
 export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const { _id, title, color } = data
-	const { toDoData, setToDoData, setTaskCount } = useToDoContext()
+	const { toDoData, setToDoData } = useToDoContext()
 
 	const { setNodeRef: setDroppableRef } = useDroppable({
 		id: _id,
@@ -69,7 +69,7 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 				},
 			}))
 		}, 250),
-		[_id, setToDoData]
+		[_id, setToDoData],
 	)
 
 	const handleLiveRename = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,16 +108,13 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const handleDeleteList = () => {
 		setToDoData((prev) => {
 			const taskIdsToDelete = prev.tasksByList[_id] || []
-			const deleteCount = taskIdsToDelete.length
 
 			const updatedTasks = Object.fromEntries(
-				Object.entries(prev.tasks).filter(([taskId]) => !taskIdsToDelete.includes(taskId))
+				Object.entries(prev.tasks).filter(([taskId]) => !taskIdsToDelete.includes(taskId)),
 			)
 			const updatedLists = Object.fromEntries(Object.entries(prev.lists).filter(([listId]) => listId !== _id))
 			const updatedTasksByList = Object.fromEntries(Object.entries(prev.tasksByList).filter(([listId]) => listId !== _id))
 			const updatedListOrder = prev.linearListOrder.filter((listId) => listId !== _id)
-
-			setTaskCount((prev) => prev - deleteCount)
 
 			return {
 				lists: updatedLists,

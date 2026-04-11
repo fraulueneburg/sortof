@@ -10,7 +10,7 @@ import { Button, Link, Modal } from '../../components'
 import useSettingsContext from '../../hooks/useSettingsContext'
 
 export function Header() {
-	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()
+	const { defaultListId, setToDoData } = useToDoContext()
 
 	const { settings, setSettings } = useSettingsContext()
 
@@ -18,7 +18,6 @@ export function Header() {
 	const handleStartOver = () => {
 		localStorage.removeItem('to-do-data')
 		setToDoData(getInitialToDoData(defaultListId))
-		setTaskCount(0)
 	}
 
 	const handleDimCompletedTasks = () => {

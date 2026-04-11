@@ -34,7 +34,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
 	const defaultTitle = 'New task'
 
-	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
+	const { toDoData, setToDoData, defaultListId } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
 		data: {
@@ -107,7 +107,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 				},
 			}
 		})
-		setTaskCount((prev) => prev - 1)
 		setEditMode(false)
 	}
 
@@ -198,6 +197,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 						id={`${componentId}title-field`}
 						ref={inputRef}
 						className="as-input"
+						maxLength={250}
 						defaultValue={title}
 						onKeyDown={handleKeyDown}
 						placeholder={defaultTitle}
