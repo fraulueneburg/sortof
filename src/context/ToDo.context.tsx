@@ -1,19 +1,20 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { ToDoData } from '../types'
 import { getInitialToDoData } from '../utils/getInitialToDoData'
+import { DEFAULT_LIST_ID } from '../config/appConfig'
 
 interface ToDoContextType {
 	toDoData: ToDoData
 	setToDoData: React.Dispatch<React.SetStateAction<ToDoData>>
-	defaultListId: string
 	defaultListColor: string
 }
 
 const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
 
 const ToDoProvider = ({ children }: { children: ReactNode }) => {
-	const defaultListId = 'list_unsorted'
+	const defaultListId = DEFAULT_LIST_ID
 	const defaultListColor = 'purple'
+
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
 
 	useEffect(() => {
@@ -29,7 +30,6 @@ const ToDoProvider = ({ children }: { children: ReactNode }) => {
 			value={{
 				toDoData,
 				setToDoData,
-				defaultListId,
 				defaultListColor,
 			}}>
 			{children}

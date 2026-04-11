@@ -3,14 +3,16 @@ import { useId } from 'react'
 import { ArrowsClockwiseIcon as IconStartover, HandIcon as IconHand } from '@phosphor-icons/react'
 
 import useToDoContext from '../../hooks/useToDoContext'
+import useSettingsContext from '../../hooks/useSettingsContext'
+
+import { DEFAULT_LIST_ID } from '../../config/appConfig'
 import { getInitialToDoData } from '../../utils/getInitialToDoData'
 
 import { Button, Link, Modal } from '../../components'
 
-import useSettingsContext from '../../hooks/useSettingsContext'
-
 export function Header() {
-	const { defaultListId, setToDoData } = useToDoContext()
+	const defaultListId = DEFAULT_LIST_ID
+	const { setToDoData } = useToDoContext()
 
 	const { settings, setSettings } = useSettingsContext()
 
