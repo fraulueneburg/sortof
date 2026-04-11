@@ -12,6 +12,8 @@ export function FormNewTask() {
 	const [newItemTitle, setNewItemTitle] = useState('')
 	const inputRef = useRef<HTMLInputElement>(null)
 
+	const maxCharLength = 250
+	const maxCharsReached = newItemTitle.length >= maxCharLength
 	const maxTasksNum = 250
 	const maxTasksReached = taskCount >= maxTasksNum
 
@@ -150,6 +152,7 @@ export function FormNewTask() {
 					ref={inputRef}
 					onChange={handleChangeTitle}
 					value={newItemTitle}
+					maxLength={maxCharLength}
 					disabled={maxTasksReached}
 					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}
 					aria-invalid={maxTasksReached}
