@@ -132,6 +132,10 @@
 			position: relative;
 			z-index: 10;
 		}
+
+		::selection {
+			background-color: color-mix(in oklab, var(--purple) 100%, #fff 99%);
+		}
 	}
 
 	> ul {
