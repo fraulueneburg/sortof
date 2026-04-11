@@ -9,6 +9,22 @@
 	}
 }
 
+main > .content {
+	max-width: 1000px;
+
+	p {
+		text-wrap-style: pretty;
+	}
+
+	a {
+		text-underline-offset: 0.2rem;
+
+		&:focus-visible {
+			outline-offset: 0;
+		}
+	}
+}
+
 a.close-page {
 	border-radius: 50%;
 	display: inline-block;
