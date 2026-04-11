@@ -1,7 +1,6 @@
 import './task.scss'
 
 import { useEffect, useId, useRef, useState } from 'react'
-import { needsInvertedText } from '../../constants/colors'
 
 import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
@@ -12,11 +11,14 @@ import {
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
 
-import { DEFAULT_LIST_ID, MAX_TASK_CHARS } from '../../config/appConfig'
 import useSettingsContext from '../../hooks/useSettingsContext'
 import useToDoContext from '../../hooks/useToDoContext'
 
+import { DEFAULT_LIST_ID, MAX_TASK_CHARS } from '../../config/appConfig'
+import { needsInvertedText } from '../../constants/colors'
+
 import { DraggableItemData, TaskData } from '../../types'
+
 import { Button } from '../../components'
 
 type TaskProps = {
@@ -28,14 +30,8 @@ type TaskProps = {
 
 export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
+
 	const { settings } = useSettingsContext()
-	const { dimCompletedTasks } = settings
-	const bgColor = !checked || (checked && !dimCompletedTasks) ? color : 'color-inactive-task'
-
-	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
-	const defaultTitle = 'New task'
-	const defaultListId = DEFAULT_LIST_ID
-
 	const { toDoData, setToDoData } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
@@ -44,7 +40,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			item: data,
 		} satisfies DraggableItemData,
 	})
-	const isDefaultList = list === defaultListId
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const taskRef = useRef<HTMLLIElement>(null)
@@ -53,9 +48,17 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		setNodeRef(node)
 	}
 
-	const componentId = useId()
+	const { dimCompletedTasks } = settings
+	const bgColor = !checked || (checked && !dimCompletedTasks) ? color : 'color-inactive-task'
+	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
+
 	const [editMode, setEditMode] = useState(isEditing)
 	const [draftTitle, setDraftTitle] = useState(title)
+	const componentId = useId()
+
+	const defaultListId = DEFAULT_LIST_ID
+	const isDefaultList = list === defaultListId
+	const defaultTitle = 'New task'
 	const maxCharLength = MAX_TASK_CHARS
 	const maxCharsReached = draftTitle.length >= maxCharLength
 
