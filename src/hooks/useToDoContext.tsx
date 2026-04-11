@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { ToDoContext } from '../context/List.context'
+import { ToDoContext } from '../context/ToDo.context'
 
 const useToDoContext = () => {
 	const context = useContext(ToDoContext)
