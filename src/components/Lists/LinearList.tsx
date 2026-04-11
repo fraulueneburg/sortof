@@ -14,9 +14,12 @@ import { ListProps } from '.'
 import { PlusIcon as IconAddTask } from '@phosphor-icons/react'
 import { Button, Task, Submenu, ColorDropdown } from '..'
 
+import { MAX_LIST_CHARS } from '../../config/appConfig'
+
 export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const { _id, title, color } = data
 	const { toDoData, setToDoData } = useToDoContext()
+	const maxCharLength = MAX_LIST_CHARS
 
 	const { setNodeRef: setDroppableRef } = useDroppable({
 		id: _id,
@@ -210,7 +213,7 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 							onChange={(event) => handleLiveRename(event)}
 							value={listName}
 							ref={inputRef}
-							maxLength={90}
+							maxLength={maxCharLength}
 							spellCheck={false}
 						/>
 						<p className="sr-only" id={inputDescriptionId}>
