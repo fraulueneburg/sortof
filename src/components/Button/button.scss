@@ -53,13 +53,6 @@ button {
 	}
 }
 
-.btn-new-list {
-	top: calc(100dvh - var(--padding-page-y) - var(--pill-size-lg));
-	position: fixed;
-	right: var(--padding-page-x);
-	z-index: 20;
-}
-
 .btn-group {
 	display: flex;
 	flex-wrap: wrap;
