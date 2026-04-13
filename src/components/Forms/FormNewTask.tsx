@@ -155,7 +155,7 @@ export function FormNewTask() {
 								will first need to delete some from your lists. Perhaps this is a good time to finish a few tasks?
 							</>
 						)}
-						{maxCharsReached && <>You have reached the character limit of {maxCharLength}.</>}
+						{maxCharsReached && <>You have reached the limit of {maxCharLength} characters.</>}
 					</div>
 				)}
 				<input
