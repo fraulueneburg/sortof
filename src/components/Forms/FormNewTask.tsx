@@ -148,7 +148,7 @@ export function FormNewTask() {
 		<>
 			<form className="form-new-todo" onSubmit={handleAddTask}>
 				{(maxTasksReached || maxCharsReached) && (
-					<div className="error-message" id="task-alert" role="alert" aria-live="polite">
+					<div className="error-message" id="alert-max-tasks" role="alert" aria-live="polite">
 						{maxTasksReached && (
 							<>
 								You have created a total of 25 tasks, which is the maximum possible. In order to create any new tasks, you
@@ -165,9 +165,9 @@ export function FormNewTask() {
 					onChange={handleChangeTitle}
 					value={newItemTitle}
 					maxLength={maxCharLength}
-					disabled={maxTasksReached}
+					readOnly={maxTasksReached}
 					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}
-					aria-describedby={maxTasksReached || maxCharsReached ? 'task-alert' : undefined}
+					aria-describedby={maxTasksReached || maxCharsReached ? 'alert-max-tasks' : undefined}
 				/>
 				<div className="append">
 					<Button
@@ -176,7 +176,7 @@ export function FormNewTask() {
 						title="add task"
 						hideTitle={true}
 						unstyled={true}
-						disabled={maxTasksReached}
+						aria-disabled={maxTasksReached}
 						iconBefore={<IconSubmit size="28" />}
 					/>
 				</div>
