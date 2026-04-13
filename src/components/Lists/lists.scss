@@ -243,6 +243,7 @@ textarea.list-name {
 	&[aria-disabled='true'],
 	&[aria-disabled='true']:hover,
 	&[aria-disabled='true']:focus-visible {
+		background-color: var(--color-surface);
 		border-style: dashed;
 	}
 
