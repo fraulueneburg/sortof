@@ -179,8 +179,17 @@ textarea.list-name {
 	button {
 		align-self: start;
 
-		&:disabled {
+		&[aria-disabled='true'] {
 			border-style: dashed;
+			border-color: var(--border-color-disabled);
+			color: var(--border-color-disabled);
+
+			&:hover,
+			&:focus,
+			&:active {
+				background-color: var(--color-surface);
+				cursor: grab;
+			}
 		}
 	}
 }

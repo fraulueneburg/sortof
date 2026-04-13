@@ -133,6 +133,8 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	}
 
 	const handleAddNewTask = () => {
+		if (maxTasksReached) return
+
 		const newTaskId = nanoid()
 
 		const newTask: TaskData = {
@@ -260,9 +262,14 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 					hideTitle={true}
 					iconBefore={<IconAddTask />}
 					onClick={handleAddNewTask}
-					disabled={maxTasksReached}
+					aria-disabled={maxTasksReached}
+					aria-describedby={maxTasksReached ? `alert-max-tasks-${_id}` : undefined}
 				/>
-				{maxTasksReached && <div>You have created {maxTaskTotal} tasks, which is the maximum number of tasks.</div>}
+				{maxTasksReached && (
+					<div id={`alert-max-tasks-${_id}`}>
+						You have created a total of {maxTaskTotal} tasks, which is the maximum number possible.
+					</div>
+				)}
 			</div>
 		</article>
 	)
