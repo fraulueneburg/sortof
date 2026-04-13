@@ -108,7 +108,7 @@
 			word-break: break-word;
 		}
 
-		> .list-name {
+		.list-name {
 			border-bottom: calc(var(--outline-width) + 1px) var(--outline-style) transparent;
 			cursor: text;
 			line-height: 1.4;

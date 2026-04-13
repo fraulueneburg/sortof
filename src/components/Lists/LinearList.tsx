@@ -56,6 +56,7 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 
 	const taskCount = Object.keys(toDoData.tasks).length
 	const maxCharLength = MAX_LIST_CHARS
+	const maxCharsReached = listName.length >= maxCharLength
 	const maxTaskTotal = MAX_TASK_TOTAL
 	const maxTasksReached = taskCount >= maxTaskTotal
 
@@ -209,28 +210,35 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 			{...attributes}
 			{...listeners}>
 			<header>
-				{isRenaming ? (
-					<>
-						<textarea
-							className="list-name as-input"
-							aria-label="list name"
-							placeholder={fallbackName}
-							aria-describedby={inputDescriptionId}
-							onChange={(event) => handleLiveRename(event)}
-							value={listName}
-							ref={inputRef}
-							maxLength={maxCharLength}
-							spellCheck={false}
-						/>
-						<p className="sr-only" id={inputDescriptionId}>
-							Rename your list here. The field auto-saves.
-						</p>
-					</>
-				) : (
-					<h2 className="list-name" onClick={() => setRenameMode(true)}>
-						{title}
-					</h2>
-				)}
+				<div>
+					{isRenaming ? (
+						<>
+							<textarea
+								className="list-name as-input"
+								aria-label="list name"
+								placeholder={fallbackName}
+								aria-describedby={`alert-max-chars-${_id} ${inputDescriptionId}`}
+								onChange={(event) => handleLiveRename(event)}
+								value={listName}
+								ref={inputRef}
+								maxLength={maxCharLength}
+								spellCheck={false}
+							/>
+							{maxCharsReached && (
+								<div id={`alert-max-chars-${_id}`} className="error-message" role="alert" aria-live="polite">
+									You have reached the limit of {maxCharLength} characters.
+								</div>
+							)}
+							<p className="sr-only" id={inputDescriptionId}>
+								Rename your list here. The field auto-saves.
+							</p>
+						</>
+					) : (
+						<h2 className="list-name" onClick={() => setRenameMode(true)}>
+							{title}
+						</h2>
+					)}
+				</div>
 				<aside>
 					<>
 						<ColorDropdown selected={listColor} onColorChange={handleColorChange} />
