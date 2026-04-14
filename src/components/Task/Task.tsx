@@ -159,10 +159,10 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			if (event.key === 'Escape') setEditMode(false)
 		}
 
-		const handlePointerDownGlobal = (event: PointerEvent) => {
+		const handleClickOutside = (event: PointerEvent) => {
 			const targetNode = event.target as Node | null
 			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setEditMode(false)
+			if (targetNode && !taskRef.current.contains(targetNode)) updateTask()
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
@@ -172,12 +172,12 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
-		document.addEventListener('pointerdown', handlePointerDownGlobal)
+		document.addEventListener('pointerdown', handleClickOutside)
 		document.addEventListener('focusin', handleFocusInGlobal)
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDownGlobal)
-			document.removeEventListener('pointerdown', handlePointerDownGlobal)
+			document.removeEventListener('pointerdown', handleClickOutside)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
 	}, [editMode, title])
