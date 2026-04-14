@@ -7,16 +7,29 @@ import useToDoContext from '../../hooks/useToDoContext'
 import { TaskData } from '../../types'
 import { Button } from '../../components'
 
+import { DEFAULT_LIST_ID, MAX_TASK_TOTAL, MAX_TASK_CHARS } from '../../config/appConfig'
+
 export function FormNewTask() {
-	const { setToDoData, taskCount, setTaskCount, defaultListId } = useToDoContext()
+	const { toDoData, setToDoData } = useToDoContext()
 	const [newItemTitle, setNewItemTitle] = useState('')
 	const inputRef = useRef<HTMLInputElement>(null)
+	const defaultListId = DEFAULT_LIST_ID
 
-	const maxTasksNum = 250
+	const taskCount = Object.keys(toDoData.tasks).length
+	const maxCharLength = MAX_TASK_CHARS
+	const maxTasksNum = MAX_TASK_TOTAL
+	const maxCharsReached = newItemTitle.length >= maxCharLength
 	const maxTasksReached = taskCount >= maxTasksNum
 
 	const handleAddTask = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+
+		if (newItemTitle.length > maxCharLength) {
+			setNewItemTitle((prev) => prev.slice(0, maxCharLength))
+			return
+		}
+
+		if (taskCount > maxTasksNum) return
 
 		const trimmedName = newItemTitle.trim()
 
@@ -123,26 +136,27 @@ export function FormNewTask() {
 					},
 				}
 			})
-			setTaskCount((prev) => prev + 1)
 		}
 		setNewItemTitle('')
 	}
 
 	const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-		event.preventDefault()
 		setNewItemTitle(event.target.value)
 	}
 
 	return (
 		<>
 			<form className="form-new-todo" onSubmit={handleAddTask}>
-				{maxTasksReached && (
-					<p className="error-message" id="task-limit-message" role="alert" aria-live="assertive">
-						You have created the maximum number of tasks possible ({maxTasksNum}).
-						<br />
-						To create new ones, you need to delete some from your lists. Maybe this is a good time to switch from creating
-						tasks to finishing them?
-					</p>
+				{(maxTasksReached || maxCharsReached) && (
+					<div className="error-message" id="alert-max-tasks" role="alert" aria-live="polite">
+						{maxTasksReached && (
+							<>
+								You have created a total of 25 tasks, which is the maximum possible. In order to create any new tasks, you
+								will first need to delete some from your lists. Perhaps this is a good time to finish a few tasks?
+							</>
+						)}
+						{maxCharsReached && <>You have reached the limit of {maxCharLength} characters.</>}
+					</div>
 				)}
 				<input
 					type="text"
@@ -150,10 +164,10 @@ export function FormNewTask() {
 					ref={inputRef}
 					onChange={handleChangeTitle}
 					value={newItemTitle}
-					disabled={maxTasksReached}
+					maxLength={maxCharLength}
+					readOnly={maxTasksReached}
 					placeholder={maxTasksReached ? 'Maximum number of tasks reached' : undefined}
-					aria-invalid={maxTasksReached}
-					aria-describedby={maxTasksReached ? 'task-limit-message' : undefined}
+					aria-describedby={maxTasksReached || maxCharsReached ? 'alert-max-tasks' : undefined}
 				/>
 				<div className="append">
 					<Button
@@ -162,6 +176,7 @@ export function FormNewTask() {
 						title="add task"
 						hideTitle={true}
 						unstyled={true}
+						aria-disabled={maxTasksReached}
 						iconBefore={<IconSubmit size="28" />}
 					/>
 				</div>

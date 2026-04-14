@@ -23,11 +23,13 @@ form {
 			border-bottom-left-radius: 0;
 			height: 100%;
 
-			&:hover,
-			&:focus,
-			&:active {
-				background-color: var(--color-text);
-				color: var(--color-text-inverted);
+			&:not([aria-disabled='true']) {
+				&:hover,
+				&:focus,
+				&:active {
+					background-color: var(--color-text);
+					color: var(--color-text-inverted);
+				}
 			}
 
 			&:focus {
@@ -51,13 +53,17 @@ textarea {
 		padding: 0.75rem 1rem;
 	}
 
-	&:disabled {
+	&:read-only {
 		border-color: var(--border-color-disabled);
 	}
 
 	&:focus {
 		border-color: var(--color-focus);
 		outline: none;
+	}
+
+	&:focus-visible {
+		border-color: var(--color-focus);
 	}
 }
 
@@ -151,12 +157,31 @@ textarea {
 }
 
 .error-message {
-	background-color: var(--color-surface);
-	border: var(--border-width-base) var(--border-style-base) currentColor;
-	border-radius: var(--border-radius-base);
+	border-radius: 0.4rem;
+	display: block;
 	font-size: 1rem;
-	color: var(--red);
-	padding: 0.8rem 1rem;
-	position: absolute;
-	bottom: 3rem;
+
+	.form-new-todo & {
+		background-color: var(--color-surface);
+		border: var(--border-width-base) var(--border-style-base) currentColor;
+		border-radius: var(--border-radius-base);
+		bottom: 4rem;
+		color: var(--color-error);
+		padding: 0.8rem 1rem;
+		position: absolute;
+		right: 0;
+	}
+
+	.task-item .title & {
+		margin: 0 -0.35rem;
+		padding-top: 0.5rem;
+	}
+
+	p {
+		font-size: inherit;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 }

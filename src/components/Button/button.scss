@@ -29,8 +29,8 @@ button {
 		border: none;
 	}
 
-	&:disabled,
-	&:disabled:hover {
+	&[aria-disabled='true'],
+	&[aria-disabled='true']:hover {
 		background-color: inherit;
 		border-color: var(--border-color-disabled);
 		color: var(--border-color-disabled);
@@ -51,13 +51,6 @@ button {
 		background-color: transparent;
 		color: currentColor;
 	}
-}
-
-.btn-new-list {
-	top: calc(100dvh - var(--padding-page-y) - var(--pill-size-lg));
-	position: fixed;
-	right: var(--padding-page-x);
-	z-index: 20;
 }
 
 .btn-group {
