@@ -3,18 +3,27 @@ import { useId } from 'react'
 import { ArrowsClockwiseIcon as IconStartover, HandIcon as IconHand } from '@phosphor-icons/react'
 
 import useToDoContext from '../../hooks/useToDoContext'
+import useSettingsContext from '../../hooks/useSettingsContext'
+
+import { DEFAULT_LIST_ID } from '../../config/appConfig'
 import { getInitialToDoData } from '../../utils/getInitialToDoData'
 
 import { Button, Link, Modal } from '../../components'
 
 export function Header() {
-	const { defaultListId, setToDoData, setTaskCount } = useToDoContext()
+	const defaultListId = DEFAULT_LIST_ID
+	const { setToDoData } = useToDoContext()
+
+	const { settings, setSettings } = useSettingsContext()
 
 	const startoverDescId = useId()
 	const handleStartOver = () => {
 		localStorage.removeItem('to-do-data')
 		setToDoData(getInitialToDoData(defaultListId))
-		setTaskCount(0)
+	}
+
+	const handleDimCompletedTasks = () => {
+		setSettings((prev) => ({ ...prev, dimCompletedTasks: !prev.dimCompletedTasks }))
 	}
 
 	return (
@@ -46,7 +55,12 @@ export function Header() {
 							</p>
 						</li>
 						<li>
-							<Button title="Settings" onClick={() => {}} />
+							<Modal trigger={<Button title="Settings" onClick={() => {}} />} title={'Settings'}>
+								<label>
+									<input type="checkbox" checked={settings.dimCompletedTasks} onChange={handleDimCompletedTasks} />
+									grey out completed tasks
+								</label>
+							</Modal>
 						</li>
 					</ul>
 				</nav>

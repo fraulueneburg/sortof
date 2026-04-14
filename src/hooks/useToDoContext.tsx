@@ -1,10 +1,10 @@
 import { useContext } from 'react'
-import { ToDoContext } from '../context/List.context'
+import { ToDoContext } from '../context/ToDo.context'
 
 const useToDoContext = () => {
 	const context = useContext(ToDoContext)
 	if (!context) {
-		throw new Error('useToDoContext must be used within a ToDoContextWrapper')
+		throw new Error('useToDoContext must be used within a ToDoProvider')
 	}
 	return context
 }

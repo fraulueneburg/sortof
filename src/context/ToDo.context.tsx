@@ -1,29 +1,27 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { ToDoData } from '../types'
 import { getInitialToDoData } from '../utils/getInitialToDoData'
+import { DEFAULT_LIST_ID } from '../config/appConfig'
 
 interface ToDoContextType {
 	toDoData: ToDoData
 	setToDoData: React.Dispatch<React.SetStateAction<ToDoData>>
-	defaultListId: string
 	defaultListColor: string
-	taskCount: number
-	setTaskCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 const ToDoContext = createContext<ToDoContextType | undefined>(undefined)
 
-const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
-	const defaultListId = 'list_unsorted'
+const ToDoProvider = ({ children }: { children: ReactNode }) => {
+	const defaultListId = DEFAULT_LIST_ID
 	const defaultListColor = 'purple'
+
 	const [toDoData, setToDoData] = useState<ToDoData>(() => getInitialToDoData(defaultListId))
-	const [taskCount, setTaskCount] = useState(Object.keys(toDoData.tasks).length || 0)
 
 	useEffect(() => {
 		try {
 			localStorage.setItem('to-do-data', JSON.stringify(toDoData))
 		} catch (error) {
-			console.warn('Failed to save todo data to session storage:', error)
+			console.warn('Failed to save todo data to local storage:', error)
 		}
 	}, [toDoData])
 
@@ -32,14 +30,11 @@ const ToDoContextWrapper = ({ children }: { children: ReactNode }) => {
 			value={{
 				toDoData,
 				setToDoData,
-				defaultListId,
 				defaultListColor,
-				taskCount,
-				setTaskCount,
 			}}>
 			{children}
 		</ToDoContext.Provider>
 	)
 }
 
-export { ToDoContext, ToDoContextWrapper }
+export { ToDoContext, ToDoProvider }

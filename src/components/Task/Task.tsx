@@ -1,7 +1,6 @@
 import './task.scss'
 
 import { useEffect, useId, useRef, useState } from 'react'
-import { needsInvertedText } from '../../constants/colors'
 
 import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
@@ -12,8 +11,14 @@ import {
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
 
+import useSettingsContext from '../../hooks/useSettingsContext'
 import useToDoContext from '../../hooks/useToDoContext'
+
+import { DEFAULT_LIST_ID, MAX_TASK_CHARS } from '../../config/appConfig'
+import { needsInvertedText } from '../../constants/colors'
+
 import { DraggableItemData, TaskData } from '../../types'
+
 import { Button } from '../../components'
 
 type TaskProps = {
@@ -25,12 +30,9 @@ type TaskProps = {
 
 export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
-	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
-	const defaultTitle = 'New task'
-
-	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
+	const { settings } = useSettingsContext()
+	const { toDoData, setToDoData } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
 		data: {
@@ -38,7 +40,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			item: data,
 		} satisfies DraggableItemData,
 	})
-	const isDefaultList = list === defaultListId
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const taskRef = useRef<HTMLLIElement>(null)
@@ -47,8 +48,19 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		setNodeRef(node)
 	}
 
-	const componentId = useId()
+	const { dimCompletedTasks } = settings
+	const bgColor = !checked || (checked && !dimCompletedTasks) ? color : 'color-inactive-task'
+	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
+
 	const [editMode, setEditMode] = useState(isEditing)
+	const [draftTitle, setDraftTitle] = useState(title)
+	const componentId = useId()
+
+	const defaultListId = DEFAULT_LIST_ID
+	const isDefaultList = list === defaultListId
+	const defaultTitle = 'New task'
+	const maxCharLength = MAX_TASK_CHARS
+	const maxCharsReached = draftTitle.length >= maxCharLength
 
 	const updateTaskStatus = () => {
 		setEditMode(false)
@@ -73,6 +85,8 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		if (!newTaskName && !prevName) {
 			newTaskName = defaultTitle
 		}
+
+		if (newTaskName && newTaskName.length > maxCharLength) return
 
 		if (!newTaskName || prevName === newTaskName) {
 			setEditMode(false)
@@ -103,7 +117,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 				},
 			}
 		})
-		setTaskCount((prev) => prev - 1)
 		setEditMode(false)
 	}
 
@@ -132,6 +145,8 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	useEffect(() => {
 		if (!editMode && title === '') updateTask()
 		if (!editMode) return
+
+		setDraftTitle(title)
 
 		const inputField = inputRef.current
 		if (!inputField) return
@@ -165,7 +180,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			document.removeEventListener('pointerdown', handlePointerDownGlobal)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
-	}, [editMode])
+	}, [editMode, title])
 
 	return (
 		<li
@@ -190,14 +205,23 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			)}
 			<div className="title">
 				{editMode ? (
-					<textarea
-						id={`${componentId}title-field`}
-						ref={inputRef}
-						className="as-input"
-						defaultValue={title}
-						onKeyDown={handleKeyDown}
-						placeholder={defaultTitle}
-					/>
+					<>
+						<textarea
+							id={`${componentId}title-field`}
+							ref={inputRef}
+							className="as-input"
+							maxLength={maxCharLength}
+							value={draftTitle}
+							onChange={(e) => setDraftTitle(e.target.value)}
+							onKeyDown={handleKeyDown}
+							placeholder={defaultTitle}
+						/>
+						{maxCharsReached && (
+							<div className="error-message" role="alert" aria-live="polite">
+								You have reached the character limit of {maxCharLength} characters.
+							</div>
+						)}
+					</>
 				) : (
 					<span>{title}</span>
 				)}
