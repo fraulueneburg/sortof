@@ -48,12 +48,15 @@
 	/* ELEMENT-SPECIFIC */
 
 	--color-bg: var(--color-light);
-	--font-size-h2: 1.5rem;
 	--padding-page-x: 1.25rem;
 	--padding-page-y: 0.9rem;
-	--pill-size-lg: 4rem;
+
+	--font-size-h1: var(--font-size-xxl);
+	--line-height-h1: 1.2;
+	--font-size-h2: 1.5rem;
 
 	--border-radius-pill: 1.5rem;
+	--pill-size-lg: 4rem;
 
 	--color-inactive-task: #999;
 
