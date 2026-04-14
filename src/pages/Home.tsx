@@ -16,6 +16,7 @@ import { restrictToWindowEdges } from '@dnd-kit/modifiers'
 
 import useToDoContext from '../hooks/useToDoContext'
 import { ListData, TaskData } from '../types'
+import { DEFAULT_LIST_ID } from '../config/appConfig'
 
 import { Task } from '../components'
 import { FormNewList, FormNewTask } from '../components/Forms'
@@ -27,7 +28,8 @@ type activeItemType =
 	| { type: null; data: null; color: null }
 
 export function Home() {
-	const { toDoData, setToDoData, defaultListId } = useToDoContext()
+	const { toDoData, setToDoData } = useToDoContext()
+	const defaultListId = DEFAULT_LIST_ID
 	const emptyActiveItem: activeItemType = { data: null, color: null, type: null }
 	const [activeItem, setActiveItem] = useState<activeItemType>(emptyActiveItem)
 	const [draggedItemRef, setDraggedItemRef] = useState<HTMLElement | null>(null)
@@ -43,7 +45,7 @@ export function Home() {
 		}),
 		useSensor(MouseSensor, {
 			activationConstraint: { distance: 8 },
-		})
+		}),
 	)
 
 	function handleDragStart(event: DragStartEvent) {
@@ -137,7 +139,7 @@ export function Home() {
 							width: draggedItemRef.getBoundingClientRect().width,
 							top: draggedItemRef.getBoundingClientRect().top,
 							left: draggedItemRef.getBoundingClientRect().left,
-					  }
+						}
 					: null
 
 				const draggedDistance = { x: delta.x, y: delta.y }
