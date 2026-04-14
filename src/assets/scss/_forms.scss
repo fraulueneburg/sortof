@@ -82,6 +82,7 @@ label:has(> input[type='checkbox']) {
 			aspect-ratio: 1 / 1;
 			background: var(--bg-color) no-repeat center center;
 			border: var(--border-base);
+			border-radius: var(--border-radius-base);
 			content: '';
 			display: block;
 			margin-left: calc(-1 * var(--checkbox-offset));
