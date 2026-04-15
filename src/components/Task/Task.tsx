@@ -1,6 +1,6 @@
 import './task.scss'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
@@ -145,15 +145,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	useEffect(() => {
 		if (!editMode) return
 
-		setDraftTitle(title)
-
-		const inputField = inputRef.current
-		if (!inputField) return
-
-		inputField.focus()
-		inputField.setSelectionRange(inputField.value.length, inputField.value.length)
-		inputField.scrollLeft = inputField.scrollWidth
-
 		const handleKeyDownGlobal = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') setEditMode(false)
 		}
@@ -179,6 +170,25 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			document.removeEventListener('pointerdown', handleClickOutside)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
+	}, [editMode])
+
+	useLayoutEffect(() => {
+		if (!editMode) return
+
+		setDraftTitle(title)
+
+		const input = inputRef.current
+
+		if (!input) return
+
+		const hasCustomTitle = title !== defaultTitle
+
+		const selectEnd = input.value.length
+		const selectStart = hasCustomTitle ? selectEnd : 0
+
+		input.focus()
+		input.setSelectionRange(selectStart, selectEnd)
+		input.scrollLeft = input.scrollWidth
 	}, [editMode, title])
 
 	return (
