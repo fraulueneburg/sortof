@@ -124,6 +124,7 @@
 		padding: var(--title-padding-inline);
 		padding-left: 1rem;
 		padding-right: calc(var(--spacing) + var(--actions-width));
+		white-space: pre-wrap;
 		word-wrap: break-word;
 
 		user-select: none;
