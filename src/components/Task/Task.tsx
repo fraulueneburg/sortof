@@ -143,7 +143,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	}
 
 	useEffect(() => {
-		if (!editMode && title === '') updateTask()
 		if (!editMode) return
 
 		setDraftTitle(title)
