@@ -154,16 +154,18 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			if (event.key === 'Escape') setEditMode(false)
 		}
 
-		const handleClickOutside = (event: PointerEvent) => {
+		const isEventOutsideTask = (event: Event) => {
+			if (!taskRef.current) return false
 			const targetNode = event.target as Node | null
-			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) updateTask()
+			return !!targetNode && !taskRef.current.contains(targetNode)
+		}
+
+		const handleClickOutside = (event: PointerEvent) => {
+			if (isEventOutsideTask(event)) updateTask()
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
-			const targetNode = event.target as Node | null
-			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setEditMode(false)
+			if (isEventOutsideTask(event)) setEditMode(false)
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
