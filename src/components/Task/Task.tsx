@@ -127,6 +127,11 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			event.preventDefault()
 			updateTask()
 		}
+
+		if (key === 'Backspace' && draftTitle === '') {
+			event.preventDefault()
+			deleteTask()
+		}
 	}
 
 	const style = {
