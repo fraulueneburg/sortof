@@ -152,28 +152,22 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	useEffect(() => {
 		if (!editMode) return
 
-		const handleKeyDownGlobal = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') setEditMode(false)
-		}
-
 		const isOutsideOfTask = (event: Event) => {
 			if (!taskRef.current) return false
 			const targetNode = event.target as Node | null
 			return !!targetNode && !taskRef.current.contains(targetNode)
 		}
 
+		const handleKeyDownGlobal = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') setEditMode(false)
+		}
+
 		const handleClickOutside = (event: PointerEvent) => {
-			const isNewEmptyTask = !draftTitle && !title
-			console.log('draftTitle', draftTitle)
-			console.log('title', title)
 			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
-			if (isOutsideOfTask(event)) {
-				updateTask()
-				return
-			}
+			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
