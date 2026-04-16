@@ -170,7 +170,10 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
-			if (isOutsideOfTask(event)) setEditMode(false)
+			if (isOutsideOfTask(event)) {
+				updateTask()
+				return
+			}
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
