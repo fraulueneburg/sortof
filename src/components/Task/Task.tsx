@@ -1,6 +1,6 @@
 import './task.scss'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
@@ -79,16 +79,14 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	}
 
 	const updateTask = () => {
-		let newTaskName = inputRef.current?.value.trim()
+		let newName = inputRef.current?.value.trim()
 		const prevName = toDoData.tasks[_id].title.trim()
 
-		if (!newTaskName && !prevName) {
-			newTaskName = defaultTitle
-		}
+		if (!newName) newName = defaultTitle
 
-		if (newTaskName && newTaskName.length > maxCharLength) return
+		if (newName.length > maxCharLength) newName = newName.slice(0, maxCharLength)
 
-		if (!newTaskName || prevName === newTaskName) {
+		if (newName === prevName) {
 			setEditMode(false)
 			return
 		}
@@ -99,7 +97,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 				...prev.tasks,
 				[_id]: {
 					...prev.tasks[_id],
-					title: newTaskName,
+					title: newName,
 				},
 			},
 		}))
@@ -122,10 +120,19 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const { key } = event
+		const isEmpty = !draftTitle
+		const isNewEmptyTask = !title && !draftTitle
 
 		if (key === 'Enter' && !event.shiftKey) {
 			event.preventDefault()
 			updateTask()
+			return
+		}
+
+		if ((key === 'Backspace' && isEmpty) || (key === 'Escape' && isNewEmptyTask)) {
+			event.preventDefault()
+			deleteTask()
+			return
 		}
 	}
 
@@ -143,32 +150,24 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	}
 
 	useEffect(() => {
-		if (!editMode && title === '') updateTask()
 		if (!editMode) return
 
-		setDraftTitle(title)
-
-		const inputField = inputRef.current
-		if (!inputField) return
-
-		inputField.focus()
-		inputField.setSelectionRange(inputField.value.length, inputField.value.length)
-		inputField.scrollLeft = inputField.scrollWidth
+		const isOutsideOfTask = (event: Event) => {
+			if (!taskRef.current) return false
+			const targetNode = event.target as Node | null
+			return !!targetNode && !taskRef.current.contains(targetNode)
+		}
 
 		const handleKeyDownGlobal = (event: KeyboardEvent) => {
 			if (event.key === 'Escape') setEditMode(false)
 		}
 
 		const handleClickOutside = (event: PointerEvent) => {
-			const targetNode = event.target as Node | null
-			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) updateTask()
+			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
-			const targetNode = event.target as Node | null
-			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setEditMode(false)
+			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
@@ -180,6 +179,20 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			document.removeEventListener('pointerdown', handleClickOutside)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
+	}, [editMode])
+
+	useLayoutEffect(() => {
+		if (!editMode) return
+
+		const input = inputRef.current
+
+		if (!input) return
+
+		const selectEnd = input.value.length
+
+		input.focus()
+		input.setSelectionRange(selectEnd, selectEnd)
+		input.scrollLeft = input.scrollWidth
 	}, [editMode, title])
 
 	return (

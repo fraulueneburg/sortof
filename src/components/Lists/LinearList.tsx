@@ -174,7 +174,7 @@ export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 			input.setSelectionRange(value.length, value.length)
 		}
 		const handleEscape = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' || event.key === 'Enter') {
+			if (event.key === 'Escape' || (event.key === 'Enter' && !event.shiftKey)) {
 				finalizeRename()
 			}
 		}

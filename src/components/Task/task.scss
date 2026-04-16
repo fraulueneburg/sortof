@@ -123,6 +123,7 @@
 		overflow: hidden;
 		padding-left: 1rem;
 		padding-right: calc(var(--actions-width) + var(--spacing) / 4);
+		white-space: pre-wrap;
 		word-wrap: break-word;
 
 		user-select: none;
