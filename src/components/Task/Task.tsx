@@ -79,16 +79,14 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	}
 
 	const updateTask = () => {
-		let newTaskName = inputRef.current?.value.trim()
+		let newName = inputRef.current?.value.trim()
 		const prevName = toDoData.tasks[_id].title.trim()
 
-		if (!newTaskName && !prevName) {
-			newTaskName = defaultTitle
-		}
+		if (!newName) newName = defaultTitle
 
-		if (newTaskName && newTaskName.length > maxCharLength) return
+		if (newName.length > maxCharLength) newName = newName.slice(0, maxCharLength)
 
-		if (!newTaskName || prevName === newTaskName) {
+		if (newName === prevName) {
 			setEditMode(false)
 			return
 		}
@@ -99,7 +97,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 				...prev.tasks,
 				[_id]: {
 					...prev.tasks[_id],
-					title: newTaskName,
+					title: newName,
 				},
 			},
 		}))
