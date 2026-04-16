@@ -223,7 +223,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 						)}
 					</>
 				) : (
-					<span>{title}</span>
+					<div className="text">{title}</div>
 				)}
 			</div>
 			<div className="actions">
