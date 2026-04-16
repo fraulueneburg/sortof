@@ -184,19 +184,14 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 	useLayoutEffect(() => {
 		if (!editMode) return
 
-		setDraftTitle(title)
-
 		const input = inputRef.current
 
 		if (!input) return
 
-		const hasCustomTitle = title !== defaultTitle
-
 		const selectEnd = input.value.length
-		const selectStart = hasCustomTitle ? selectEnd : 0
 
 		input.focus()
-		input.setSelectionRange(selectStart, selectEnd)
+		input.setSelectionRange(selectEnd, selectEnd)
 		input.scrollLeft = input.scrollWidth
 	}, [editMode, title])
 
