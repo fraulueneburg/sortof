@@ -120,15 +120,19 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const { key } = event
+		const isEmpty = !draftTitle
+		const isNewEmptyTask = !title && !draftTitle
 
 		if (key === 'Enter' && !event.shiftKey) {
 			event.preventDefault()
 			updateTask()
+			return
 		}
 
-		if (key === 'Backspace' && draftTitle === '') {
+		if ((key === 'Backspace' && isEmpty) || (key === 'Escape' && isNewEmptyTask)) {
 			event.preventDefault()
 			deleteTask()
+			return
 		}
 	}
 
@@ -152,18 +156,21 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 			if (event.key === 'Escape') setEditMode(false)
 		}
 
-		const isEventOutsideTask = (event: Event) => {
+		const isOutsideOfTask = (event: Event) => {
 			if (!taskRef.current) return false
 			const targetNode = event.target as Node | null
 			return !!targetNode && !taskRef.current.contains(targetNode)
 		}
 
 		const handleClickOutside = (event: PointerEvent) => {
-			if (isEventOutsideTask(event)) updateTask()
+			const isNewEmptyTask = !draftTitle && !title
+			console.log('draftTitle', draftTitle)
+			console.log('title', title)
+			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
-			if (isEventOutsideTask(event)) setEditMode(false)
+			if (isOutsideOfTask(event)) setEditMode(false)
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
