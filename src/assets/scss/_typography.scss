@@ -1,8 +1,8 @@
 h1 {
 	display: inline-block;
 	font-family: var(--font-family-headings);
-	font-size: var(--font-size-xxl);
-	line-height: 1.2;
+	font-size: var(--font-size-h1);
+	line-height: var(--line-height-h1);
 	margin: 0 0 2rem;
 	text-transform: uppercase;
 	text-decoration: underline;
