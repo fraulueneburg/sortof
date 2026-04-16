@@ -122,7 +122,7 @@
 		min-height: var(--min-height);
 		overflow: hidden;
 		padding-left: 1rem;
-		padding-right: calc(var(--spacing) + var(--actions-width));
+		padding-right: calc(var(--actions-width) + var(--spacing) / 4);
 		word-wrap: break-word;
 
 		user-select: none;
