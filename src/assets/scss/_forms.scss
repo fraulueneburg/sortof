@@ -32,6 +32,10 @@ form {
 				}
 			}
 
+			&[aria-disabled='true'] {
+				background-color: transparent;
+			}
+
 			&:focus {
 				border-radius: var(--border-radius-base);
 			}
