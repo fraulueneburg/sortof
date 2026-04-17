@@ -151,8 +151,8 @@ export function FormNewTask() {
 					<div className="error-message" id="alert-max-tasks" role="alert" aria-live="polite">
 						{maxTasksReached && (
 							<>
-								You have created a total of 25 tasks, which is the maximum possible. In order to create any new tasks, you
-								will first need to delete some from your lists. Perhaps this is a good time to finish a few tasks?
+								You have created a total of {maxTasksNum} tasks, which is the maximum possible. In order to create any new
+								tasks, you will first need to delete some from your lists. Perhaps this is a good time to finish a few tasks?
 							</>
 						)}
 						{maxCharsReached && <>You have reached the limit of {maxCharLength} characters.</>}
