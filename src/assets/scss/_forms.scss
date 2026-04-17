@@ -119,7 +119,7 @@ textarea {
 	}
 }
 
-.form-new-todo,
+.form-new-task,
 .form-new-list {
 	margin-bottom: 1rem;
 	width: fit-content;
@@ -136,7 +136,7 @@ textarea {
 	}
 }
 
-.form-new-todo {
+.form-new-task {
 	margin-left: auto;
 	margin-right: auto;
 
@@ -161,7 +161,7 @@ textarea {
 	display: block;
 	font-size: 1rem;
 
-	.form-new-todo & {
+	.form-new-task & {
 		background-color: var(--color-surface);
 		border: var(--border-width-base) var(--border-style-base) currentColor;
 		border-radius: var(--border-radius-base);

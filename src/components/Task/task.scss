@@ -17,10 +17,10 @@
 	--outline-color: var(--color-text);
 	--spacing: 0.5rem;
 	--title-max-width: 240px;
-	--title-padding-inline: 0.45rem;
+	--title-padding: 0.45rem;
 
 	@media (min-width: 1200px) {
-		--title-padding-inline: 0.35rem;
+		--title-padding: 0.35rem;
 	}
 
 	background-color: var(--color-primary);
@@ -42,7 +42,7 @@
 		z-index: 10;
 	}
 
-	&.is-placeholder .title span {
+	&.is-placeholder .title .text {
 		opacity: 0.7;
 	}
 
@@ -60,11 +60,11 @@
 		--offset-x: 10px;
 
 		border: none;
+		display: block;
+		left: var(--offset-x);
 		margin: 0;
 		position: absolute;
 		top: var(--offset-y);
-		left: var(--offset-x);
-		display: block;
 
 		&:before,
 		&:after {
@@ -106,10 +106,10 @@
 				background-color: var(--color-text-inverted);
 			}
 		}
-	}
 
-	input[type='checkbox'] + .title {
-		padding-left: calc(var(--min-height) + var(--spacing));
+		& + .title {
+			padding-left: calc(var(--min-height) - var(--title-padding) + var(--spacing));
+		}
 	}
 
 	.title {
@@ -121,9 +121,8 @@
 		max-width: var(--title-max-width);
 		min-height: var(--min-height);
 		overflow: hidden;
-		padding: var(--title-padding-inline);
 		padding-left: 1rem;
-		padding-right: calc(var(--spacing) + var(--actions-width));
+		padding-right: calc(var(--actions-width) + var(--spacing) / 4);
 		white-space: pre-wrap;
 		word-wrap: break-word;
 
@@ -133,6 +132,10 @@
 
 		@media (min-width: 1024px) {
 			--title-max-width: 500px;
+		}
+
+		.text {
+			padding: var(--title-padding);
 		}
 
 		&:has(textarea) {
@@ -154,9 +157,9 @@
 		border-radius: 0.4rem;
 		background-color: rgba(255, 255, 255, 0.5);
 		display: block;
-		padding: var(--title-padding-inline);
-		margin: calc(var(--title-padding-inline) * -1);
 		max-width: 100%;
+		min-height: calc(var(--min-height) - var(--title-padding) * 2);
+		padding: var(--title-padding);
 		width: auto;
 	}
 
