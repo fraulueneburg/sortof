@@ -146,7 +146,7 @@ export function FormNewTask() {
 
 	return (
 		<>
-			<form className="form-new-todo" onSubmit={handleAddTask}>
+			<form className="form-new-task" onSubmit={handleAddTask}>
 				{(maxTasksReached || maxCharsReached) && (
 					<div className="error-message" id="alert-max-tasks" role="alert" aria-live="polite">
 						{maxTasksReached && (
