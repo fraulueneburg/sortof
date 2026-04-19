@@ -192,9 +192,9 @@
 }
 
 .new-list-wrapper {
-	top: calc(100dvh - var(--padding-page-y) - var(--pill-size-lg));
 	position: fixed;
-	right: var(--padding-page-x);
+	right: calc(var(--padding-page-x) - 0.5rem);
+	top: calc(100dvh - var(--padding-page-y) - var(--pill-size-lg));
 	z-index: 20;
 
 	.error-message {
@@ -237,6 +237,8 @@
 }
 
 .btn-new-list {
+	box-shadow: var(--box-shadow);
+
 	&[aria-disabled='true'],
 	&[aria-disabled='true']:hover,
 	&[aria-disabled='true']:focus-visible {
