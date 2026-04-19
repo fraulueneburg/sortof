@@ -4,7 +4,7 @@ html {
 }
 
 body {
-	background-color: var(--color-bg);
+	background: var(--color-bg) url(../img/bg-noise-300.png) repeat top left;
 	color: var(--color-text);
 	font-family: var(--font-family-text);
 	font-size: var(--font-size-base);
