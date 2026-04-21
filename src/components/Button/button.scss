@@ -30,8 +30,9 @@ button {
 	}
 
 	&[aria-disabled='true'],
-	&[aria-disabled='true']:hover {
-		background-color: inherit;
+	&[aria-disabled='true']:hover,
+	&[aria-disabled='true']:focus {
+		background-color: var(--color-surface);
 		border-color: var(--border-color-disabled);
 		color: var(--border-color-disabled);
 		cursor: default;

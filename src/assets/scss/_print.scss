@@ -1,0 +1,122 @@
+@media print {
+	:root {
+		--border-width-base: 1.5px;
+	}
+
+	body {
+		background: none transparent;
+	}
+
+	#page-header,
+	h1 br:last-child,
+	.form-new-task,
+	.new-list-wrapper,
+	.task-item .actions,
+	.list aside,
+	.list .list-footer,
+	#page-footer {
+		display: none !important;
+	}
+
+	html {
+		font-size: 0.75rem;
+	}
+
+	#root,
+	main {
+		padding: 0;
+	}
+
+	h1 {
+		font-size: 2.3rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.list-container {
+		display: grid !important;
+		grid-template-columns: repeat(2, 1fr) !important;
+	}
+
+	.list {
+		&:not(.list_unsorted) {
+			padding: 1rem 1.25rem !important;
+		}
+
+		> ul {
+			gap: 0.5rem !important;
+		}
+
+		.task-item {
+			background-color: transparent !important;
+			color: var(--color-text) !important;
+			display: block !important;
+			min-height: 0 !important;
+			height: auto !important;
+			transform: none !important;
+			width: 100% !important;
+
+			.title {
+				display: block !important;
+				max-width: none !important;
+				min-height: 0 !important;
+				padding-inline: 1.5rem 0 !important;
+
+				.text {
+					display: block !important;
+					padding: 0 !important;
+				}
+			}
+
+			&.is-checked .title {
+				text-decoration-thickness: 2px;
+			}
+
+			&.is-placeholder .title .text {
+				opacity: 1 !important;
+			}
+
+			input[type='checkbox'] {
+				--offset-y: 3px;
+				--offset-x: 0px;
+
+				&:before,
+				&:after {
+					display: none !important;
+				}
+			}
+		}
+
+		&.list_unsorted {
+			grid-column: 1 / -1;
+			position: static !important;
+			height: auto !important;
+
+			ul {
+				align-items: flex-start;
+				display: flex !important;
+				flex-direction: row !important;
+				flex-wrap: wrap;
+				gap: 0.25rem !important;
+				height: fit-content !important;
+			}
+
+			.task-item {
+				border: var(--border-base);
+				display: block !important;
+				flex: 0 0 auto;
+				box-sizing: border-box;
+				box-shadow: none !important;
+				position: static !important;
+				margin-right: 0.25rem;
+				padding-inline: 0.75rem !important;
+				width: fit-content !important;
+
+				& .title,
+				& .text {
+					border-radius: 0 !important;
+					padding-inline: 0 !important;
+				}
+			}
+		}
+	}
+}

@@ -32,6 +32,10 @@ form {
 				}
 			}
 
+			&[aria-disabled='true'] {
+				background-color: transparent;
+			}
+
 			&:focus {
 				border-radius: var(--border-radius-base);
 			}
@@ -173,8 +177,7 @@ textarea {
 	}
 
 	.task-item .title & {
-		margin: 0 -0.35rem;
-		padding-top: 0.5rem;
+		padding: 0.25rem 0 0.5rem;
 	}
 
 	p {
