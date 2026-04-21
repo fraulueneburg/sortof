@@ -4,17 +4,21 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react'
 
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import { nanoid } from 'nanoid'
 import debounce from 'lodash/debounce'
 
 import useToDoContext from '../../hooks/useToDoContext'
-import { DraggableItemData } from '../../types'
+import { DraggableItemData, TaskData } from '../../types'
 import { ListProps } from '.'
 
+import { PlusIcon as IconAddTask } from '@phosphor-icons/react'
 import { Button, Task, Submenu, ColorDropdown } from '..'
 
-export function LinearList({ data, tasks }: ListProps) {
+import { MAX_TASK_TOTAL, MAX_LIST_CHARS } from '../../config/appConfig'
+
+export function LinearList({ data, tasks, isDraggedCopy = false }: ListProps) {
 	const { _id, title, color } = data
-	const { toDoData, setToDoData, setTaskCount } = useToDoContext()
+	const { toDoData, setToDoData } = useToDoContext()
 
 	const { setNodeRef: setDroppableRef } = useDroppable({
 		id: _id,
@@ -48,6 +52,13 @@ export function LinearList({ data, tasks }: ListProps) {
 	const [isRenaming, setRenameMode] = useState(isNewList)
 	const [listName, setListName] = useState(title)
 	const [listColor, setListColor] = useState(color)
+	const [editingTaskId, setEditingTaskId] = useState<string | null>(null)
+
+	const taskCount = Object.keys(toDoData.tasks).length
+	const maxCharLength = MAX_LIST_CHARS
+	const maxCharsReached = listName.length >= maxCharLength
+	const maxTaskTotal = MAX_TASK_TOTAL
+	const maxTasksReached = taskCount >= maxTaskTotal
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const inputDescriptionId = useId()
@@ -66,7 +77,7 @@ export function LinearList({ data, tasks }: ListProps) {
 				},
 			}))
 		}, 250),
-		[_id, setToDoData]
+		[_id, setToDoData],
 	)
 
 	const handleLiveRename = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -105,16 +116,13 @@ export function LinearList({ data, tasks }: ListProps) {
 	const handleDeleteList = () => {
 		setToDoData((prev) => {
 			const taskIdsToDelete = prev.tasksByList[_id] || []
-			const deleteCount = taskIdsToDelete.length
 
 			const updatedTasks = Object.fromEntries(
-				Object.entries(prev.tasks).filter(([taskId]) => !taskIdsToDelete.includes(taskId))
+				Object.entries(prev.tasks).filter(([taskId]) => !taskIdsToDelete.includes(taskId)),
 			)
 			const updatedLists = Object.fromEntries(Object.entries(prev.lists).filter(([listId]) => listId !== _id))
 			const updatedTasksByList = Object.fromEntries(Object.entries(prev.tasksByList).filter(([listId]) => listId !== _id))
 			const updatedListOrder = prev.linearListOrder.filter((listId) => listId !== _id)
-
-			setTaskCount((prev) => prev - deleteCount)
 
 			return {
 				lists: updatedLists,
@@ -125,6 +133,39 @@ export function LinearList({ data, tasks }: ListProps) {
 		})
 	}
 
+	const handleAddNewTask = () => {
+		if (maxTasksReached) return
+
+		const newTaskId = nanoid()
+
+		const newTask: TaskData = {
+			_id: newTaskId,
+			title: '',
+			checked: false,
+			list: _id,
+			rotation: Math.random() < 0.5 ? '5deg' : '-5deg',
+			position: { x: 0, y: 0 },
+		}
+
+		setToDoData((prev) => {
+			const { tasks, tasksByList } = prev
+
+			return {
+				...prev,
+				tasks: {
+					...tasks,
+					[newTaskId]: newTask,
+				},
+				tasksByList: {
+					...tasksByList,
+					[_id]: [...(tasksByList[_id] || []), newTaskId],
+				},
+			}
+		})
+
+		setEditingTaskId(newTaskId)
+	}
+
 	useEffect(() => {
 		if (isRenaming && inputRef.current) {
 			const input = inputRef.current
@@ -133,7 +174,7 @@ export function LinearList({ data, tasks }: ListProps) {
 			input.setSelectionRange(value.length, value.length)
 		}
 		const handleEscape = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' || event.key === 'Enter') {
+			if (event.key === 'Escape' || (event.key === 'Enter' && !event.shiftKey)) {
 				finalizeRename()
 			}
 		}
@@ -162,35 +203,42 @@ export function LinearList({ data, tasks }: ListProps) {
 
 	return (
 		<article
-			className={`list ${_id}${isDragging ? ' is-dragging' : ''}`}
+			className={`list ${_id}${isDragging || isDraggedCopy ? ' is-dragging' : ''}`}
 			ref={setNodeRef}
 			data-list-id={_id}
 			style={style}
 			{...attributes}
 			{...listeners}>
 			<header>
-				{isRenaming ? (
-					<>
-						<textarea
-							className="list-name as-input"
-							aria-label="list name"
-							placeholder={fallbackName}
-							aria-describedby={inputDescriptionId}
-							onChange={(event) => handleLiveRename(event)}
-							value={listName}
-							ref={inputRef}
-							maxLength={90}
-							spellCheck={false}
-						/>
-						<p className="sr-only" id={inputDescriptionId}>
-							Rename your list here. The field auto-saves.
-						</p>
-					</>
-				) : (
-					<h2 className="list-name" onClick={() => setRenameMode(true)}>
-						{title}
-					</h2>
-				)}
+				<div>
+					{isRenaming ? (
+						<>
+							<textarea
+								className="list-name as-input"
+								aria-label="list name"
+								placeholder={fallbackName}
+								aria-describedby={`alert-max-chars-${_id} ${inputDescriptionId}`}
+								onChange={(event) => handleLiveRename(event)}
+								value={listName}
+								ref={inputRef}
+								maxLength={maxCharLength}
+								spellCheck={false}
+							/>
+							{maxCharsReached && (
+								<div id={`alert-max-chars-${_id}`} className="error-message" role="alert" aria-live="polite">
+									You have reached the limit of {maxCharLength} characters.
+								</div>
+							)}
+							<p className="sr-only" id={inputDescriptionId}>
+								Rename your list here. The field auto-saves.
+							</p>
+						</>
+					) : (
+						<h2 className="list-name" onClick={() => setRenameMode(true)}>
+							{title}
+						</h2>
+					)}
+				</div>
 				<aside>
 					<>
 						<ColorDropdown selected={listColor} onColorChange={handleColorChange} />
@@ -207,16 +255,30 @@ export function LinearList({ data, tasks }: ListProps) {
 					</>
 				</aside>
 			</header>
-
 			{tasks?.length > 0 && (
 				<ul>
 					<SortableContext items={toDoData.tasksByList[_id]} strategy={verticalListSortingStrategy}>
 						{tasks.map((task) => (
-							<Task key={task._id} data={task} color={listColor} />
+							<Task key={task._id} data={task} color={listColor} isEditing={task._id === editingTaskId} />
 						))}
 					</SortableContext>
 				</ul>
 			)}
+			<div className="list-footer">
+				<Button
+					title={`add task to ${title}`}
+					hideTitle={true}
+					iconBefore={<IconAddTask />}
+					onClick={handleAddNewTask}
+					aria-disabled={maxTasksReached}
+					aria-describedby={maxTasksReached ? `alert-max-tasks-${_id}` : undefined}
+				/>
+				{maxTasksReached && (
+					<div id={`alert-max-tasks-${_id}`}>
+						You have created a total of {maxTaskTotal} tasks, which is the maximum number possible.
+					</div>
+				)}
+			</div>
 		</article>
 	)
 }

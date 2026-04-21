@@ -2,7 +2,6 @@ import './lists.scss'
 
 import { useDroppable } from '@dnd-kit/core'
 
-import useToDoContext from '../../hooks/useToDoContext'
 import { DraggableItemData } from '../../types'
 import { ListProps } from '.'
 

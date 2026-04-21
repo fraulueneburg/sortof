@@ -24,6 +24,7 @@
 	--color-surface-inverted: var(--color-dark);
 	--color-text: var(--color-dark);
 	--color-text-inverted: var(--color-white);
+	--color-task-inverted: var(--color-text);
 
 	--border-width-base: 2.5px;
 	--border-style-base: solid;
@@ -37,7 +38,7 @@
 	--font-family-text: 'Atkinson Hyperlegible Next', sans-serif;
 	--font-family-menus: 'Atkinson Hyperlegible Mono', sans-serif;
 	--font-size-base: 1.2rem;
-	--font-size-xxl: 2.5rem;
+	--font-size-xxl: 3rem;
 	--outline-color: var(--color-primary);
 	--outline-style: solid;
 	--outline-width: var(--border-width-base);
@@ -47,26 +48,37 @@
 	/* ELEMENT-SPECIFIC */
 
 	--color-bg: var(--color-light);
-	--font-size-h2: 1.5rem;
 	--padding-page-x: 1.25rem;
 	--padding-page-y: 0.9rem;
-	--pill-size-lg: 4rem;
+
+	--font-size-h1: var(--font-size-xxl);
+	--line-height-h1: 1.2;
+	--font-size-h2: 1.5rem;
 
 	--border-radius-pill: 1.5rem;
+	--pill-size-lg: 4rem;
 
 	--color-inactive-task: #999;
-}
 
-@media (min-width: 1024px) {
-	:root {
-		--font-size-base: 1.5rem;
+	@media (min-width: 375px) {
+		--font-size-xxl: 3.5rem;
+	}
+
+	@media (min-width: 425px) {
+		--font-size-xxl: 4rem;
+	}
+
+	@media (min-width: 1024px) {
 		--font-size-xxl: 7rem;
 		--border-width-base: 3px;
 		--padding-page-x: 2.5rem;
 		--padding-page-y: 1.875rem;
 
 		/* ELEMENT-SPECIFIC */
-
 		--font-size-h2: 1.5rem;
+	}
+
+	@media (min-width: 1200px) {
+		--font-size-base: 1.35rem;
 	}
 }

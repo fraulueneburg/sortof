@@ -23,10 +23,14 @@ This is my latest project – a simple React web app that helps you clear your m
 - Typescript
 - HTML, SCSS
 - Vite
-- React Router DOM
-- nanoid
+
 - @dnd-kit
 - @phosphor-icons/react
+- Embla Carousel
+
+- React Router DOM
+- nanoid
+- lodash
 
 ## Starting the app
 
@@ -36,9 +40,3 @@ and `npm run start -- --host` if you also want to test it on your local network
 ## About Me
 
 I’m Wiebke, a Full Stack Web Developer and UI/UX Designer, currently living in Hamburg, Germany. I love working on web apps that are intuitive to use. Usability is a top priority in my work and I am also strongly advocating for (and keep learning about) web accessibility.
-
-## Like this project? Let’s connect:
-
-<a href="https://linkedin.com/in/fraulueneburg" target="_blank">
-<img alt="LinkedIn" src="https://img.shields.io/badge/-linkedin-1572B6?&style=for-the-badge&logo=css3&logoColor=white" />
-</a>

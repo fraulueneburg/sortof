@@ -1,9 +1,11 @@
 header#page-header,
 footer#page-footer {
 	--spacing-y: 0.5rem;
+
+	align-items: center;
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	gap: var(--spacing-y);
 	justify-content: space-between;
 	position: relative;

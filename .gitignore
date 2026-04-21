@@ -21,6 +21,7 @@
 .vscode
 docs
 src/components/**/_*.*
+*.psd
 
 npm-debug.log*
 yarn-debug.log*

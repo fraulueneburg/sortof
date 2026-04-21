@@ -1,0 +1,54 @@
+.content-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+
+	h1 {
+		word-break: break-word;
+	}
+}
+
+main > .content {
+	max-width: 1000px;
+
+	p {
+		text-wrap-style: pretty;
+	}
+
+	a {
+		text-underline-offset: 0.2rem;
+
+		&:focus-visible {
+			outline-offset: 0;
+		}
+	}
+}
+
+a.close-page {
+	border-radius: 50%;
+	display: inline-block;
+	padding: 0.5rem;
+	margin-top: 0.5rem;
+
+	&:hover,
+	&:focus,
+	&:active {
+		background-color: var(--color-surface-inverted);
+		color: var(--color-text-inverted);
+	}
+
+	svg {
+		display: block;
+
+		@media (max-width: 375px) {
+			height: 2rem;
+			width: 2rem;
+		}
+
+		@media (min-height: 1024px) {
+			height: 3rem;
+			width: 3rem;
+		}
+	}
+}

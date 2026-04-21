@@ -23,11 +23,17 @@ form {
 			border-bottom-left-radius: 0;
 			height: 100%;
 
-			&:hover,
-			&:focus,
-			&:active {
-				background-color: var(--color-text);
-				color: var(--color-text-inverted);
+			&:not([aria-disabled='true']) {
+				&:hover,
+				&:focus,
+				&:active {
+					background-color: var(--color-text);
+					color: var(--color-text-inverted);
+				}
+			}
+
+			&[aria-disabled='true'] {
+				background-color: transparent;
 			}
 
 			&:focus {
@@ -45,15 +51,59 @@ textarea {
 	color: var(--color-text);
 	font-family: var(--font-family-text);
 	font-size: var(--font-size-base);
-	padding: 0.75rem 1rem;
+	padding: 0.5rem 0.75rem;
 
-	&:disabled {
+	@media (min-width: 600px) {
+		padding: 0.75rem 1rem;
+	}
+
+	&:read-only {
 		border-color: var(--border-color-disabled);
 	}
 
 	&:focus {
 		border-color: var(--color-focus);
 		outline: none;
+	}
+
+	&:focus-visible {
+		border-color: var(--color-focus);
+	}
+}
+
+label:has(> input[type='checkbox']) {
+	--checkbox-width: 1.75rem;
+	--checkbox-offset: 5px;
+
+	padding-left: calc(var(--checkbox-width) + 1rem);
+
+	position: relative;
+
+	input[type='checkbox'] {
+		--bg-color: #fff;
+
+		display: inline-block;
+		left: var(--checkbox-offset);
+		margin: 0;
+		position: absolute;
+		top: var(--checkbox-offset);
+
+		&:before {
+			aspect-ratio: 1 / 1;
+			background: var(--bg-color) no-repeat center center;
+			border: var(--border-base);
+			border-radius: var(--border-radius-base);
+			content: '';
+			display: block;
+			margin-left: calc(-1 * var(--checkbox-offset));
+			margin-top: calc(-1 * var(--checkbox-offset));
+			min-height: var(--checkbox-width);
+		}
+
+		&:checked::before {
+			background-image: url(../../../public/icons/check-bold.svg);
+			background-size: 1.5rem 1.5rem;
+		}
 	}
 }
 
@@ -73,7 +123,7 @@ textarea {
 	}
 }
 
-.form-new-todo,
+.form-new-task,
 .form-new-list {
 	margin-bottom: 1rem;
 	width: fit-content;
@@ -90,7 +140,7 @@ textarea {
 	}
 }
 
-.form-new-todo {
+.form-new-task {
 	margin-left: auto;
 	margin-right: auto;
 
@@ -111,7 +161,30 @@ textarea {
 }
 
 .error-message {
-	font-size: 1.2rem;
-	color: var(--red);
-	position: absolute;
+	border-radius: 0.4rem;
+	display: block;
+	font-size: 1rem;
+
+	.form-new-task & {
+		background-color: var(--color-surface);
+		border: var(--border-width-base) var(--border-style-base) currentColor;
+		border-radius: var(--border-radius-base);
+		bottom: 4rem;
+		color: var(--color-error);
+		padding: 0.8rem 1rem;
+		position: absolute;
+		right: 0;
+	}
+
+	.task-item .title & {
+		padding: 0.25rem 0 0.5rem;
+	}
+
+	p {
+		font-size: inherit;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 }

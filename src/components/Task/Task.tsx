@@ -1,7 +1,8 @@
 import './task.scss'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 
+import clsx from 'clsx'
 import { useSortable } from '@dnd-kit/sortable'
 import {
 	ArrowUDownLeftIcon as IconSubmit,
@@ -10,7 +11,12 @@ import {
 	XIcon as IconCancel,
 } from '@phosphor-icons/react'
 
+import useSettingsContext from '../../hooks/useSettingsContext'
 import useToDoContext from '../../hooks/useToDoContext'
+
+import { DEFAULT_LIST_ID, MAX_TASK_CHARS } from '../../config/appConfig'
+import { needsInvertedText } from '../../constants/colors'
+
 import { DraggableItemData, TaskData } from '../../types'
 
 import { Button } from '../../components'
@@ -19,13 +25,14 @@ type TaskProps = {
 	data: TaskData
 	color?: string | null
 	isDraggedCopy?: boolean
+	isEditing?: boolean
 }
 
-export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProps) {
+export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing = false }: TaskProps) {
 	const { title, _id, list, checked, position, rotation } = data
-	const bgColor = !checked ? color : 'color-inactive-task'
 
-	const { toDoData, setToDoData, defaultListId, setTaskCount } = useToDoContext()
+	const { settings } = useSettingsContext()
+	const { toDoData, setToDoData } = useToDoContext()
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
 		id: _id,
 		data: {
@@ -33,7 +40,6 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 			item: data,
 		} satisfies DraggableItemData,
 	})
-	const isDefaultList = list === defaultListId
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const taskRef = useRef<HTMLLIElement>(null)
@@ -42,11 +48,22 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 		setNodeRef(node)
 	}
 
+	const { dimCompletedTasks } = settings
+	const bgColor = !checked || (checked && !dimCompletedTasks) ? color : 'color-inactive-task'
+	const textColor = needsInvertedText(bgColor) ? 'var(--color-task-inverted)' : undefined
+
+	const [editMode, setEditMode] = useState(isEditing)
+	const [draftTitle, setDraftTitle] = useState(title)
 	const componentId = useId()
-	const [isEditing, setIsEditing] = useState(false)
+
+	const defaultListId = DEFAULT_LIST_ID
+	const isDefaultList = list === defaultListId
+	const defaultTitle = 'New task'
+	const maxCharLength = MAX_TASK_CHARS
+	const maxCharsReached = draftTitle.length >= maxCharLength
 
 	const updateTaskStatus = () => {
-		setIsEditing(false)
+		setEditMode(false)
 		setToDoData((prev) => {
 			return {
 				...prev,
@@ -62,11 +79,15 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 	}
 
 	const updateTask = () => {
-		const newTaskName = inputRef.current?.value.trim()
-		const prevName = toDoData.tasks[_id].title
+		let newName = inputRef.current?.value.trim()
+		const prevName = toDoData.tasks[_id].title.trim()
 
-		if (!newTaskName || newTaskName === '' || prevName === newTaskName) {
-			setIsEditing(false)
+		if (!newName) newName = defaultTitle
+
+		if (newName.length > maxCharLength) newName = newName.slice(0, maxCharLength)
+
+		if (newName === prevName) {
+			setEditMode(false)
 			return
 		}
 
@@ -76,11 +97,11 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 				...prev.tasks,
 				[_id]: {
 					...prev.tasks[_id],
-					title: newTaskName,
+					title: newName,
 				},
 			},
 		}))
-		setIsEditing(false)
+		setEditMode(false)
 	}
 
 	const deleteTask = () => {
@@ -94,16 +115,24 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 				},
 			}
 		})
-		setTaskCount((prev) => prev - 1)
-		setIsEditing(false)
+		setEditMode(false)
 	}
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const { key } = event
+		const isEmpty = !draftTitle
+		const isNewEmptyTask = !title && !draftTitle
 
 		if (key === 'Enter' && !event.shiftKey) {
 			event.preventDefault()
 			updateTask()
+			return
+		}
+
+		if ((key === 'Backspace' && isEmpty) || (key === 'Escape' && isNewEmptyTask)) {
+			event.preventDefault()
+			deleteTask()
+			return
 		}
 	}
 
@@ -112,6 +141,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 			${transform ? `translate(${transform.x}px, ${transform.y}px) ` : ''}
         	${isDefaultList ? `rotate(${rotation})` : ''}`,
 		backgroundColor: `var(--${bgColor})`,
+		color: textColor,
 		left: isDefaultList && !isDraggedCopy ? `${position.x}%` : undefined,
 		top: isDefaultList && !isDraggedCopy ? `${position.y}%` : undefined,
 		opacity: isDragging ? 0 : undefined,
@@ -120,62 +150,97 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 	}
 
 	useEffect(() => {
-		if (!isEditing) return
+		if (!editMode) return
 
-		inputRef.current?.focus()
-		inputRef.current?.setSelectionRange(title.length, title.length)
-
-		const handleKeyDownGlobal = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') setIsEditing(false)
+		const isOutsideOfTask = (event: Event) => {
+			if (!taskRef.current) return false
+			const targetNode = event.target as Node | null
+			return !!targetNode && !taskRef.current.contains(targetNode)
 		}
 
-		const handlePointerDownGlobal = (event: PointerEvent) => {
-			const targetNode = event.target as Node | null
-			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
+		const handleKeyDownGlobal = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') setEditMode(false)
+		}
+
+		const handleClickOutside = (event: PointerEvent) => {
+			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		const handleFocusInGlobal = (event: FocusEvent) => {
-			const targetNode = event.target as Node | null
-			if (!taskRef.current) return
-			if (targetNode && !taskRef.current.contains(targetNode)) setIsEditing(false)
+			if (isOutsideOfTask(event)) updateTask()
 		}
 
 		document.addEventListener('keydown', handleKeyDownGlobal)
-		document.addEventListener('pointerdown', handlePointerDownGlobal)
+		document.addEventListener('pointerdown', handleClickOutside)
 		document.addEventListener('focusin', handleFocusInGlobal)
 
 		return () => {
 			document.removeEventListener('keydown', handleKeyDownGlobal)
-			document.removeEventListener('pointerdown', handlePointerDownGlobal)
+			document.removeEventListener('pointerdown', handleClickOutside)
 			document.removeEventListener('focusin', handleFocusInGlobal)
 		}
-	}, [isEditing])
+	}, [editMode])
+
+	useLayoutEffect(() => {
+		if (!editMode) return
+
+		const input = inputRef.current
+
+		if (!input) return
+
+		const selectEnd = input.value.length
+
+		input.focus()
+		input.setSelectionRange(selectEnd, selectEnd)
+		input.scrollLeft = input.scrollWidth
+	}, [editMode, title])
 
 	return (
 		<li
-			className={`task-item${checked ? ' checked' : ''}${isDragging ? ' is-dragging' : ''}`}
+			className={clsx('task-item', {
+				'is-checked': checked,
+				'is-dragging': isDragging || isDraggedCopy,
+				'is-placeholder': title === defaultTitle,
+			})}
 			style={style}
 			data-task-id={_id}
 			ref={mergeRefs}
 			{...listeners}
 			{...attributes}>
-			{list !== defaultListId && <input type="checkbox" aria-label={title} checked={checked} onChange={updateTaskStatus} />}
+			{list !== defaultListId && (
+				<input
+					type="checkbox"
+					id={`${componentId}checkbox`}
+					aria-label={title}
+					checked={checked}
+					onChange={updateTaskStatus}
+				/>
+			)}
 			<div className="title">
-				{isEditing ? (
-					<textarea
-						id={`${componentId}title-field`}
-						ref={inputRef}
-						className="as-input"
-						defaultValue={title}
-						onKeyDown={handleKeyDown}
-					/>
+				{editMode ? (
+					<>
+						<textarea
+							id={`${componentId}title-field`}
+							ref={inputRef}
+							className="as-input"
+							maxLength={maxCharLength}
+							value={draftTitle}
+							onChange={(e) => setDraftTitle(e.target.value)}
+							onKeyDown={handleKeyDown}
+							placeholder={defaultTitle}
+						/>
+						{maxCharsReached && (
+							<div className="error-message" role="alert" aria-live="polite">
+								You have reached the character limit of {maxCharLength} characters.
+							</div>
+						)}
+					</>
 				) : (
-					title
+					<div className="text">{title}</div>
 				)}
 			</div>
 			<div className="actions">
-				{isEditing ? (
+				{editMode ? (
 					<>
 						<Button
 							type="button"
@@ -203,7 +268,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 							hideTitle={true}
 							unstyled={true}
 							iconBefore={<IconCancel />}
-							onClick={() => setIsEditing(false)}
+							onClick={() => setEditMode(false)}
 							style={{ backgroundColor: `var(--${bgColor})` }}
 						/>
 					</>
@@ -215,7 +280,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false }: TaskProp
 						hideTitle={true}
 						unstyled={true}
 						iconBefore={<IconEdit />}
-						onClick={() => setIsEditing(true)}
+						onClick={() => setEditMode(true)}
 					/>
 				)}
 			</div>

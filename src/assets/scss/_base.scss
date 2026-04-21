@@ -4,13 +4,20 @@ html {
 }
 
 body {
-	background-color: var(--color-bg);
+	background: var(--color-bg) url(../img/bg-noise-300.png) repeat top left;
 	color: var(--color-text);
 	font-family: var(--font-family-text);
 	font-size: var(--font-size-base);
 	margin: 0;
 	min-height: 100dvh;
 	overflow-x: hidden;
+}
+
+html,
+body {
+	&:has(.is-dragging) {
+		overscroll-behavior-y: none !important;
+	}
 }
 
 #root {
@@ -22,7 +29,7 @@ body {
 
 main {
 	flex: 1;
-	margin: 0.5rem 0;
+	margin: 1rem 0 2.5rem;
 	position: relative;
 }
 
@@ -35,7 +42,7 @@ main {
 .hidden,
 .sr-only {
 	border: 0;
-	clip-path: rect(0, 0, 0, 0);
+	clip-path: rect(0 0 0 0);
 	position: absolute;
 	height: 1px;
 	margin: -1px;
@@ -46,5 +53,10 @@ main {
 
 :focus-visible {
 	outline: calc(var(--outline-width) + 1px) var(--outline-style) var(--outline-color);
-	outline-offset: var(--outline-width);
+	outline-offset: calc(var(--outline-width) - 1px);
+}
+
+::backdrop {
+	background-color: rgba(0, 0, 0, 0.85);
+	backdrop-filter: blur(3px);
 }

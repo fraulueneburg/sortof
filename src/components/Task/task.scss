@@ -16,20 +16,24 @@
 	--min-height: 2.5rem;
 	--outline-color: var(--color-text);
 	--spacing: 0.5rem;
-	--title-max-width: 240px;
-	--spacing: 0.5rem;
+	--title-padding: 0.45rem;
 
-	--title-padding-inline: 0.5rem;
+	@media (min-width: 1200px) {
+		--title-padding: 0.35rem;
+	}
 
 	background-color: var(--color-primary);
 	border-radius: var(--border-radius);
 	color: var(--color-text-inverted);
 	cursor: grab;
 	display: flex;
+	font-size: var(--font-size-base);
+	line-height: normal;
 	gap: 0;
 	max-width: 100%;
 	min-height: var(--min-height);
 	position: relative;
+	touch-action: manipulation;
 	width: fit-content;
 	z-index: 5;
 
@@ -37,12 +41,16 @@
 		z-index: 10;
 	}
 
+	&.is-placeholder .title .text {
+		opacity: 0.7;
+	}
+
 	&.is-dragging {
 		box-shadow: var(--box-shadow-dragging);
 		z-index: 10;
 
 		.title {
-			outline-color: var(--color-text);
+			outline-color: var(--outline-color);
 		}
 	}
 
@@ -50,15 +58,12 @@
 		--offset-y: 10px;
 		--offset-x: 10px;
 
+		border: none;
+		display: block;
+		left: var(--offset-x);
 		margin: 0;
 		position: absolute;
 		top: var(--offset-y);
-		left: var(--offset-x);
-		height: 0;
-		width: 0;
-		display: block;
-
-		clip-path: rect(0, 1, 0, 1);
 
 		&:before,
 		&:after {
@@ -88,20 +93,22 @@
 		}
 
 		&:focus-visible {
+			outline: none;
+
 			&:before {
 				background-color: var(--color-surface-inverted);
 				outline: calc(var(--outline-width) + 1px) solid var(--color-text);
-				outline-offset: calc(var(--outline-width) * 2);
+				outline-offset: calc(var(--outline-width) * 1.5);
 			}
 
 			&:after {
 				background-color: var(--color-text-inverted);
 			}
 		}
-	}
 
-	input[type='checkbox'] + .title {
-		padding-left: calc(var(--min-height) + var(--spacing));
+		& + .title {
+			padding-left: calc(var(--min-height) - var(--title-padding) + var(--spacing));
+		}
 	}
 
 	.title {
@@ -110,17 +117,19 @@
 		align-self: center;
 		border-radius: var(--border-radius);
 		box-sizing: border-box;
-		max-width: var(--title-max-width);
 		min-height: var(--min-height);
 		overflow: hidden;
-		padding: var(--title-padding-inline);
 		padding-left: 1rem;
-		padding-right: calc(var(--spacing) + var(--actions-width));
+		padding-right: calc(var(--actions-width) + var(--spacing) / 4);
+		white-space: pre-wrap;
 		word-wrap: break-word;
 
-		@media (min-width: 1024px) {
-			--title-max-width: 500px;
-			--title-padding-inline: 0.25rem;
+		user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+
+		.text {
+			padding: var(--title-padding);
 		}
 
 		&:has(textarea) {
@@ -131,7 +140,7 @@
 		}
 	}
 
-	&.checked {
+	&.is-checked {
 		.title {
 			text-decoration: line-through 4px var(--color-text);
 		}
@@ -141,9 +150,11 @@
 		border: none;
 		border-radius: 0.4rem;
 		background-color: rgba(255, 255, 255, 0.5);
+		box-sizing: border-box;
 		display: block;
-		padding: var(--title-padding-inline);
-		margin: calc(var(--title-padding-inline) * -1);
+		max-width: 100%;
+		min-height: calc(var(--min-height) - var(--title-padding) * 2);
+		padding: var(--title-padding);
 		width: auto;
 	}
 
@@ -166,7 +177,8 @@
 		&:active {
 			background-color: var(--color-text);
 			border: none;
-			outline-color: var(--color-text);
+			color: var(--color-text-inverted);
+			outline-color: var(--outline-color);
 		}
 
 		&.btn-save,
