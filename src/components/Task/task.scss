@@ -16,7 +16,6 @@
 	--min-height: 2.5rem;
 	--outline-color: var(--color-text);
 	--spacing: 0.5rem;
-	--title-max-width: 240px;
 	--title-padding: 0.45rem;
 
 	@media (min-width: 1200px) {
@@ -118,7 +117,6 @@
 		align-self: center;
 		border-radius: var(--border-radius);
 		box-sizing: border-box;
-		max-width: var(--title-max-width);
 		min-height: var(--min-height);
 		overflow: hidden;
 		padding-left: 1rem;
@@ -129,10 +127,6 @@
 		user-select: none;
 		-webkit-user-select: none;
 		-ms-user-select: none;
-
-		@media (min-width: 1024px) {
-			--title-max-width: 500px;
-		}
 
 		.text {
 			padding: var(--title-padding);
