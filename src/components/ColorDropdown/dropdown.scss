@@ -40,6 +40,7 @@ ul[role='listbox'] {
 		background-color: var(--color-surface);
 		border-radius: var(--border-radius-base);
 		border: var(--border-base);
+		box-shadow: var(--box-shadow);
 		display: none;
 		gap: calc(var(--outline-width) * 3);
 		margin-top: calc(var(--outline-width) * 3);
