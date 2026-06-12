@@ -120,7 +120,14 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 
 	const cancelEditTask = () => {
 		const isNewEmptyTask = !title && !draftTitle
-		if (isNewEmptyTask) deleteTask()
+
+		if (isNewEmptyTask) {
+			deleteTask()
+		} else if (title === defaultTitle) {
+			setDraftTitle('')
+		} else {
+			setDraftTitle(title)
+		}
 
 		setEditMode(false)
 	}
