@@ -24,19 +24,22 @@ h2 {
 }
 
 p {
-	font-size: 1.25rem;
+	--fz: 1.25rem;
+
+	font-size: var(--fz);
+	line-height: 1.35;
 	margin-top: 0;
 
-	@media (min-width: 600px) {
-		font-size: 1.5rem;
+	&:first-child {
+		font-size: calc(var(--fz) + 0.5rem);
+	}
+
+	&:last-child {
+		font-size: calc(var(--fz) - 0.3rem);
 	}
 
 	@media (min-width: 768px) {
-		font-size: 1.75rem;
-	}
-
-	@media (min-width: 1024px) {
-		font-size: 2rem;
+		--fz: 1.5rem;
 	}
 }
 
