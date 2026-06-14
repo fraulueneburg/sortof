@@ -118,6 +118,20 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		setEditMode(false)
 	}
 
+	const cancelEditTask = () => {
+		const isNewEmptyTask = !title && !draftTitle
+
+		if (isNewEmptyTask) {
+			deleteTask()
+		} else if (title === defaultTitle) {
+			setDraftTitle('')
+		} else {
+			setDraftTitle(title)
+		}
+
+		setEditMode(false)
+	}
+
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const { key } = event
 		const isEmpty = !draftTitle
@@ -159,7 +173,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 		}
 
 		const handleKeyDownGlobal = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') setEditMode(false)
+			if (event.key === 'Escape') cancelEditTask()
 		}
 
 		const handleClickOutside = (event: PointerEvent) => {
@@ -268,7 +282,7 @@ export function Task({ data, color = 'purple', isDraggedCopy = false, isEditing 
 							hideTitle={true}
 							unstyled={true}
 							iconBefore={<IconCancel />}
-							onClick={() => setEditMode(false)}
+							onClick={cancelEditTask}
 							style={{ backgroundColor: `var(--${bgColor})` }}
 						/>
 					</>
